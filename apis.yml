@@ -1,0 +1,116 @@
+name: SAP Concur
+description: SAP Concur is a leading provider of integrated travel, expense, and invoice management solutions. Their APIs enable developers to integrate Concur functionality into their applications, automate business processes, and access travel and expense data.
+image: https://www.concur.com/themes/custom/concur/logo.svg
+url: https://www.concur.com
+created: '2024'
+modified: '2024'
+tags:
+- Travel Management
+- Expense Management
+- Invoice Management
+- Financial Services
+- Business Travel
+apis:
+- name: Concur Expense API
+  description: Enables integration with Concur Expense for creating, retrieving, and managing expense reports, entries, and related data.
+  image: https://www.concur.com/themes/custom/concur/logo.svg
+  baseURL: https://www.concursolutions.com/api/v3.0
+  humanURL: https://developer.concur.com/api-reference/expense/
+  tags:
+  - Expenses
+  - Reports
+  - Receipts
+  properties:
+  - type: Documentation
+    url: https://developer.concur.com/api-reference/expense/
+  - type: OpenAPI
+    url: https://developer.concur.com/api-reference/expense/expense-report/expense-report.json
+  - type: Authentication
+    url: https://developer.concur.com/api-reference/authentication/getting-started.html
+- name: Concur Travel API
+  description: Provides access to travel booking data, profiles, and itinerary information within Concur Travel.
+  image: https://www.concur.com/themes/custom/concur/logo.svg
+  baseURL: https://www.concursolutions.com/api/v3.0
+  humanURL: https://developer.concur.com/api-reference/travel/
+  tags:
+  - Travel
+  - Bookings
+  - Itineraries
+  properties:
+  - type: Documentation
+    url: https://developer.concur.com/api-reference/travel/
+  - type: OpenAPI
+    url: https://developer.concur.com/api-reference/travel/itinerary/itinerary.json
+- name: Concur Invoice API
+  description: Allows integration with Concur Invoice for managing purchase requests, invoices, and payment requests.
+  image: https://www.concur.com/themes/custom/concur/logo.svg
+  baseURL: https://www.concursolutions.com/api/v3.0
+  humanURL: https://developer.concur.com/api-reference/invoice/
+  tags:
+  - Invoices
+  - Purchase Requests
+  - Payments
+  properties:
+  - type: Documentation
+    url: https://developer.concur.com/api-reference/invoice/
+  - type: OpenAPI
+    url: https://developer.concur.com/api-reference/invoice/v3.invoice.json
+- name: Concur Request API
+  description: Enables management of travel requests and approvals within the Concur system.
+  image: https://www.concur.com/themes/custom/concur/logo.svg
+  baseURL: https://www.concursolutions.com/api/v4.0
+  humanURL: https://developer.concur.com/api-reference/request/
+  tags:
+  - Travel Requests
+  - Approvals
+  - Workflows
+  properties:
+  - type: Documentation
+    url: https://developer.concur.com/api-reference/request/
+  - type: OpenAPI
+    url: https://developer.concur.com/api-reference/request/v4.request.json
+- name: Concur User Provisioning API
+  description: Manages user accounts and profiles, including creating, updating, and retrieving user information.
+  image: https://www.concur.com/themes/custom/concur/logo.svg
+  baseURL: https://www.concursolutions.com/api/user/v1.0
+  humanURL: https://developer.concur.com/api-reference/user/
+  tags:
+  - Users
+  - Provisioning
+  - Identity Management
+  properties:
+  - type: Documentation
+    url: https://developer.concur.com/api-reference/user/
+- name: Concur Receipt API
+  description: Allows for the submission and management of digital receipts within Concur Expense.
+  image: https://www.concur.com/themes/custom/concur/logo.svg
+  baseURL: https://www.concursolutions.com/api/v3.0
+  humanURL: https://developer.concur.com/api-reference/receipts/
+  tags:
+  - Receipts
+  - Images
+  - Documents
+  properties:
+  - type: Documentation
+    url: https://developer.concur.com/api-reference/receipts/
+common:
+- type: Developer Portal
+  url: https://developer.concur.com/
+- type: Authentication
+  url: https://developer.concur.com/api-reference/authentication/getting-started.html
+- type: Support
+  url: https://developer.concur.com/support/
+- type: Terms of Service
+  url: https://www.concur.com/terms-of-use
+- type: Privacy Policy
+  url: https://www.concur.com/privacy-policy
+- type: Status
+  url: https://open.concur.com/
+- type: Blog
+  url: https://www.concur.com/newsroom
+- type: Sign Up
+  url: https://developer.concur.com/register
+maintainers:
+- name: SAP Concur
+  email: developer@concur.com
+  url: https://developer.concur.com/
