@@ -1,0 +1,923 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developer.concur.com/schema/expense/v4/expense-report.json",
+  "title": "SAP Concur Expense Report Schema",
+  "description": "JSON Schema definitions for the SAP Concur Expense Report v4 API core models, covering expense reports, expense entries, allocations, and supporting types.",
+  "type": "object",
+  "$defs": {
+    "Amount": {
+      "$id": "#Amount",
+      "title": "Amount",
+      "description": "A monetary amount with its ISO 4217 currency code. Used throughout the expense system for transaction amounts, approved amounts, reimbursable amounts, and allocation amounts.",
+      "type": "object",
+      "required": ["value", "currencyCode"],
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": "The numeric monetary amount.",
+          "examples": [250.00, 1500.75]
+        },
+        "currencyCode": {
+          "type": "string",
+          "description": "ISO 4217 three-letter currency code.",
+          "minLength": 3,
+          "maxLength": 3,
+          "pattern": "^[A-Z]{3}$",
+          "examples": ["USD", "EUR", "GBP", "JPY"]
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "CustomData": {
+      "$id": "#CustomData",
+      "title": "Custom Data",
+      "description": "A customer-configured custom field value. Organizations can define up to 40 custom fields (custom1-custom40) and 6 organizational unit fields (orgUnit1-orgUnit6) for reports, expenses, and allocations.",
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The identifier of the custom field (e.g., custom1, custom2, orgUnit1).",
+          "examples": ["custom1", "custom12", "orgUnit1", "orgUnit3"]
+        },
+        "value": {
+          "type": ["string", "null"],
+          "description": "The value assigned to the custom field. Maximum 48 characters.",
+          "maxLength": 48,
+          "examples": ["Marketing Department", "Project Alpha"]
+        },
+        "isValid": {
+          "type": "boolean",
+          "description": "Whether the current value passes the configured validation rules for this field."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ExpenseType": {
+      "$id": "#ExpenseType",
+      "title": "Expense Type",
+      "description": "An expense category classification configured within the organization's expense policy. Common types include airfare, lodging, meals, mileage, and miscellaneous.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The expense type identifier code.",
+          "maxLength": 5,
+          "examples": ["BRKFT", "LODNG", "AIRFR", "MILEG", "TAXIX"]
+        },
+        "name": {
+          "type": "string",
+          "description": "The localized display name of the expense type.",
+          "examples": ["Breakfast", "Hotel/Lodging", "Airfare", "Mileage"]
+        },
+        "code": {
+          "type": "string",
+          "description": "The expense type category code."
+        },
+        "isDeleted": {
+          "type": "boolean",
+          "description": "Whether this expense type has been deactivated in the system."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "PaymentType": {
+      "$id": "#PaymentType",
+      "title": "Payment Type",
+      "description": "A payment method used for an expense transaction, such as cash, company-paid credit card, or personal credit card.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The payment type identifier.",
+          "maxLength": 4,
+          "examples": ["CASH", "CPAID", "IBCP", "PENDC"]
+        },
+        "name": {
+          "type": "string",
+          "description": "The localized display name of the payment method.",
+          "examples": ["Cash", "Company Paid", "IBCP (Individual Bill, Company Paid)"]
+        },
+        "code": {
+          "type": "string",
+          "description": "The payment type code."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Location": {
+      "$id": "#Location",
+      "title": "Location",
+      "description": "A geographic location associated with an expense transaction. Locations in SAP Concur can include cities, airports, and custom-defined locations.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique location identifier within SAP Concur."
+        },
+        "name": {
+          "type": "string",
+          "description": "The localized display name of the location.",
+          "examples": ["New York, New York", "London, United Kingdom"]
+        },
+        "city": {
+          "type": "string",
+          "description": "The city name.",
+          "examples": ["New York", "London", "Tokyo"]
+        },
+        "countryCode": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 country code.",
+          "minLength": 2,
+          "maxLength": 2,
+          "pattern": "^[A-Z]{2}$",
+          "examples": ["US", "GB", "JP"]
+        },
+        "countrySubDivisionCode": {
+          "type": "string",
+          "description": "ISO 3166-2 subdivision code (state, province, region).",
+          "examples": ["US-NY", "GB-LND"]
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Vendor": {
+      "$id": "#Vendor",
+      "title": "Vendor",
+      "description": "Vendor or merchant information associated with an expense transaction.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The vendor identifier within SAP Concur."
+        },
+        "name": {
+          "type": "string",
+          "description": "The vendor or merchant name.",
+          "examples": ["Marriott International", "United Airlines", "Uber"]
+        },
+        "description": {
+          "type": "string",
+          "description": "Additional vendor description or details."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ExchangeRate": {
+      "$id": "#ExchangeRate",
+      "title": "Exchange Rate",
+      "description": "Currency exchange rate applied to convert a transaction amount from the transaction currency to the report currency.",
+      "type": "object",
+      "required": ["value", "operation"],
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": "The exchange rate value used in conversion.",
+          "exclusiveMinimum": 0,
+          "examples": [1.08, 0.79, 149.50]
+        },
+        "operation": {
+          "type": "string",
+          "description": "How to apply the rate: MULTIPLY the transaction amount by the rate, or DIVIDE the transaction amount by the rate.",
+          "enum": ["MULTIPLY", "DIVIDE"]
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Mileage": {
+      "$id": "#Mileage",
+      "title": "Mileage",
+      "description": "Mileage-specific data for distance-based expense entries. Captures vehicle usage, distance traveled, and passenger information for mileage reimbursement calculations.",
+      "type": "object",
+      "properties": {
+        "totalDistance": {
+          "type": "integer",
+          "description": "Total distance traveled in the configured unit (miles or kilometers).",
+          "minimum": 0
+        },
+        "vehicleId": {
+          "type": "string",
+          "description": "The identifier of the vehicle used from the user's configured vehicles."
+        },
+        "odometerStart": {
+          "type": "integer",
+          "description": "Starting odometer reading.",
+          "minimum": 0
+        },
+        "odometerEnd": {
+          "type": "integer",
+          "description": "Ending odometer reading.",
+          "minimum": 0
+        },
+        "passengerCount": {
+          "type": "integer",
+          "description": "Number of passengers in the vehicle.",
+          "minimum": 0
+        },
+        "personalDistance": {
+          "type": "integer",
+          "description": "Distance attributed to personal (non-reimbursable) use.",
+          "minimum": 0
+        },
+        "isMarkedAsHigherRate": {
+          "type": "boolean",
+          "description": "Whether the higher mileage reimbursement rate applies."
+        },
+        "routeId": {
+          "type": "string",
+          "description": "The identifier of the predefined or tracked route."
+        },
+        "hasMachinery": {
+          "type": "boolean",
+          "description": "Whether equipment or machinery was transported."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Travel": {
+      "$id": "#Travel",
+      "title": "Travel",
+      "description": "Travel-specific data for transportation and lodging expense entries, including flight details, hotel stays, and car rentals.",
+      "type": "object",
+      "properties": {
+        "startLocation": {
+          "type": "string",
+          "description": "Trip origin or departure location.",
+          "maxLength": 100,
+          "examples": ["New York, NY"]
+        },
+        "endLocation": {
+          "type": "string",
+          "description": "Trip destination or arrival location.",
+          "maxLength": 100,
+          "examples": ["San Francisco, CA"]
+        },
+        "ticketNumber": {
+          "type": "string",
+          "description": "Ticket or booking reference number.",
+          "maxLength": 32,
+          "examples": ["0162345678901"]
+        },
+        "hotelCheckinDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Hotel check-in date in YYYY-MM-DD format."
+        },
+        "hotelCheckoutDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Hotel check-out date in YYYY-MM-DD format."
+        },
+        "carRentalDays": {
+          "type": "integer",
+          "description": "Number of car rental days.",
+          "minimum": 0
+        },
+        "airlineServiceClassCode": {
+          "type": "string",
+          "description": "Airline cabin class code.",
+          "enum": ["BUSIN", "COACH", "FIRST"]
+        },
+        "airlineFeeTypeCode": {
+          "type": "string",
+          "description": "Airline-specific fee type identifier."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "TravelAllowance": {
+      "$id": "#TravelAllowance",
+      "title": "Travel Allowance",
+      "description": "Travel allowance (per diem) association for an expense, linking it to the organization's configured daily travel allowance limits.",
+      "type": "object",
+      "properties": {
+        "isExpensePartOfTravelAllowance": {
+          "type": "boolean",
+          "description": "Whether this expense is included in a travel allowance calculation."
+        },
+        "dailyTravelAllowanceId": {
+          "type": "string",
+          "description": "Identifier of the associated daily travel allowance.",
+          "maxLength": 32
+        },
+        "dailyLimitAmount": {
+          "type": "number",
+          "description": "The daily allowance limit amount in the report currency."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ExpenseTaxSummary": {
+      "$id": "#ExpenseTaxSummary",
+      "title": "Expense Tax Summary",
+      "description": "Summarized tax information for an expense entry, including net and reclaim amounts used for VAT/GST recovery.",
+      "type": "object",
+      "properties": {
+        "netAdjustedTaxAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "Net adjusted tax amount after modifications."
+        },
+        "netReclaimAdjustedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "Net reclaim amount after adjustments."
+        },
+        "netReclaimAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "Net reclaimable tax amount."
+        },
+        "netTaxAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "Net tax amount before adjustments."
+        },
+        "totalReclaimAdjustedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "Total reclaim amount after all adjustments."
+        },
+        "totalReclaimPostedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "Total reclaim amount posted to the ledger."
+        },
+        "totalTaxAdjustedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "Total tax amount after all adjustments."
+        },
+        "totalTaxPostedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "Total tax amount posted to the ledger."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Link": {
+      "$id": "#Link",
+      "title": "Link",
+      "description": "A HATEOAS hypermedia link for navigating between related resources in the API.",
+      "type": "object",
+      "properties": {
+        "rel": {
+          "type": "string",
+          "description": "The link relation type describing the relationship to the current resource.",
+          "examples": ["self", "expenses", "allocations", "comments"]
+        },
+        "href": {
+          "type": "string",
+          "format": "uri",
+          "description": "The target URI of the linked resource."
+        },
+        "hreflang": {
+          "type": "string",
+          "description": "Language of the target resource (BCP 47 tag)."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ExpenseReport": {
+      "$id": "#ExpenseReport",
+      "title": "Expense Report",
+      "description": "The full representation of an SAP Concur expense report, containing header information, financial amounts, approval and payment status, ownership, versioning, and custom data fields. An expense report is the top-level container that groups related expense entries for reimbursement processing.",
+      "type": "object",
+      "required": [
+        "reportId",
+        "name",
+        "currencyCode",
+        "policyId",
+        "approvalStatus",
+        "paymentStatus",
+        "userId",
+        "isSubmitted",
+        "creationDate",
+        "reportVersion"
+      ],
+      "properties": {
+        "reportId": {
+          "type": "string",
+          "description": "Unique identifier of the expense report."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name or title of the expense report.",
+          "examples": ["Q1 2026 Business Travel", "March Client Meetings"]
+        },
+        "businessPurpose": {
+          "type": ["string", "null"],
+          "description": "The business justification for the expenses in this report.",
+          "examples": ["Client meetings and site visits in New York"]
+        },
+        "reportDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The date of the report in YYYY-MM-DD format."
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The start date of the reporting period in YYYY-MM-DD format."
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The end date of the reporting period in YYYY-MM-DD format."
+        },
+        "countryCode": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 country code for the report's home country.",
+          "minLength": 2,
+          "maxLength": 2,
+          "pattern": "^[A-Z]{2}$",
+          "examples": ["US", "DE", "GB"]
+        },
+        "countrySubDivisionCode": {
+          "type": "string",
+          "description": "ISO 3166-2 subdivision code (state, province, region)."
+        },
+        "currencyCode": {
+          "type": "string",
+          "description": "ISO 4217 three-letter currency code for the report.",
+          "minLength": 3,
+          "maxLength": 3,
+          "pattern": "^[A-Z]{3}$",
+          "examples": ["USD", "EUR"]
+        },
+        "policyId": {
+          "type": "string",
+          "description": "The identifier of the expense policy applied to this report."
+        },
+        "reportFormId": {
+          "type": "string",
+          "description": "The identifier of the form template used for this report."
+        },
+        "ledgerId": {
+          "type": "string",
+          "description": "The identifier of the financial ledger associated with this report."
+        },
+        "approvalStatus": {
+          "type": "string",
+          "description": "Human-readable label of the current approval status.",
+          "examples": [
+            "Not Submitted",
+            "Submitted & Pending Approval",
+            "Approved",
+            "Sent Back to Employee"
+          ]
+        },
+        "approvalStatusId": {
+          "type": "string",
+          "description": "Machine-readable code for the current approval status.",
+          "examples": ["A_NOTF", "A_PEND", "A_APPR", "A_RESU"]
+        },
+        "paymentStatus": {
+          "type": "string",
+          "description": "Human-readable label of the current payment status.",
+          "examples": ["Not Paid", "Processing Payment", "Payment Confirmed"]
+        },
+        "paymentStatusId": {
+          "type": "string",
+          "description": "Machine-readable code for the current payment status.",
+          "examples": ["P_NOTP", "P_PROC", "P_PAID"]
+        },
+        "claimedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "The total amount claimed by the employee."
+        },
+        "approvedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "The total amount approved for reimbursement."
+        },
+        "reportTotal": {
+          "$ref": "#/$defs/Amount",
+          "description": "The overall total of all expenses on this report."
+        },
+        "amountDueEmployee": {
+          "$ref": "#/$defs/Amount",
+          "description": "The net amount due to the employee after deducting company-paid amounts."
+        },
+        "userId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The unique identifier (UUID) of the report owner."
+        },
+        "isSubmitted": {
+          "type": "boolean",
+          "description": "Whether the report has been submitted into the approval workflow."
+        },
+        "isSentBack": {
+          "type": "boolean",
+          "description": "Whether the report was sent back to the employee for corrections."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the report was created, in ISO 8601 format."
+        },
+        "submitDate": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "When the report was last submitted, in ISO 8601 format. Null if never submitted."
+        },
+        "reportVersion": {
+          "type": "integer",
+          "description": "The version number, incremented on each modification to the report.",
+          "minimum": 1
+        },
+        "customData": {
+          "type": "array",
+          "description": "Custom field values configured on the report header.",
+          "items": {
+            "$ref": "#/$defs/CustomData"
+          }
+        },
+        "links": {
+          "type": "array",
+          "description": "HATEOAS navigation links to related resources.",
+          "items": {
+            "$ref": "#/$defs/Link"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ExpenseEntry": {
+      "$id": "#ExpenseEntry",
+      "title": "Expense Entry",
+      "description": "A single expense line item on an expense report. Represents one transaction or charge with its associated amounts, categorization, vendor, location, and optional detail data for mileage, travel, or travel allowance expenses.",
+      "type": "object",
+      "required": ["expenseId"],
+      "properties": {
+        "expenseId": {
+          "type": "string",
+          "description": "Unique identifier of the expense entry."
+        },
+        "transactionDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The date the transaction occurred in YYYY-MM-DD format."
+        },
+        "transactionAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "The amount in the original transaction currency."
+        },
+        "postedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "The amount converted to the report currency."
+        },
+        "approvedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "The amount approved for reimbursement."
+        },
+        "approverAdjustedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "The amount after approver adjustments."
+        },
+        "businessPurpose": {
+          "type": ["string", "null"],
+          "description": "Business justification for this specific expense.",
+          "maxLength": 64
+        },
+        "expenseType": {
+          "$ref": "#/$defs/ExpenseType",
+          "description": "The expense category classification."
+        },
+        "paymentType": {
+          "$ref": "#/$defs/PaymentType",
+          "description": "The payment method used for this transaction."
+        },
+        "location": {
+          "$ref": "#/$defs/Location",
+          "description": "The geographic location where the transaction occurred."
+        },
+        "vendor": {
+          "$ref": "#/$defs/Vendor",
+          "description": "The vendor or merchant for this transaction."
+        },
+        "exchangeRate": {
+          "$ref": "#/$defs/ExchangeRate",
+          "description": "The currency exchange rate applied if the transaction currency differs from the report currency."
+        },
+        "allocationState": {
+          "type": "string",
+          "description": "The allocation status indicating how the expense amount has been distributed.",
+          "enum": ["FULLY_ALLOCATED", "NOT_ALLOCATED", "PARTIALLY_ALLOCATED"]
+        },
+        "isPersonalExpense": {
+          "type": "boolean",
+          "description": "Whether this is a non-reimbursable personal expense."
+        },
+        "isExpenseRejected": {
+          "type": "boolean",
+          "description": "Whether the expense has been rejected by an approver."
+        },
+        "isPaperReceiptReceived": {
+          "type": "boolean",
+          "description": "Whether a physical paper receipt has been received for this expense."
+        },
+        "hasExceptions": {
+          "type": "boolean",
+          "description": "Whether the expense has triggered policy exception rules."
+        },
+        "expenseTaxSummary": {
+          "$ref": "#/$defs/ExpenseTaxSummary",
+          "description": "Tax details for VAT/GST recovery purposes."
+        },
+        "mileage": {
+          "$ref": "#/$defs/Mileage",
+          "description": "Mileage-specific data, present only for distance-based expense types."
+        },
+        "travel": {
+          "$ref": "#/$defs/Travel",
+          "description": "Travel-specific data for transportation and lodging expenses."
+        },
+        "travelAllowance": {
+          "$ref": "#/$defs/TravelAllowance",
+          "description": "Travel allowance (per diem) association."
+        },
+        "invoiceId": {
+          "type": ["string", "null"],
+          "description": "Reference to a supplier invoice, if applicable."
+        },
+        "customData": {
+          "type": "array",
+          "description": "Custom field values configured on the expense entry.",
+          "items": {
+            "$ref": "#/$defs/CustomData"
+          }
+        },
+        "lastModifiedDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the expense was last modified, in ISO 8601 format."
+        },
+        "links": {
+          "type": "array",
+          "description": "HATEOAS navigation links to related resources.",
+          "items": {
+            "$ref": "#/$defs/Link"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Allocation": {
+      "$id": "#Allocation",
+      "title": "Allocation",
+      "description": "An expense allocation that distributes a portion of an expense amount to a specific cost center, department, project, or general ledger account. Allocations enable organizations to split expense charges across multiple organizational units for accurate financial reporting.",
+      "type": "object",
+      "required": [
+        "allocationId",
+        "expenseId",
+        "percentage",
+        "isSystemAllocation",
+        "isPercentEdited"
+      ],
+      "properties": {
+        "allocationId": {
+          "type": "string",
+          "description": "Unique identifier of the allocation."
+        },
+        "expenseId": {
+          "type": "string",
+          "description": "The identifier of the expense this allocation belongs to."
+        },
+        "accountCode": {
+          "type": ["string", "null"],
+          "description": "The general ledger account code for this allocation."
+        },
+        "overLimitAccountCode": {
+          "type": ["string", "null"],
+          "description": "The account code used for amounts that exceed policy limits."
+        },
+        "allocationAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "The monetary amount allocated."
+        },
+        "approvedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "The pro-rated approved amount for this allocation."
+        },
+        "claimedAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "The claimed reimbursement amount for this allocation."
+        },
+        "percentage": {
+          "type": "number",
+          "description": "The percentage of the total expense allocated (0-100). All allocations on an expense must sum to 100%.",
+          "minimum": 0,
+          "maximum": 100,
+          "examples": [100.0, 50.0, 33.33]
+        },
+        "isSystemAllocation": {
+          "type": "boolean",
+          "description": "Whether this allocation was automatically created by the system (true) or manually defined by a user (false). System allocations are read-only when displayed."
+        },
+        "isPercentEdited": {
+          "type": "boolean",
+          "description": "Whether the allocation percentage has been manually modified from its original value."
+        },
+        "customData": {
+          "type": "array",
+          "description": "Custom field values configured on the allocation.",
+          "items": {
+            "$ref": "#/$defs/CustomData"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ExpenseItemization": {
+      "$id": "#ExpenseItemization",
+      "title": "Expense Itemization",
+      "description": "An itemized breakdown line within a parent expense entry. Used to split a single transaction (such as a hotel bill) into its constituent charges (room rate, tax, minibar, etc.).",
+      "type": "object",
+      "properties": {
+        "itemizationId": {
+          "type": "string",
+          "description": "Unique identifier of the itemization."
+        },
+        "expenseId": {
+          "type": "string",
+          "description": "The parent expense entry this itemization belongs to."
+        },
+        "transactionDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The date of the itemized charge in YYYY-MM-DD format."
+        },
+        "transactionAmount": {
+          "$ref": "#/$defs/Amount",
+          "description": "The amount of this itemized charge."
+        },
+        "expenseType": {
+          "$ref": "#/$defs/ExpenseType",
+          "description": "The expense category for this itemized line."
+        },
+        "businessPurpose": {
+          "type": ["string", "null"],
+          "description": "Business justification for this specific itemization."
+        },
+        "customData": {
+          "type": "array",
+          "description": "Custom field values on the itemization.",
+          "items": {
+            "$ref": "#/$defs/CustomData"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "Comment": {
+      "$id": "#Comment",
+      "title": "Comment",
+      "description": "A comment attached to an expense report header or individual expense entry. Comments facilitate communication between employees, approvers, and processors during the expense workflow.",
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "description": "The text content of the comment."
+        },
+        "author": {
+          "type": "object",
+          "description": "The user who authored the comment.",
+          "properties": {
+            "userId": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The author's unique user identifier."
+            },
+            "firstName": {
+              "type": "string",
+              "description": "The author's first name."
+            },
+            "lastName": {
+              "type": "string",
+              "description": "The author's last name."
+            }
+          },
+          "additionalProperties": false
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the comment was created, in ISO 8601 format."
+        },
+        "isLatest": {
+          "type": "boolean",
+          "description": "Whether this is the most recent comment in the thread."
+        },
+        "isAuditLog": {
+          "type": "boolean",
+          "description": "Whether this is a system-generated audit log entry rather than a user comment."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "FormField": {
+      "$id": "#FormField",
+      "title": "Form Field",
+      "description": "A configured form field with its metadata, display properties, and validation rules. Form fields define the data entry interface for reports and expenses.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The field identifier."
+        },
+        "label": {
+          "type": "string",
+          "description": "The localized display label for the field."
+        },
+        "controlType": {
+          "type": "string",
+          "description": "The UI control type used to render this field (e.g., text, dropdown, date picker)."
+        },
+        "dataType": {
+          "type": "string",
+          "description": "The data type of the field value (e.g., string, number, date, boolean)."
+        },
+        "isRequired": {
+          "type": "boolean",
+          "description": "Whether the field is mandatory for submission."
+        },
+        "isCustom": {
+          "type": "boolean",
+          "description": "Whether this is a customer-configured custom field."
+        },
+        "maxLength": {
+          "type": "integer",
+          "description": "Maximum allowed character length for the field value.",
+          "minimum": 0
+        },
+        "sequence": {
+          "type": "integer",
+          "description": "Display order sequence number for form layout.",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ErrorResponse": {
+      "$id": "#ErrorResponse",
+      "title": "Error Response",
+      "description": "Standard error response returned by the SAP Concur Expense API when a request fails.",
+      "type": "object",
+      "properties": {
+        "errorId": {
+          "type": "string",
+          "description": "Unique identifier for this specific error occurrence, useful for support inquiries."
+        },
+        "errorMessage": {
+          "type": "string",
+          "description": "Human-readable description of the error."
+        },
+        "httpStatus": {
+          "type": "string",
+          "description": "The HTTP status code returned as a string.",
+          "examples": ["400", "401", "403", "404", "500"]
+        },
+        "path": {
+          "type": "string",
+          "description": "The request path that triggered the error."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the error occurred, in ISO 8601 format."
+        },
+        "validationErrors": {
+          "type": "array",
+          "description": "Detailed field-level validation failures, present for 400 Bad Request responses.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "description": "The field or parameter that failed validation."
+              },
+              "message": {
+                "type": "string",
+                "description": "Description of the validation failure."
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

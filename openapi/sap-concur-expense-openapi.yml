@@ -1,0 +1,2083 @@
+openapi: 3.1.0
+info:
+  title: SAP Concur Expense Report API
+  description: >-
+    The SAP Concur Expense Report v4 API enables integration with Concur
+    Expense for creating, retrieving, updating, and managing expense reports,
+    expenses (entries), allocations, comments, and workflow actions. This API
+    follows RESTful conventions with JSON Merge Patch (RFC 7386) for partial
+    updates and HATEOAS links for resource navigation.
+  version: 4.0.0
+  contact:
+    name: SAP Concur Developer Support
+    url: https://developer.concur.com/support/
+  license:
+    name: SAP Concur API Terms of Use
+    url: https://www.concur.com/terms-of-use
+  x-api-id: sap-concur-expense-report-v4
+  x-audience: external-partner
+
+servers:
+  - url: https://us.api.concursolutions.com
+    description: US Production Datacenter
+  - url: https://us2.api.concursolutions.com
+    description: US2 Production Datacenter
+  - url: https://emea.api.concursolutions.com
+    description: EMEA Production Datacenter
+  - url: https://cn.api.concursolutions.com
+    description: China Production Datacenter
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Reports
+    description: >-
+      Operations for creating, retrieving, updating, and deleting expense
+      reports, as well as retrieving reports pending approval.
+  - name: Expenses
+    description: >-
+      Operations for retrieving, updating, and deleting expense entries
+      (line items) on a report, and retrieving itemizations.
+  - name: Allocations
+    description: >-
+      Operations for retrieving and updating expense allocations, which
+      distribute expense amounts across cost centers or accounts.
+  - name: Comments
+    description: >-
+      Operations for creating, retrieving, updating, and deleting comments
+      at the report header or individual expense level.
+  - name: Workflows
+    description: >-
+      Operations for submitting, approving, recalling, and sending back
+      expense reports through the approval workflow.
+
+paths:
+  # ──────────────────────────────────────────────────────────────────────
+  # Reports
+  # ──────────────────────────────────────────────────────────────────────
+  /expensereports/v4/users/{userID}/context/{contextType}/reports:
+    post:
+      operationId: createReport
+      summary: Create a new expense report
+      description: >-
+        Creates a new expense report for the specified user. The report is
+        created in an unsubmitted state and can be populated with expenses
+        before submission through the workflow.
+      tags:
+        - Reports
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextTypeWritable'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewReport'
+      responses:
+        '201':
+          description: Report created successfully
+          headers:
+            Location:
+              description: URI of the newly created report
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreatedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}:
+    get:
+      operationId: getReport
+      summary: Retrieve an expense report by ID
+      description: >-
+        Returns the full details of a specific expense report including
+        header information, amounts, approval status, and custom data.
+      tags:
+        - Reports
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+      responses:
+        '200':
+          description: Report retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      operationId: updateReport
+      summary: Update an unsubmitted expense report
+      description: >-
+        Partially updates an unsubmitted expense report using JSON Merge
+        Patch (RFC 7386). Only fields included in the request body are
+        updated; omitted fields remain unchanged.
+      tags:
+        - Reports
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextTypeWritable'
+        - $ref: '#/components/parameters/reportId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateReport'
+      responses:
+        '204':
+          description: Report updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/reports/{reportId}:
+    patch:
+      operationId: updateSubmittedReport
+      summary: Update a submitted expense report
+      description: >-
+        Partially updates a submitted expense report. Only Company JWT
+        authentication is permitted. Updatable fields are limited to
+        businessPurpose, comment, customData, name, and
+        isPaperReceiptsReceived.
+      tags:
+        - Reports
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/reportId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateSubmittedReport'
+      responses:
+        '204':
+          description: Report updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteReport
+      summary: Delete an expense report
+      description: >-
+        Permanently deletes an expense report and all associated expenses,
+        allocations, and comments. Only unsubmitted reports can be deleted.
+      tags:
+        - Reports
+      parameters:
+        - $ref: '#/components/parameters/reportId'
+      responses:
+        '204':
+          description: Report deleted successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/reports/{reportId}/formFields:
+    get:
+      operationId: getReportFormFields
+      summary: Retrieve report form field configuration
+      description: >-
+        Returns the configured form fields for a specific expense report,
+        including field metadata, validation rules, and display properties.
+      tags:
+        - Reports
+      parameters:
+        - $ref: '#/components/parameters/reportId'
+        - name: policyId
+          in: query
+          description: Policy identifier to determine applicable form fields
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Form fields retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormField'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/users/{userId}/context/{contextType}/reportsToApprove:
+    get:
+      operationId: getReportsToApprove
+      summary: Retrieve reports pending approval
+      description: >-
+        Returns a list of expense reports awaiting approval for the
+        specified manager, including delegate approvals if requested.
+      tags:
+        - Reports
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The unique identifier of the approving manager
+          schema:
+            type: string
+            format: uuid
+        - name: contextType
+          in: path
+          required: true
+          description: Must be MANAGER for this endpoint
+          schema:
+            type: string
+            enum:
+              - MANAGER
+        - name: sort
+          in: query
+          description: Field to sort results by
+          schema:
+            type: string
+        - name: order
+          in: query
+          description: Sort order
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        - name: includeDelegateApprovals
+          in: query
+          description: Whether to include reports delegated for approval
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Reports to approve retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReportToApprove'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Expenses (Entries)
+  # ──────────────────────────────────────────────────────────────────────
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses:
+    get:
+      operationId: getExpenses
+      summary: Retrieve all expenses on a report
+      description: >-
+        Returns a summary list of all expense entries (line items)
+        associated with the specified expense report.
+      tags:
+        - Expenses
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+      responses:
+        '200':
+          description: Expenses retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExpenseSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}:
+    get:
+      operationId: getExpense
+      summary: Retrieve a single expense by ID
+      description: >-
+        Returns the full details of a specific expense entry including
+        transaction amounts, vendor information, location, payment type,
+        allocation state, tax summary, mileage, and travel data.
+      tags:
+        - Expenses
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+        - $ref: '#/components/parameters/expenseId'
+      responses:
+        '200':
+          description: Expense retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/itemizations:
+    get:
+      operationId: getExpenseItemizations
+      summary: Retrieve itemizations for an expense
+      description: >-
+        Returns the itemized breakdown of a parent expense entry, such as
+        individual charges on a hotel folio or conference registration.
+      tags:
+        - Expenses
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+        - $ref: '#/components/parameters/expenseId'
+      responses:
+        '200':
+          description: Itemizations retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExpenseItemization'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/reports/{reportId}/expenses/{expenseId}:
+    patch:
+      operationId: updateSubmittedExpense
+      summary: Update an expense on a submitted report
+      description: >-
+        Partially updates an expense on a submitted report. Only Company
+        JWT authentication is permitted. Updatable fields are limited to
+        businessPurpose, customData, expenseSource, isExpenseRejected,
+        and isPaperReceiptReceived.
+      tags:
+        - Expenses
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/reportId'
+        - $ref: '#/components/parameters/expenseId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateSubmittedExpense'
+      responses:
+        '204':
+          description: Expense updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteExpense
+      summary: Delete an expense from a report
+      description: >-
+        Permanently removes an expense entry and its associated
+        allocations and itemizations from a report.
+      tags:
+        - Expenses
+      parameters:
+        - $ref: '#/components/parameters/reportId'
+        - $ref: '#/components/parameters/expenseId'
+      responses:
+        '204':
+          description: Expense deleted successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/reports/{reportId}/expenses/{expenseId}/formFields:
+    get:
+      operationId: getExpenseFormFields
+      summary: Retrieve expense form field configuration
+      description: >-
+        Returns the configured form fields for a specific expense entry,
+        including field metadata, validation rules, and display properties.
+      tags:
+        - Expenses
+      parameters:
+        - $ref: '#/components/parameters/reportId'
+        - $ref: '#/components/parameters/expenseId'
+        - name: expenseTypeId
+          in: query
+          description: Expense type identifier to filter applicable fields
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Form fields retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormField'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Allocations
+  # ──────────────────────────────────────────────────────────────────────
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/allocations:
+    get:
+      operationId: getAllocations
+      summary: Retrieve allocations for an expense
+      description: >-
+        Returns all allocations associated with a specific expense entry,
+        showing how the expense amount is distributed across cost centers,
+        departments, or accounts.
+      tags:
+        - Allocations
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+        - $ref: '#/components/parameters/expenseId'
+      responses:
+        '200':
+          description: Allocations retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Allocation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/allocations/{allocationId}:
+    get:
+      operationId: getAllocation
+      summary: Retrieve a single allocation by ID
+      description: >-
+        Returns the full details of a specific allocation including
+        account codes, amounts, percentage, and custom data fields.
+      tags:
+        - Allocations
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+        - $ref: '#/components/parameters/allocationId'
+      responses:
+        '200':
+          description: Allocation retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Allocation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      operationId: updateAllocation
+      summary: Update an allocation
+      description: >-
+        Partially updates an allocation using JSON Merge Patch (RFC 7386).
+        Typically used to update custom data fields on allocations. The
+        request body includes the allocation update and the list of
+        expense IDs to which the update applies.
+      tags:
+        - Allocations
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextTypeWritable'
+        - $ref: '#/components/parameters/reportId'
+        - $ref: '#/components/parameters/allocationId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateAllocationRequest'
+      responses:
+        '204':
+          description: Allocation updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Comments
+  # ──────────────────────────────────────────────────────────────────────
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/comments:
+    get:
+      operationId: getReportComments
+      summary: Retrieve report-level comments
+      description: >-
+        Returns all comments associated with the expense report header.
+      tags:
+        - Comments
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+        - name: includeAllComments
+          in: query
+          description: Whether to return comments from all report levels
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Comments retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: createReportComment
+      summary: Create a report-level comment
+      description: >-
+        Adds a new comment to the expense report header.
+      tags:
+        - Comments
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        '201':
+          description: Comment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreatedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      operationId: updateReportComment
+      summary: Update the latest report-level comment
+      description: >-
+        Replaces the content of the most recent comment on the report
+        header. Only the latest comment by the authenticated user can be
+        updated.
+      tags:
+        - Comments
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        '200':
+          description: Comment updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteReportComment
+      summary: Delete the latest report-level comment
+      description: >-
+        Removes the most recent comment from the expense report header.
+        Only the latest comment by the authenticated user can be deleted.
+      tags:
+        - Comments
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+      responses:
+        '204':
+          description: Comment deleted successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/comments:
+    get:
+      operationId: getExpenseComments
+      summary: Retrieve expense-level comments
+      description: >-
+        Returns all comments associated with a specific expense entry.
+      tags:
+        - Comments
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+        - $ref: '#/components/parameters/expenseId'
+      responses:
+        '200':
+          description: Comments retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: createExpenseComment
+      summary: Create an expense-level comment
+      description: >-
+        Adds a new comment to a specific expense entry.
+      tags:
+        - Comments
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextType'
+        - $ref: '#/components/parameters/reportId'
+        - $ref: '#/components/parameters/expenseId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        '201':
+          description: Comment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreatedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Workflows
+  # ──────────────────────────────────────────────────────────────────────
+  /expensereports/v4/users/{userId}/reports/{reportId}/submit:
+    patch:
+      operationId: submitReport
+      summary: Submit an expense report for approval
+      description: >-
+        Submits an unsubmitted expense report into the approval workflow.
+        The report must have at least one expense entry and pass all
+        configured validation rules.
+      tags:
+        - Workflows
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The unique identifier of the report owner
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/reportId'
+      responses:
+        '204':
+          description: Report submitted successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/approve:
+    patch:
+      operationId: approveReport
+      summary: Approve an expense report
+      description: >-
+        Approves an expense report in the current workflow step. The
+        authenticated user must be an assigned approver. Individual
+        expenses can be rejected within the approval by specifying
+        expenseRejectedComment.
+      tags:
+        - Workflows
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - name: contextType
+          in: path
+          required: true
+          description: Must be MANAGER for approval actions
+          schema:
+            type: string
+            enum:
+              - MANAGER
+        - $ref: '#/components/parameters/reportId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportApproveRequest'
+      responses:
+        '204':
+          description: Report approved successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/sendBack:
+    patch:
+      operationId: sendBackReport
+      summary: Send back an expense report to the submitter
+      description: >-
+        Returns a submitted expense report to the employee for
+        corrections. A comment explaining the reason is required.
+      tags:
+        - Workflows
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - name: contextType
+          in: path
+          required: true
+          description: Must be MANAGER for send-back actions
+          schema:
+            type: string
+            enum:
+              - MANAGER
+        - $ref: '#/components/parameters/reportId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportSendBackRequest'
+      responses:
+        '204':
+          description: Report sent back successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/recall:
+    patch:
+      operationId: recallReport
+      summary: Recall a submitted expense report
+      description: >-
+        Recalls a previously submitted expense report back to unsubmitted
+        status, removing it from the approval workflow. Only the report
+        owner or a proxy can recall a report.
+      tags:
+        - Workflows
+      parameters:
+        - $ref: '#/components/parameters/userID'
+        - $ref: '#/components/parameters/contextTypeWritable'
+        - $ref: '#/components/parameters/reportId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportApproveRequest'
+      responses:
+        '204':
+          description: Report recalled successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /expensereports/v4/users/{userId}/reports/{reportId}/costObjectsForApprover:
+    get:
+      operationId: getCostObjectsForApprover
+      summary: Retrieve cost objects for an approver
+      description: >-
+        Returns the cost objects (cost centers, departments, projects)
+        associated with expenses on a report that are relevant to the
+        specified approver.
+      tags:
+        - Workflows
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The unique identifier of the approving manager
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/reportId'
+      responses:
+        '200':
+          description: Cost objects retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CostObjectForApprover'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+# ════════════════════════════════════════════════════════════════════════
+# Components
+# ════════════════════════════════════════════════════════════════════════
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        OAuth 2.0 Bearer token. Obtain tokens via the SAP Concur
+        Authentication API using either Company or User level grants.
+        Required scopes vary by operation.
+
+  parameters:
+    userID:
+      name: userID
+      in: path
+      required: true
+      description: >-
+        The unique identifier (UUID) of the SAP Concur user. Obtain via
+        the Identity v4 API.
+      schema:
+        type: string
+        format: uuid
+    contextType:
+      name: contextType
+      in: path
+      required: true
+      description: >-
+        The access context for the request. TRAVELER for the report
+        owner, MANAGER for an approver, PROXY for a delegate.
+      schema:
+        type: string
+        enum:
+          - TRAVELER
+          - MANAGER
+          - PROXY
+    contextTypeWritable:
+      name: contextType
+      in: path
+      required: true
+      description: >-
+        The access context for write operations. TRAVELER for the report
+        owner or PROXY for a delegate acting on behalf of the owner.
+      schema:
+        type: string
+        enum:
+          - TRAVELER
+          - PROXY
+    reportId:
+      name: reportId
+      in: path
+      required: true
+      description: The unique identifier of the expense report
+      schema:
+        type: string
+    expenseId:
+      name: expenseId
+      in: path
+      required: true
+      description: The unique identifier of the expense entry
+      schema:
+        type: string
+    allocationId:
+      name: allocationId
+      in: path
+      required: true
+      description: The unique identifier of the allocation
+      schema:
+        type: string
+
+  schemas:
+    # ── Amount ─────────────────────────────────────────────────────────
+    Amount:
+      type: object
+      description: A monetary amount with its currency code
+      required:
+        - value
+        - currencyCode
+      properties:
+        value:
+          type: number
+          format: double
+          description: The numeric monetary amount
+          examples:
+            - 250.00
+        currencyCode:
+          type: string
+          description: ISO 4217 three-letter currency code
+          minLength: 3
+          maxLength: 3
+          examples:
+            - USD
+
+    # ── CustomData ─────────────────────────────────────────────────────
+    CustomData:
+      type: object
+      description: >-
+        A custom field value configured by the organization. Field IDs
+        follow patterns like custom1-custom40 and orgUnit1-orgUnit6.
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: >-
+            The identifier of the custom field (e.g., custom1, orgUnit1)
+          examples:
+            - custom1
+        value:
+          type: string
+          description: The value assigned to the custom field
+          maxLength: 48
+          examples:
+            - Marketing Department
+        isValid:
+          type: boolean
+          description: Whether the current value passes validation rules
+
+    # ── Report Models ──────────────────────────────────────────────────
+    NewReport:
+      type: object
+      description: Request body for creating a new expense report
+      required:
+        - name
+        - currencyCode
+        - policyId
+      properties:
+        name:
+          type: string
+          description: The name or title of the expense report
+          examples:
+            - Q1 2026 Business Travel
+        businessPurpose:
+          type: string
+          description: The business justification for the expenses
+          examples:
+            - Client meetings in New York
+        reportDate:
+          type: string
+          format: date
+          description: The date of the report (YYYY-MM-DD)
+        startDate:
+          type: string
+          format: date
+          description: The start date of the reporting period
+        endDate:
+          type: string
+          format: date
+          description: The end date of the reporting period
+        currencyCode:
+          type: string
+          description: ISO 4217 three-letter currency code for the report
+          minLength: 3
+          maxLength: 3
+          examples:
+            - USD
+        countryCode:
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+          minLength: 2
+          maxLength: 2
+          examples:
+            - US
+        countrySubDivisionCode:
+          type: string
+          description: ISO 3166-2 subdivision code (state/province)
+        policyId:
+          type: string
+          description: The identifier of the expense policy to apply
+        customData:
+          type: array
+          description: Custom field values for the report header
+          items:
+            $ref: '#/components/schemas/CustomData'
+
+    UpdateReport:
+      type: object
+      description: >-
+        JSON Merge Patch body for updating an unsubmitted report. All
+        fields from NewReport are updatable.
+      properties:
+        name:
+          type: string
+          description: The name or title of the expense report
+        businessPurpose:
+          type: string
+          description: The business justification for the expenses
+        reportDate:
+          type: string
+          format: date
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+        countrySubDivisionCode:
+          type: string
+        policyId:
+          type: string
+        customData:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomData'
+
+    UpdateSubmittedReport:
+      type: object
+      description: >-
+        Limited-field JSON Merge Patch for updating a submitted report.
+        Only accessible with Company JWT authentication.
+      properties:
+        name:
+          type: string
+          description: The name or title of the expense report
+        businessPurpose:
+          type: string
+          description: The business justification
+        comment:
+          type: string
+          description: A comment to accompany the update
+        isPaperReceiptsReceived:
+          type: boolean
+          description: Whether physical receipts have been received
+        customData:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomData'
+
+    ReportDetails:
+      type: object
+      description: The full representation of an expense report
+      required:
+        - reportId
+        - name
+        - currencyCode
+        - policyId
+        - approvalStatus
+        - paymentStatus
+        - userId
+        - isSubmitted
+        - creationDate
+        - reportVersion
+      properties:
+        reportId:
+          type: string
+          description: Unique identifier of the expense report
+        name:
+          type: string
+          description: The name or title of the report
+        businessPurpose:
+          type: string
+          description: The business justification for the expenses
+        reportDate:
+          type: string
+          format: date
+          description: The date of the report
+        startDate:
+          type: string
+          format: date
+          description: The start date of the reporting period
+        endDate:
+          type: string
+          format: date
+          description: The end date of the reporting period
+        countryCode:
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+        countrySubDivisionCode:
+          type: string
+          description: ISO 3166-2 subdivision code
+        currencyCode:
+          type: string
+          description: ISO 4217 three-letter currency code
+        policyId:
+          type: string
+          description: The expense policy applied to this report
+        reportFormId:
+          type: string
+          description: The form template used for this report
+        ledgerId:
+          type: string
+          description: The financial ledger associated with this report
+        approvalStatus:
+          type: string
+          description: Human-readable approval status label
+          examples:
+            - Not Submitted
+            - Submitted & Pending Approval
+            - Approved
+        approvalStatusId:
+          type: string
+          description: Machine-readable approval status code
+          examples:
+            - A_NOTF
+            - A_PEND
+            - A_APPR
+        paymentStatus:
+          type: string
+          description: Human-readable payment status label
+          examples:
+            - Not Paid
+            - Payment Confirmed
+        paymentStatusId:
+          type: string
+          description: Machine-readable payment status code
+        claimedAmount:
+          $ref: '#/components/schemas/Amount'
+        approvedAmount:
+          $ref: '#/components/schemas/Amount'
+        reportTotal:
+          $ref: '#/components/schemas/Amount'
+        amountDueEmployee:
+          $ref: '#/components/schemas/Amount'
+        userId:
+          type: string
+          format: uuid
+          description: The unique identifier of the report owner
+        isSubmitted:
+          type: boolean
+          description: Whether the report has been submitted
+        isSentBack:
+          type: boolean
+          description: Whether the report was sent back for corrections
+        creationDate:
+          type: string
+          format: date-time
+          description: When the report was created (ISO 8601)
+        submitDate:
+          type: string
+          format: date-time
+          description: When the report was last submitted (ISO 8601)
+        reportVersion:
+          type: integer
+          format: int32
+          description: The version number, incremented on each modification
+        customData:
+          type: array
+          description: Custom field values on the report header
+          items:
+            $ref: '#/components/schemas/CustomData'
+        links:
+          type: array
+          description: HATEOAS navigation links
+          items:
+            $ref: '#/components/schemas/Link'
+
+    ReportToApprove:
+      type: object
+      description: A summary of an expense report awaiting approval
+      properties:
+        reportId:
+          type: string
+          description: Unique identifier of the report
+        name:
+          type: string
+          description: The report name
+        userId:
+          type: string
+          format: uuid
+          description: The report owner's user ID
+        approvalStatus:
+          type: string
+          description: Current approval status
+        reportTotal:
+          $ref: '#/components/schemas/Amount'
+        submitDate:
+          type: string
+          format: date-time
+          description: When the report was submitted
+
+    # ── Expense Models ─────────────────────────────────────────────────
+    ExpenseSummary:
+      type: object
+      description: A summary of an expense entry on a report
+      properties:
+        expenseId:
+          type: string
+          description: Unique identifier of the expense
+        transactionDate:
+          type: string
+          format: date
+          description: The date the transaction occurred
+        transactionAmount:
+          $ref: '#/components/schemas/Amount'
+        postedAmount:
+          $ref: '#/components/schemas/Amount'
+        approvedAmount:
+          $ref: '#/components/schemas/Amount'
+        expenseType:
+          $ref: '#/components/schemas/ExpenseType'
+        businessPurpose:
+          type: string
+          description: Business justification for this expense
+        vendor:
+          $ref: '#/components/schemas/Vendor'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+
+    ExpenseDetail:
+      type: object
+      description: The full representation of an expense entry
+      required:
+        - expenseId
+      properties:
+        expenseId:
+          type: string
+          description: Unique identifier of the expense
+        transactionDate:
+          type: string
+          format: date
+          description: The date the transaction occurred
+        transactionAmount:
+          $ref: '#/components/schemas/Amount'
+        postedAmount:
+          $ref: '#/components/schemas/Amount'
+        approvedAmount:
+          $ref: '#/components/schemas/Amount'
+        approverAdjustedAmount:
+          $ref: '#/components/schemas/Amount'
+        businessPurpose:
+          type: string
+          description: Business justification, maximum 64 characters
+          maxLength: 64
+        expenseType:
+          $ref: '#/components/schemas/ExpenseType'
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+        location:
+          $ref: '#/components/schemas/Location'
+        vendor:
+          $ref: '#/components/schemas/Vendor'
+        exchangeRate:
+          $ref: '#/components/schemas/ExchangeRate'
+        allocationState:
+          type: string
+          description: The allocation status of this expense
+          enum:
+            - FULLY_ALLOCATED
+            - NOT_ALLOCATED
+            - PARTIALLY_ALLOCATED
+        isPersonalExpense:
+          type: boolean
+          description: Whether this is a non-reimbursable personal expense
+        isExpenseRejected:
+          type: boolean
+          description: Whether the expense has been rejected by an approver
+        isPaperReceiptReceived:
+          type: boolean
+          description: Whether a physical receipt has been received
+        hasExceptions:
+          type: boolean
+          description: Whether the expense has policy exceptions
+        expenseTaxSummary:
+          $ref: '#/components/schemas/ExpenseTaxSummary'
+        mileage:
+          $ref: '#/components/schemas/Mileage'
+        travel:
+          $ref: '#/components/schemas/Travel'
+        travelAllowance:
+          $ref: '#/components/schemas/TravelAllowance'
+        invoiceId:
+          type: string
+          description: Reference to a supplier invoice
+        customData:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomData'
+        lastModifiedDate:
+          type: string
+          format: date-time
+          description: When the expense was last modified (ISO 8601)
+        links:
+          type: array
+          description: HATEOAS navigation links
+          items:
+            $ref: '#/components/schemas/Link'
+
+    UpdateSubmittedExpense:
+      type: object
+      description: >-
+        Limited-field update for an expense on a submitted report. Only
+        accessible with Company JWT authentication.
+      required:
+        - expenseSource
+      properties:
+        businessPurpose:
+          type: string
+          description: Business justification, maximum 64 characters
+          maxLength: 64
+        expenseSource:
+          type: string
+          description: The source system that created or modified the expense
+          enum:
+            - EA
+            - MOB
+            - OTHER
+            - SE
+            - TA
+            - TR
+            - UI
+        isExpenseRejected:
+          type: boolean
+          description: Whether to mark the expense as rejected
+        isPaperReceiptReceived:
+          type: boolean
+          description: Whether a physical receipt has been received
+        customData:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomData'
+
+    ExpenseItemization:
+      type: object
+      description: >-
+        An itemized line within a parent expense, representing a
+        breakdown of the total amount.
+      properties:
+        itemizationId:
+          type: string
+          description: Unique identifier of the itemization
+        expenseId:
+          type: string
+          description: The parent expense identifier
+        transactionDate:
+          type: string
+          format: date
+          description: The date of the itemized charge
+        transactionAmount:
+          $ref: '#/components/schemas/Amount'
+        expenseType:
+          $ref: '#/components/schemas/ExpenseType'
+        businessPurpose:
+          type: string
+          description: Purpose of this specific itemization
+        customData:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomData'
+
+    # ── Supporting Type Models ─────────────────────────────────────────
+    ExpenseType:
+      type: object
+      description: An expense category classification
+      properties:
+        id:
+          type: string
+          description: >-
+            The expense type identifier (e.g., BRKFT, LODNG, AIRFR)
+          maxLength: 5
+        name:
+          type: string
+          description: The localized display name
+        code:
+          type: string
+          description: The expense type code
+        isDeleted:
+          type: boolean
+          description: Whether this type has been deactivated
+
+    PaymentType:
+      type: object
+      description: A payment method used for an expense
+      properties:
+        id:
+          type: string
+          description: The payment type identifier (e.g., CASH, CPAID)
+          maxLength: 4
+        name:
+          type: string
+          description: The localized display name
+        code:
+          type: string
+          description: The payment type code
+
+    Location:
+      type: object
+      description: A geographic location associated with an expense
+      properties:
+        id:
+          type: string
+          description: The location identifier
+        name:
+          type: string
+          description: The localized location name
+        city:
+          type: string
+          description: The city name
+        countryCode:
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+        countrySubDivisionCode:
+          type: string
+          description: ISO 3166-2 subdivision code
+
+    Vendor:
+      type: object
+      description: Vendor or merchant information for an expense
+      properties:
+        id:
+          type: string
+          description: The vendor identifier
+        name:
+          type: string
+          description: The vendor or merchant name
+        description:
+          type: string
+          description: Additional vendor description
+
+    ExchangeRate:
+      type: object
+      description: Currency exchange rate applied to an expense
+      required:
+        - value
+        - operation
+      properties:
+        value:
+          type: number
+          format: double
+          description: The exchange rate multiplier or divisor
+        operation:
+          type: string
+          description: How to apply the rate to convert currencies
+          enum:
+            - MULTIPLY
+            - DIVIDE
+
+    Mileage:
+      type: object
+      description: Mileage-specific data for distance-based expenses
+      properties:
+        totalDistance:
+          type: integer
+          description: Total distance traveled
+        vehicleId:
+          type: string
+          description: The identifier of the vehicle used
+        odometerStart:
+          type: integer
+          description: Starting odometer reading
+        odometerEnd:
+          type: integer
+          description: Ending odometer reading
+        passengerCount:
+          type: integer
+          description: Number of passengers
+        personalDistance:
+          type: integer
+          description: Distance attributed to personal use
+        isMarkedAsHigherRate:
+          type: boolean
+          description: Whether the higher mileage rate applies
+        routeId:
+          type: string
+          description: The identifier of the route taken
+        hasMachinery:
+          type: boolean
+          description: Whether equipment was transported
+
+    Travel:
+      type: object
+      description: Travel-specific data for transportation expenses
+      properties:
+        startLocation:
+          type: string
+          description: Trip origin location
+          maxLength: 100
+        endLocation:
+          type: string
+          description: Trip destination location
+          maxLength: 100
+        ticketNumber:
+          type: string
+          description: Ticket or booking reference number
+          maxLength: 32
+        hotelCheckinDate:
+          type: string
+          format: date
+          description: Hotel check-in date
+        hotelCheckoutDate:
+          type: string
+          format: date
+          description: Hotel check-out date
+        carRentalDays:
+          type: integer
+          description: Number of car rental days
+        airlineServiceClassCode:
+          type: string
+          description: Airline cabin class code
+          enum:
+            - BUSIN
+            - COACH
+            - FIRST
+        airlineFeeTypeCode:
+          type: string
+          description: Airline fee type identifier
+
+    TravelAllowance:
+      type: object
+      description: Travel allowance (per diem) data associated with an expense
+      properties:
+        isExpensePartOfTravelAllowance:
+          type: boolean
+          description: Whether this expense is part of a travel allowance
+        dailyTravelAllowanceId:
+          type: string
+          description: Identifier of the daily travel allowance
+          maxLength: 32
+        dailyLimitAmount:
+          type: number
+          format: double
+          description: The daily allowance limit amount
+
+    ExpenseTaxSummary:
+      type: object
+      description: Tax information summarized for an expense
+      properties:
+        netAdjustedTaxAmount:
+          $ref: '#/components/schemas/Amount'
+        netReclaimAdjustedAmount:
+          $ref: '#/components/schemas/Amount'
+        netReclaimAmount:
+          $ref: '#/components/schemas/Amount'
+        netTaxAmount:
+          $ref: '#/components/schemas/Amount'
+        totalReclaimAdjustedAmount:
+          $ref: '#/components/schemas/Amount'
+        totalReclaimPostedAmount:
+          $ref: '#/components/schemas/Amount'
+        totalTaxAdjustedAmount:
+          $ref: '#/components/schemas/Amount'
+        totalTaxPostedAmount:
+          $ref: '#/components/schemas/Amount'
+
+    # ── Allocation Models ──────────────────────────────────────────────
+    Allocation:
+      type: object
+      description: >-
+        An expense allocation that distributes an expense amount across
+        cost centers, departments, or general ledger accounts.
+      required:
+        - allocationId
+        - expenseId
+        - percentage
+        - isSystemAllocation
+        - isPercentEdited
+      properties:
+        allocationId:
+          type: string
+          description: Unique identifier of the allocation
+        expenseId:
+          type: string
+          description: The expense this allocation belongs to
+        accountCode:
+          type: string
+          description: The ledger account code
+        overLimitAccountCode:
+          type: string
+          description: Account code for amounts exceeding policy limits
+        allocationAmount:
+          $ref: '#/components/schemas/Amount'
+        approvedAmount:
+          $ref: '#/components/schemas/Amount'
+        claimedAmount:
+          $ref: '#/components/schemas/Amount'
+        percentage:
+          type: number
+          format: double
+          description: >-
+            The percentage of the total expense allocated (0-100)
+          minimum: 0
+          maximum: 100
+        isSystemAllocation:
+          type: boolean
+          description: >-
+            Whether this allocation was automatically created by the
+            system (true) or manually created by a user (false)
+        isPercentEdited:
+          type: boolean
+          description: Whether the allocation percentage has been modified
+        customData:
+          type: array
+          description: Custom field values on the allocation
+          items:
+            $ref: '#/components/schemas/CustomData'
+
+    UpdateAllocationRequest:
+      type: object
+      description: Request body for updating an allocation
+      properties:
+        allocation:
+          type: object
+          description: The allocation fields to update
+          properties:
+            customData:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomData'
+        expenseIds:
+          type: array
+          description: The expense IDs to which this update applies
+          items:
+            type: string
+
+    # ── Comment Models ─────────────────────────────────────────────────
+    Comment:
+      type: object
+      description: A comment on a report or expense
+      properties:
+        comment:
+          type: string
+          description: The comment text content
+        author:
+          type: object
+          description: The user who authored the comment
+          properties:
+            userId:
+              type: string
+              format: uuid
+              description: The author's user identifier
+            firstName:
+              type: string
+              description: The author's first name
+            lastName:
+              type: string
+              description: The author's last name
+        creationDate:
+          type: string
+          format: date-time
+          description: When the comment was created
+        isLatest:
+          type: boolean
+          description: Whether this is the most recent comment
+        isAuditLog:
+          type: boolean
+          description: Whether this is a system-generated audit entry
+
+    CommentRequest:
+      type: object
+      description: Request body for creating or updating a comment
+      required:
+        - comment
+      properties:
+        comment:
+          type: string
+          description: The comment text content
+
+    # ── Workflow Models ────────────────────────────────────────────────
+    ReportApproveRequest:
+      type: object
+      description: Request body for approving or recalling a report
+      properties:
+        comment:
+          type: string
+          description: An optional comment accompanying the approval
+        expenseRejectedComment:
+          type: string
+          description: >-
+            Comment explaining why specific expenses are being rejected
+            within an otherwise approved report
+        statusId:
+          type: string
+          description: Target status identifier
+        expectedStepCode:
+          type: string
+          description: >-
+            The expected current workflow step code for optimistic
+            concurrency control
+        expectedStepSequence:
+          type: integer
+          description: >-
+            The expected current workflow step sequence number for
+            optimistic concurrency control
+
+    ReportSendBackRequest:
+      type: object
+      description: Request body for sending a report back to the submitter
+      required:
+        - comment
+      properties:
+        comment:
+          type: string
+          description: >-
+            Explanation of why the report is being returned for corrections
+        expectedStepCode:
+          type: string
+          description: The expected current workflow step code
+        expectedStepSequence:
+          type: integer
+          description: The expected current workflow step sequence number
+
+    CostObjectForApprover:
+      type: object
+      description: >-
+        A cost object relevant to an approver, representing how expenses
+        on a report map to organizational cost structures.
+      properties:
+        costObjectId:
+          type: string
+          description: Unique identifier of the cost object
+        name:
+          type: string
+          description: Display name of the cost object
+        code:
+          type: string
+          description: Cost object code
+
+    # ── Form Field Models ──────────────────────────────────────────────
+    FormField:
+      type: object
+      description: >-
+        A configured form field with its metadata, display properties,
+        and validation rules.
+      properties:
+        id:
+          type: string
+          description: The field identifier
+        label:
+          type: string
+          description: The localized display label
+        controlType:
+          type: string
+          description: The UI control type for rendering
+        dataType:
+          type: string
+          description: The data type of the field value
+        isRequired:
+          type: boolean
+          description: Whether the field is mandatory
+        isCustom:
+          type: boolean
+          description: Whether this is a customer-configured custom field
+        maxLength:
+          type: integer
+          description: Maximum allowed character length
+        sequence:
+          type: integer
+          description: Display order sequence number
+
+    # ── Common Models ──────────────────────────────────────────────────
+    Link:
+      type: object
+      description: A HATEOAS hypermedia link for resource navigation
+      properties:
+        rel:
+          type: string
+          description: The link relation type
+        href:
+          type: string
+          format: uri
+          description: The target URI
+        hreflang:
+          type: string
+          description: Language of the target resource
+
+    ResourceCreatedResponse:
+      type: object
+      description: Response returned when a resource is successfully created
+      properties:
+        uri:
+          type: string
+          format: uri
+          description: The URI of the newly created resource
+
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        errorId:
+          type: string
+          description: Unique identifier for this error occurrence
+        errorMessage:
+          type: string
+          description: Human-readable error description
+        httpStatus:
+          type: string
+          description: The HTTP status code as a string
+        path:
+          type: string
+          description: The request path that triggered the error
+        timestamp:
+          type: string
+          format: date-time
+          description: When the error occurred
+        validationErrors:
+          type: array
+          description: Detailed field-level validation failures
+          items:
+            type: object
+            properties:
+              source:
+                type: string
+                description: The field or parameter that failed validation
+              message:
+                type: string
+                description: Description of the validation failure
+
+  responses:
+    BadRequest:
+      description: >-
+        The request was malformed or contained invalid parameters.
+        Check the validationErrors array for field-level details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: >-
+        Authentication failed. The bearer token is missing, expired,
+        or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: >-
+        The authenticated user does not have the required scope or
+        permission to perform this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: >-
+        The requested resource (report, expense, allocation, or user)
+        was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Conflict:
+      description: >-
+        The request conflicts with the current state of the resource.
+        For example, attempting to delete a submitted report or approve
+        a report that has already been processed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: >-
+        An unexpected server error occurred. Retry the request or
+        contact SAP Concur support with the Concur-CorrelationId header.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

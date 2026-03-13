@@ -1,0 +1,568 @@
+{
+  "@context": {
+    "@version": 1.1,
+
+    "concur": "https://developer.concur.com/schema/expense/v4/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "gr": "http://purl.org/goodrelations/v1#",
+
+    "ExpenseReport": {
+      "@id": "concur:ExpenseReport",
+      "@context": {
+        "reportId": {
+          "@id": "dcterms:identifier",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "schema:name",
+          "@type": "xsd:string"
+        },
+        "businessPurpose": {
+          "@id": "schema:description",
+          "@type": "xsd:string"
+        },
+        "reportDate": {
+          "@id": "schema:dateCreated",
+          "@type": "xsd:date"
+        },
+        "startDate": {
+          "@id": "schema:startDate",
+          "@type": "xsd:date"
+        },
+        "endDate": {
+          "@id": "schema:endDate",
+          "@type": "xsd:date"
+        },
+        "countryCode": {
+          "@id": "schema:addressCountry",
+          "@type": "xsd:string"
+        },
+        "countrySubDivisionCode": {
+          "@id": "schema:addressRegion",
+          "@type": "xsd:string"
+        },
+        "currencyCode": {
+          "@id": "schema:priceCurrency",
+          "@type": "xsd:string"
+        },
+        "policyId": {
+          "@id": "concur:policyId",
+          "@type": "xsd:string"
+        },
+        "reportFormId": {
+          "@id": "concur:reportFormId",
+          "@type": "xsd:string"
+        },
+        "ledgerId": {
+          "@id": "concur:ledgerId",
+          "@type": "xsd:string"
+        },
+        "approvalStatus": {
+          "@id": "concur:approvalStatus",
+          "@type": "xsd:string"
+        },
+        "approvalStatusId": {
+          "@id": "concur:approvalStatusId",
+          "@type": "xsd:string"
+        },
+        "paymentStatus": {
+          "@id": "concur:paymentStatus",
+          "@type": "xsd:string"
+        },
+        "paymentStatusId": {
+          "@id": "concur:paymentStatusId",
+          "@type": "xsd:string"
+        },
+        "claimedAmount": {
+          "@id": "concur:claimedAmount",
+          "@type": "@id"
+        },
+        "approvedAmount": {
+          "@id": "concur:approvedAmount",
+          "@type": "@id"
+        },
+        "reportTotal": {
+          "@id": "concur:reportTotal",
+          "@type": "@id"
+        },
+        "amountDueEmployee": {
+          "@id": "concur:amountDueEmployee",
+          "@type": "@id"
+        },
+        "userId": {
+          "@id": "schema:identifier",
+          "@type": "xsd:string"
+        },
+        "isSubmitted": {
+          "@id": "concur:isSubmitted",
+          "@type": "xsd:boolean"
+        },
+        "isSentBack": {
+          "@id": "concur:isSentBack",
+          "@type": "xsd:boolean"
+        },
+        "creationDate": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "submitDate": {
+          "@id": "concur:submitDate",
+          "@type": "xsd:dateTime"
+        },
+        "reportVersion": {
+          "@id": "schema:version",
+          "@type": "xsd:integer"
+        },
+        "customData": {
+          "@id": "concur:customData",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "expenses": {
+          "@id": "concur:hasExpense",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "allocations": {
+          "@id": "concur:hasAllocation",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "comments": {
+          "@id": "concur:hasComment",
+          "@type": "@id",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "ExpenseEntry": {
+      "@id": "concur:ExpenseEntry",
+      "@context": {
+        "expenseId": {
+          "@id": "dcterms:identifier",
+          "@type": "xsd:string"
+        },
+        "transactionDate": {
+          "@id": "schema:dateCreated",
+          "@type": "xsd:date"
+        },
+        "transactionAmount": {
+          "@id": "concur:transactionAmount",
+          "@type": "@id"
+        },
+        "postedAmount": {
+          "@id": "concur:postedAmount",
+          "@type": "@id"
+        },
+        "approvedAmount": {
+          "@id": "concur:approvedAmount",
+          "@type": "@id"
+        },
+        "approverAdjustedAmount": {
+          "@id": "concur:approverAdjustedAmount",
+          "@type": "@id"
+        },
+        "businessPurpose": {
+          "@id": "schema:description",
+          "@type": "xsd:string"
+        },
+        "expenseType": {
+          "@id": "concur:expenseType",
+          "@type": "@id"
+        },
+        "paymentType": {
+          "@id": "concur:paymentType",
+          "@type": "@id"
+        },
+        "location": {
+          "@id": "schema:location",
+          "@type": "@id"
+        },
+        "vendor": {
+          "@id": "concur:vendor",
+          "@type": "@id"
+        },
+        "exchangeRate": {
+          "@id": "concur:exchangeRate",
+          "@type": "@id"
+        },
+        "allocationState": {
+          "@id": "concur:allocationState",
+          "@type": "xsd:string"
+        },
+        "isPersonalExpense": {
+          "@id": "concur:isPersonalExpense",
+          "@type": "xsd:boolean"
+        },
+        "isExpenseRejected": {
+          "@id": "concur:isExpenseRejected",
+          "@type": "xsd:boolean"
+        },
+        "isPaperReceiptReceived": {
+          "@id": "concur:isPaperReceiptReceived",
+          "@type": "xsd:boolean"
+        },
+        "hasExceptions": {
+          "@id": "concur:hasExceptions",
+          "@type": "xsd:boolean"
+        },
+        "mileage": {
+          "@id": "concur:mileage",
+          "@type": "@id"
+        },
+        "travel": {
+          "@id": "concur:travel",
+          "@type": "@id"
+        },
+        "travelAllowance": {
+          "@id": "concur:travelAllowance",
+          "@type": "@id"
+        },
+        "invoiceId": {
+          "@id": "concur:invoiceId",
+          "@type": "xsd:string"
+        },
+        "customData": {
+          "@id": "concur:customData",
+          "@type": "@id",
+          "@container": "@set"
+        },
+        "lastModifiedDate": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Allocation": {
+      "@id": "concur:Allocation",
+      "@context": {
+        "allocationId": {
+          "@id": "dcterms:identifier",
+          "@type": "xsd:string"
+        },
+        "expenseId": {
+          "@id": "concur:expenseId",
+          "@type": "xsd:string"
+        },
+        "accountCode": {
+          "@id": "concur:accountCode",
+          "@type": "xsd:string"
+        },
+        "overLimitAccountCode": {
+          "@id": "concur:overLimitAccountCode",
+          "@type": "xsd:string"
+        },
+        "allocationAmount": {
+          "@id": "concur:allocationAmount",
+          "@type": "@id"
+        },
+        "approvedAmount": {
+          "@id": "concur:approvedAmount",
+          "@type": "@id"
+        },
+        "claimedAmount": {
+          "@id": "concur:claimedAmount",
+          "@type": "@id"
+        },
+        "percentage": {
+          "@id": "concur:percentage",
+          "@type": "xsd:double"
+        },
+        "isSystemAllocation": {
+          "@id": "concur:isSystemAllocation",
+          "@type": "xsd:boolean"
+        },
+        "isPercentEdited": {
+          "@id": "concur:isPercentEdited",
+          "@type": "xsd:boolean"
+        },
+        "customData": {
+          "@id": "concur:customData",
+          "@type": "@id",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "Amount": {
+      "@id": "concur:Amount",
+      "@context": {
+        "value": {
+          "@id": "schema:value",
+          "@type": "xsd:double"
+        },
+        "currencyCode": {
+          "@id": "schema:priceCurrency",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "CustomData": {
+      "@id": "concur:CustomData",
+      "@context": {
+        "id": {
+          "@id": "dcterms:identifier",
+          "@type": "xsd:string"
+        },
+        "value": {
+          "@id": "schema:value",
+          "@type": "xsd:string"
+        },
+        "isValid": {
+          "@id": "concur:isValid",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+
+    "ExpenseType": {
+      "@id": "concur:ExpenseType",
+      "@context": {
+        "id": {
+          "@id": "dcterms:identifier",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "schema:name",
+          "@type": "xsd:string"
+        },
+        "code": {
+          "@id": "schema:codeValue",
+          "@type": "xsd:string"
+        },
+        "isDeleted": {
+          "@id": "concur:isDeleted",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+
+    "PaymentType": {
+      "@id": "concur:PaymentType",
+      "@context": {
+        "id": {
+          "@id": "dcterms:identifier",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "schema:name",
+          "@type": "xsd:string"
+        },
+        "code": {
+          "@id": "schema:codeValue",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "Location": {
+      "@id": "schema:Place",
+      "@context": {
+        "id": {
+          "@id": "dcterms:identifier",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "schema:name",
+          "@type": "xsd:string"
+        },
+        "city": {
+          "@id": "schema:addressLocality",
+          "@type": "xsd:string"
+        },
+        "countryCode": {
+          "@id": "schema:addressCountry",
+          "@type": "xsd:string"
+        },
+        "countrySubDivisionCode": {
+          "@id": "schema:addressRegion",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "Vendor": {
+      "@id": "schema:Organization",
+      "@context": {
+        "id": {
+          "@id": "dcterms:identifier",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "schema:name",
+          "@type": "xsd:string"
+        },
+        "description": {
+          "@id": "schema:description",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "ExchangeRate": {
+      "@id": "concur:ExchangeRate",
+      "@context": {
+        "value": {
+          "@id": "schema:value",
+          "@type": "xsd:double"
+        },
+        "operation": {
+          "@id": "concur:exchangeRateOperation",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "Mileage": {
+      "@id": "concur:Mileage",
+      "@context": {
+        "totalDistance": {
+          "@id": "schema:distance",
+          "@type": "xsd:integer"
+        },
+        "vehicleId": {
+          "@id": "concur:vehicleId",
+          "@type": "xsd:string"
+        },
+        "odometerStart": {
+          "@id": "concur:odometerStart",
+          "@type": "xsd:integer"
+        },
+        "odometerEnd": {
+          "@id": "concur:odometerEnd",
+          "@type": "xsd:integer"
+        },
+        "passengerCount": {
+          "@id": "concur:passengerCount",
+          "@type": "xsd:integer"
+        },
+        "personalDistance": {
+          "@id": "concur:personalDistance",
+          "@type": "xsd:integer"
+        },
+        "routeId": {
+          "@id": "concur:routeId",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "Travel": {
+      "@id": "concur:Travel",
+      "@context": {
+        "startLocation": {
+          "@id": "schema:fromLocation",
+          "@type": "xsd:string"
+        },
+        "endLocation": {
+          "@id": "schema:toLocation",
+          "@type": "xsd:string"
+        },
+        "ticketNumber": {
+          "@id": "schema:confirmationNumber",
+          "@type": "xsd:string"
+        },
+        "hotelCheckinDate": {
+          "@id": "schema:checkinTime",
+          "@type": "xsd:date"
+        },
+        "hotelCheckoutDate": {
+          "@id": "schema:checkoutTime",
+          "@type": "xsd:date"
+        },
+        "carRentalDays": {
+          "@id": "concur:carRentalDays",
+          "@type": "xsd:integer"
+        },
+        "airlineServiceClassCode": {
+          "@id": "concur:airlineServiceClassCode",
+          "@type": "xsd:string"
+        },
+        "airlineFeeTypeCode": {
+          "@id": "concur:airlineFeeTypeCode",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "TravelAllowance": {
+      "@id": "concur:TravelAllowance",
+      "@context": {
+        "isExpensePartOfTravelAllowance": {
+          "@id": "concur:isExpensePartOfTravelAllowance",
+          "@type": "xsd:boolean"
+        },
+        "dailyTravelAllowanceId": {
+          "@id": "concur:dailyTravelAllowanceId",
+          "@type": "xsd:string"
+        },
+        "dailyLimitAmount": {
+          "@id": "concur:dailyLimitAmount",
+          "@type": "xsd:double"
+        }
+      }
+    },
+
+    "Comment": {
+      "@id": "concur:Comment",
+      "@context": {
+        "comment": {
+          "@id": "schema:text",
+          "@type": "xsd:string"
+        },
+        "author": {
+          "@id": "schema:author",
+          "@type": "@id"
+        },
+        "creationDate": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "isLatest": {
+          "@id": "concur:isLatest",
+          "@type": "xsd:boolean"
+        },
+        "isAuditLog": {
+          "@id": "concur:isAuditLog",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+
+    "ExpenseItemization": {
+      "@id": "concur:ExpenseItemization",
+      "@context": {
+        "itemizationId": {
+          "@id": "dcterms:identifier",
+          "@type": "xsd:string"
+        },
+        "expenseId": {
+          "@id": "concur:expenseId",
+          "@type": "xsd:string"
+        },
+        "transactionDate": {
+          "@id": "schema:dateCreated",
+          "@type": "xsd:date"
+        },
+        "transactionAmount": {
+          "@id": "concur:transactionAmount",
+          "@type": "@id"
+        },
+        "expenseType": {
+          "@id": "concur:expenseType",
+          "@type": "@id"
+        },
+        "businessPurpose": {
+          "@id": "schema:description",
+          "@type": "xsd:string"
+        }
+      }
+    }
+  }
+}
