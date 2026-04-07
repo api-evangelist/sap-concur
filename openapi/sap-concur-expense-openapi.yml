@@ -31,14 +31,6 @@ security:
   - bearerAuth: []
 
 tags:
-  - name: Reports
-    description: >-
-      Operations for creating, retrieving, updating, and deleting expense
-      reports, as well as retrieving reports pending approval.
-  - name: Expenses
-    description: >-
-      Operations for retrieving, updating, and deleting expense entries
-      (line items) on a report, and retrieving itemizations.
   - name: Allocations
     description: >-
       Operations for retrieving and updating expense allocations, which
@@ -47,6 +39,14 @@ tags:
     description: >-
       Operations for creating, retrieving, updating, and deleting comments
       at the report header or individual expense level.
+  - name: Expenses
+    description: >-
+      Operations for retrieving, updating, and deleting expense entries
+      (line items) on a report, and retrieving itemizations.
+  - name: Reports
+    description: >-
+      Operations for creating, retrieving, updating, and deleting expense
+      reports, as well as retrieving reports pending approval.
   - name: Workflows
     description: >-
       Operations for submitting, approving, recalling, and sending back
