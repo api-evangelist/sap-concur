@@ -59,7 +59,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports:
     post:
       operationId: createReport
-      summary: Create a new expense report
+      summary: SAP Concur Create a new expense report
       description: >-
         Creates a new expense report for the specified user. The report is
         created in an unsubmitted state and can be populated with expenses
@@ -104,7 +104,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}:
     get:
       operationId: getReport
-      summary: Retrieve an expense report by ID
+      summary: SAP Concur Retrieve an expense report by ID
       description: >-
         Returns the full details of a specific expense report including
         header information, amounts, approval status, and custom data.
@@ -133,7 +133,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     patch:
       operationId: updateReport
-      summary: Update an unsubmitted expense report
+      summary: SAP Concur Update an unsubmitted expense report
       description: >-
         Partially updates an unsubmitted expense report using JSON Merge
         Patch (RFC 7386). Only fields included in the request body are
@@ -167,7 +167,7 @@ paths:
   /expensereports/v4/reports/{reportId}:
     patch:
       operationId: updateSubmittedReport
-      summary: Update a submitted expense report
+      summary: SAP Concur Update a submitted expense report
       description: >-
         Partially updates a submitted expense report. Only Company JWT
         authentication is permitted. Updatable fields are limited to
@@ -200,7 +200,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     delete:
       operationId: deleteReport
-      summary: Delete an expense report
+      summary: SAP Concur Delete an expense report
       description: >-
         Permanently deletes an expense report and all associated expenses,
         allocations, and comments. Only unsubmitted reports can be deleted.
@@ -227,7 +227,7 @@ paths:
   /expensereports/v4/reports/{reportId}/formFields:
     get:
       operationId: getReportFormFields
-      summary: Retrieve report form field configuration
+      summary: SAP Concur Retrieve report form field configuration
       description: >-
         Returns the configured form fields for a specific expense report,
         including field metadata, validation rules, and display properties.
@@ -263,7 +263,7 @@ paths:
   /expensereports/v4/users/{userId}/context/{contextType}/reportsToApprove:
     get:
       operationId: getReportsToApprove
-      summary: Retrieve reports pending approval
+      summary: SAP Concur Retrieve reports pending approval
       description: >-
         Returns a list of expense reports awaiting approval for the
         specified manager, including delegate approvals if requested.
@@ -330,7 +330,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses:
     get:
       operationId: getExpenses
-      summary: Retrieve all expenses on a report
+      summary: SAP Concur Retrieve all expenses on a report
       description: >-
         Returns a summary list of all expense entries (line items)
         associated with the specified expense report.
@@ -363,7 +363,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}:
     get:
       operationId: getExpense
-      summary: Retrieve a single expense by ID
+      summary: SAP Concur Retrieve a single expense by ID
       description: >-
         Returns the full details of a specific expense entry including
         transaction amounts, vendor information, location, payment type,
@@ -396,7 +396,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/itemizations:
     get:
       operationId: getExpenseItemizations
-      summary: Retrieve itemizations for an expense
+      summary: SAP Concur Retrieve itemizations for an expense
       description: >-
         Returns the itemized breakdown of a parent expense entry, such as
         individual charges on a hotel folio or conference registration.
@@ -430,7 +430,7 @@ paths:
   /expensereports/v4/reports/{reportId}/expenses/{expenseId}:
     patch:
       operationId: updateSubmittedExpense
-      summary: Update an expense on a submitted report
+      summary: SAP Concur Update an expense on a submitted report
       description: >-
         Partially updates an expense on a submitted report. Only Company
         JWT authentication is permitted. Updatable fields are limited to
@@ -464,7 +464,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     delete:
       operationId: deleteExpense
-      summary: Delete an expense from a report
+      summary: SAP Concur Delete an expense from a report
       description: >-
         Permanently removes an expense entry and its associated
         allocations and itemizations from a report.
@@ -492,7 +492,7 @@ paths:
   /expensereports/v4/reports/{reportId}/expenses/{expenseId}/formFields:
     get:
       operationId: getExpenseFormFields
-      summary: Retrieve expense form field configuration
+      summary: SAP Concur Retrieve expense form field configuration
       description: >-
         Returns the configured form fields for a specific expense entry,
         including field metadata, validation rules, and display properties.
@@ -532,7 +532,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/allocations:
     get:
       operationId: getAllocations
-      summary: Retrieve allocations for an expense
+      summary: SAP Concur Retrieve allocations for an expense
       description: >-
         Returns all allocations associated with a specific expense entry,
         showing how the expense amount is distributed across cost centers,
@@ -567,7 +567,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/allocations/{allocationId}:
     get:
       operationId: getAllocation
-      summary: Retrieve a single allocation by ID
+      summary: SAP Concur Retrieve a single allocation by ID
       description: >-
         Returns the full details of a specific allocation including
         account codes, amounts, percentage, and custom data fields.
@@ -597,7 +597,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     patch:
       operationId: updateAllocation
-      summary: Update an allocation
+      summary: SAP Concur Update an allocation
       description: >-
         Partially updates an allocation using JSON Merge Patch (RFC 7386).
         Typically used to update custom data fields on allocations. The
@@ -636,7 +636,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/comments:
     get:
       operationId: getReportComments
-      summary: Retrieve report-level comments
+      summary: SAP Concur Retrieve report-level comments
       description: >-
         Returns all comments associated with the expense report header.
       tags:
@@ -672,7 +672,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     post:
       operationId: createReportComment
-      summary: Create a report-level comment
+      summary: SAP Concur Create a report-level comment
       description: >-
         Adds a new comment to the expense report header.
       tags:
@@ -706,7 +706,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     put:
       operationId: updateReportComment
-      summary: Update the latest report-level comment
+      summary: SAP Concur Update the latest report-level comment
       description: >-
         Replaces the content of the most recent comment on the report
         header. Only the latest comment by the authenticated user can be
@@ -738,7 +738,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     delete:
       operationId: deleteReportComment
-      summary: Delete the latest report-level comment
+      summary: SAP Concur Delete the latest report-level comment
       description: >-
         Removes the most recent comment from the expense report header.
         Only the latest comment by the authenticated user can be deleted.
@@ -765,7 +765,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/comments:
     get:
       operationId: getExpenseComments
-      summary: Retrieve expense-level comments
+      summary: SAP Concur Retrieve expense-level comments
       description: >-
         Returns all comments associated with a specific expense entry.
       tags:
@@ -796,7 +796,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
     post:
       operationId: createExpenseComment
-      summary: Create an expense-level comment
+      summary: SAP Concur Create an expense-level comment
       description: >-
         Adds a new comment to a specific expense entry.
       tags:
@@ -836,7 +836,7 @@ paths:
   /expensereports/v4/users/{userId}/reports/{reportId}/submit:
     patch:
       operationId: submitReport
-      summary: Submit an expense report for approval
+      summary: SAP Concur Submit an expense report for approval
       description: >-
         Submits an unsubmitted expense report into the approval workflow.
         The report must have at least one expense entry and pass all
@@ -871,7 +871,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/approve:
     patch:
       operationId: approveReport
-      summary: Approve an expense report
+      summary: SAP Concur Approve an expense report
       description: >-
         Approves an expense report in the current workflow step. The
         authenticated user must be an assigned approver. Individual
@@ -914,7 +914,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/sendBack:
     patch:
       operationId: sendBackReport
-      summary: Send back an expense report to the submitter
+      summary: SAP Concur Send back an expense report to the submitter
       description: >-
         Returns a submitted expense report to the employee for
         corrections. A comment explaining the reason is required.
@@ -956,7 +956,7 @@ paths:
   /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/recall:
     patch:
       operationId: recallReport
-      summary: Recall a submitted expense report
+      summary: SAP Concur Recall a submitted expense report
       description: >-
         Recalls a previously submitted expense report back to unsubmitted
         status, removing it from the approval workflow. Only the report
@@ -991,7 +991,7 @@ paths:
   /expensereports/v4/users/{userId}/reports/{reportId}/costObjectsForApprover:
     get:
       operationId: getCostObjectsForApprover
-      summary: Retrieve cost objects for an approver
+      summary: SAP Concur Retrieve cost objects for an approver
       description: >-
         Returns the cost objects (cost centers, departments, projects)
         associated with expenses on a report that are relevant to the
