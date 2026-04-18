@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Travel",
+  "type": "object",
+  "properties": {
+    "startLocation": {
+      "type": "string"
+    },
+    "endLocation": {
+      "type": "string"
+    },
+    "ticketNumber": {
+      "type": "string"
+    },
+    "hotelCheckinDate": {
+      "type": "string"
+    },
+    "hotelCheckoutDate": {
+      "type": "string"
+    },
+    "carRentalDays": {
+      "type": "integer"
+    },
+    "airlineServiceClassCode": {
+      "type": "string"
+    },
+    "airlineFeeTypeCode": {
+      "type": "string"
+    }
+  }
+}

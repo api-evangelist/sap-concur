@@ -1,0 +1,12 @@
+name: sap-concur API Vocabulary
+provider: sap-concur
+created: '2026-04-18'
+modified: '2026-04-18'
+operations: 27
+schemas: 31
+tags:
+- Allocations
+- Comments
+- Expenses
+- Reports
+- Workflows

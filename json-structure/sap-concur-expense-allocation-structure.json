@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Allocation",
+  "type": "object",
+  "properties": {
+    "allocationId": {
+      "type": "string"
+    },
+    "expenseId": {
+      "type": "string"
+    },
+    "accountCode": {
+      "type": "string"
+    },
+    "overLimitAccountCode": {
+      "type": "string"
+    },
+    "percentage": {
+      "type": "number"
+    },
+    "isSystemAllocation": {
+      "type": "boolean"
+    },
+    "isPercentEdited": {
+      "type": "boolean"
+    },
+    "customData": {
+      "type": "array"
+    }
+  }
+}

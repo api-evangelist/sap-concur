@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReportSendBackRequest",
+  "type": "object",
+  "description": "Request body for sending a report back to the submitter",
+  "properties": {
+    "comment": {
+      "type": "string",
+      "description": "Explanation of why the report is being returned for corrections"
+    },
+    "expectedStepCode": {
+      "type": "string",
+      "description": "The expected current workflow step code"
+    },
+    "expectedStepSequence": {
+      "type": "integer",
+      "description": "The expected current workflow step sequence number"
+    }
+  }
+}

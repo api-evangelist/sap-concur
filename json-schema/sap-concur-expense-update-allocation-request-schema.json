@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UpdateAllocationRequest",
+  "type": "object",
+  "description": "Request body for updating an allocation",
+  "properties": {
+    "allocation": {
+      "type": "object",
+      "description": "The allocation fields to update"
+    },
+    "expenseIds": {
+      "type": "array",
+      "description": "The expense IDs to which this update applies"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CommentRequest",
+  "type": "object",
+  "description": "Request body for creating or updating a comment",
+  "properties": {
+    "comment": {
+      "type": "string",
+      "description": "The comment text content"
+    }
+  }
+}

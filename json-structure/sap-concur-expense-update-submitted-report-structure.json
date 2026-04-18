@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "UpdateSubmittedReport",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "businessPurpose": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "string"
+    },
+    "isPaperReceiptsReceived": {
+      "type": "boolean"
+    },
+    "customData": {
+      "type": "array"
+    }
+  }
+}

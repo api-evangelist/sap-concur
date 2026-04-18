@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExpenseTaxSummary",
+  "type": "object",
+  "description": "Tax information summarized for an expense",
+  "properties": {}
+}

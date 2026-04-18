@@ -1,0 +1,10 @@
+{
+  "allocationId": "500123",
+  "expenseId": "500123",
+  "accountCode": "example_value",
+  "overLimitAccountCode": "example_value",
+  "percentage": 42.5,
+  "isSystemAllocation": true,
+  "isPercentEdited": true,
+  "customData": []
+}

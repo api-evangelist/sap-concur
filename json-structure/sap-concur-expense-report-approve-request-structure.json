@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ReportApproveRequest",
+  "type": "object",
+  "properties": {
+    "comment": {
+      "type": "string"
+    },
+    "expenseRejectedComment": {
+      "type": "string"
+    },
+    "statusId": {
+      "type": "string"
+    },
+    "expectedStepCode": {
+      "type": "string"
+    },
+    "expectedStepSequence": {
+      "type": "integer"
+    }
+  }
+}

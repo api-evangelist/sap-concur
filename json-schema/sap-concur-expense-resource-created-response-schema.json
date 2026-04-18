@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResourceCreatedResponse",
+  "type": "object",
+  "description": "Response returned when a resource is successfully created",
+  "properties": {
+    "uri": {
+      "type": "string",
+      "description": "The URI of the newly created resource"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "abc123",
+  "label": "Example Title",
+  "controlType": "example_value",
+  "dataType": "example_value",
+  "isRequired": true,
+  "isCustom": true,
+  "maxLength": 10,
+  "sequence": 10
+}

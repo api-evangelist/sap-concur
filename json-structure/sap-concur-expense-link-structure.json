@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Link",
+  "type": "object",
+  "properties": {
+    "rel": {
+      "type": "string"
+    },
+    "href": {
+      "type": "string"
+    },
+    "hreflang": {
+      "type": "string"
+    }
+  }
+}

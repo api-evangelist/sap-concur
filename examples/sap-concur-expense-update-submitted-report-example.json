@@ -1,0 +1,7 @@
+{
+  "name": "Example Title",
+  "businessPurpose": "example_value",
+  "comment": "example_value",
+  "isPaperReceiptsReceived": true,
+  "customData": []
+}

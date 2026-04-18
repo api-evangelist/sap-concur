@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "UpdateSubmittedExpense",
+  "type": "object",
+  "properties": {
+    "businessPurpose": {
+      "type": "string"
+    },
+    "expenseSource": {
+      "type": "string"
+    },
+    "isExpenseRejected": {
+      "type": "boolean"
+    },
+    "isPaperReceiptReceived": {
+      "type": "boolean"
+    },
+    "customData": {
+      "type": "array"
+    }
+  }
+}

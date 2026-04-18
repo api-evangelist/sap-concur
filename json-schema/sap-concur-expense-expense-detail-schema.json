@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExpenseDetail",
+  "type": "object",
+  "description": "The full representation of an expense entry",
+  "properties": {
+    "expenseId": {
+      "type": "string",
+      "description": "Unique identifier of the expense"
+    },
+    "transactionDate": {
+      "type": "string",
+      "description": "The date the transaction occurred"
+    },
+    "businessPurpose": {
+      "type": "string",
+      "description": "Business justification, maximum 64 characters"
+    },
+    "allocationState": {
+      "type": "string",
+      "description": "The allocation status of this expense"
+    },
+    "isPersonalExpense": {
+      "type": "boolean",
+      "description": "Whether this is a non-reimbursable personal expense"
+    },
+    "isExpenseRejected": {
+      "type": "boolean",
+      "description": "Whether the expense has been rejected by an approver"
+    },
+    "isPaperReceiptReceived": {
+      "type": "boolean",
+      "description": "Whether a physical receipt has been received"
+    },
+    "hasExceptions": {
+      "type": "boolean",
+      "description": "Whether the expense has policy exceptions"
+    },
+    "invoiceId": {
+      "type": "string",
+      "description": "Reference to a supplier invoice"
+    },
+    "customData": {
+      "type": "array"
+    },
+    "lastModifiedDate": {
+      "type": "string",
+      "description": "When the expense was last modified (ISO 8601)"
+    },
+    "links": {
+      "type": "array",
+      "description": "HATEOAS navigation links"
+    }
+  }
+}

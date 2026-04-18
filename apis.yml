@@ -3,7 +3,8 @@ description: SAP Concur is a leading provider of integrated travel, expense, and
 image: https://www.concur.com/themes/custom/concur/logo.svg
 url: https://www.concur.com
 created: '2024'
-modified: '2026-03-03'
+modified: '2026-04-18'
+specificationVersion: '0.18'
 tags:
   - Business Travel
   - Expense Management
@@ -43,8 +44,9 @@ apis:
         url: https://developer.concur.com/api-reference/expense/expense-report/v4.comments.html
       - type: Documentation
         url: https://developer.concur.com/api-reference/expense/expense-report/v4.expense-attendee-associations.html
-      - type: SAP Business Accelerator Hub
+      - type: Resources
         url: https://api.sap.com/package/ConcurExpense
+        title: SAP Business Accelerator Hub
   - name: Concur Travel API
     description: Provides access to travel booking data, profiles, and itinerary information within Concur Travel.
     image: https://www.concur.com/themes/custom/concur/logo.svg
@@ -77,8 +79,9 @@ apis:
         url: https://developer.concur.com/api-reference/invoice/v3.invoice.json
       - type: Authentication
         url: https://developer.concur.com/api-reference/authentication/getting-started.html
-      - type: SAP Business Accelerator Hub
+      - type: Resources
         url: https://api.sap.com/package/ConcurInvoice
+        title: SAP Business Accelerator Hub
   - name: Concur Request API
     description: Enables management of travel requests and approvals within the Concur system.
     image: https://www.concur.com/themes/custom/concur/logo.svg
@@ -99,8 +102,9 @@ apis:
         url: https://developer.concur.com/api-reference/request/v4.get-started.html
       - type: Documentation
         url: https://developer.concur.com/api-reference/request/v4.endpoints.cashadvance-resources.html
-      - type: SAP Business Accelerator Hub
+      - type: Resources
         url: https://api.sap.com/package/ConcurRequest
+        title: SAP Business Accelerator Hub
   - name: Concur User Provisioning API
     description: Manages user accounts and profiles, including creating, updating, and retrieving user information. Supports provisioning across Identity, Spend, and Travel services with bulk operations for managing multiple user records.
     image: https://www.concur.com/themes/custom/concur/logo.svg
@@ -450,44 +454,73 @@ apis:
       - type: Documentation
         url: https://developer.concur.com/api-reference/expense/attendee-types/v3.attendee-types.html
 common:
-  - type: Developer Portal
+  - type: DeveloperPortal
     url: https://developer.concur.com/
   - type: Authentication
     url: https://developer.concur.com/api-reference/authentication/getting-started.html
   - type: Authentication
     url: https://developer.concur.com/api-reference/authentication/company-auth.html
-  - type: Authentication
-    url: https://developer.concur.com/api-reference/authentication/company-refresh-tool.html
   - type: Support
     url: https://developer.concur.com/support/
-  - type: Terms of Service
+  - type: TermsOfService
     url: https://www.concur.com/terms-of-use
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://www.concur.com/privacy-policy
-  - type: Status
+  - type: StatusPage
     url: https://open.concur.com/
   - type: Blog
     url: https://www.concur.com/newsroom
-  - type: Sign Up
+  - type: SignUp
     url: https://developer.concur.com/register
-  - type: GitHub Repository
+  - type: GitHubRepository
     url: https://github.com/SAP-docs/preview.developer.concur.com
-  - type: Release Notes
+  - type: ReleaseNotes
     url: https://developer.concur.com/tools-support/release-notes/
-  - type: Change Log
+  - type: ChangeLog
     url: https://developer.concur.com/tools-support/release-notes/
-  - type: App Registration
-    url: https://developer.concur.com/manage-apps/partner-applications.html
-  - type: SAP Business Accelerator Hub
+  - type: Resources
     url: https://api.sap.com/products/SAPConcur/apis/REST
-  - type: Community
-    url: https://community.concur.com/
-  - type: Integration Guide
-    url: https://developer.concur.com/api-guides/ERP-integration/funds-management-integration.html
+    title: SAP Business Accelerator Hub
   - type: Tutorials
     url: https://developers.sap.com/tutorials/data-to-value-conn-concur-part01..html
-  - type: SAP Business Accelerator Hub
-    url: https://api.sap.com/products/SAPConcur/apis/packages
+  - type: Features
+    data:
+      - name: OAuth 2.0 Authentication
+        description: Secure token-based authentication supporting both company-level and user-level access tokens with automatic refresh.
+      - name: Multi-Datacenter Support
+        description: Separate API endpoints for US, US2, EMEA, and China datacenters ensuring data residency compliance.
+      - name: Event Subscription Service
+        description: Publish/Subscribe event-driven architecture for real-time notifications on business events like report submissions.
+      - name: SCIM 2.0 User Provisioning
+        description: Standards-based user identity management following SCIM protocol for automated user lifecycle operations.
+      - name: Direct Connect Framework
+        description: Integration framework allowing travel suppliers to provide inventory directly to the Concur booking tool.
+      - name: Multi-Currency Exchange Rates
+        description: Custom exchange rate management supporting bulk uploads for currency conversion across global operations.
+  - type: UseCases
+    data:
+      - name: Expense Report Automation
+        description: Automate expense report creation, submission, and approval workflows by integrating with ERP and financial systems.
+      - name: Travel Booking Integration
+        description: Connect travel management companies and suppliers to provide booking, itinerary, and receipt data within Concur Travel.
+      - name: Invoice Processing
+        description: Streamline accounts payable by automating invoice creation, purchase order matching, and vendor management.
+      - name: Financial Posting
+        description: Extract approved expense reports and invoices for automated posting into ERP systems like SAP, Oracle, and NetSuite.
+      - name: Receipt Digitization
+        description: Submit and manage digital receipts from e-receipt partners and mobile capture for paperless expense management.
+  - type: Integrations
+    data:
+      - name: SAP ERP
+        description: Native integration with SAP S/4HANA and SAP ERP for financial posting, cost center sync, and master data management.
+      - name: Microsoft Teams
+        description: Approve expense reports and travel requests directly from Microsoft Teams notifications.
+      - name: Uber for Business
+        description: Automatic e-receipt submission for Uber business rides directly into Concur Expense.
+      - name: Salesforce
+        description: Sync customer and opportunity data to pre-populate expense reports and travel requests.
+      - name: Oracle NetSuite
+        description: Automated financial posting of approved expense reports and invoices into Oracle NetSuite.
 maintainers:
   - name: Kin Lane
     email: kin@apievangelist.com

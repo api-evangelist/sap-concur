@@ -1,0 +1,7 @@
+{
+  "businessPurpose": "example_value",
+  "expenseSource": "example_value",
+  "isExpenseRejected": true,
+  "isPaperReceiptReceived": true,
+  "customData": []
+}

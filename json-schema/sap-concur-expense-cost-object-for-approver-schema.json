@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CostObjectForApprover",
+  "type": "object",
+  "description": "A cost object relevant to an approver, representing how expenses on a report map to organizational cost structures.",
+  "properties": {
+    "costObjectId": {
+      "type": "string",
+      "description": "Unique identifier of the cost object"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name of the cost object"
+    },
+    "code": {
+      "type": "string",
+      "description": "Cost object code"
+    }
+  }
+}

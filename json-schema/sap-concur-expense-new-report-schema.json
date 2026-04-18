@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NewReport",
+  "type": "object",
+  "description": "Request body for creating a new expense report",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name or title of the expense report"
+    },
+    "businessPurpose": {
+      "type": "string",
+      "description": "The business justification for the expenses"
+    },
+    "reportDate": {
+      "type": "string",
+      "description": "The date of the report (YYYY-MM-DD)"
+    },
+    "startDate": {
+      "type": "string",
+      "description": "The start date of the reporting period"
+    },
+    "endDate": {
+      "type": "string",
+      "description": "The end date of the reporting period"
+    },
+    "currencyCode": {
+      "type": "string",
+      "description": "ISO 4217 three-letter currency code for the report"
+    },
+    "countryCode": {
+      "type": "string",
+      "description": "ISO 3166-1 alpha-2 country code"
+    },
+    "countrySubDivisionCode": {
+      "type": "string",
+      "description": "ISO 3166-2 subdivision code (state/province)"
+    },
+    "policyId": {
+      "type": "string",
+      "description": "The identifier of the expense policy to apply"
+    },
+    "customData": {
+      "type": "array",
+      "description": "Custom field values for the report header"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CustomData",
+  "type": "object",
+  "description": "A custom field value configured by the organization. Field IDs follow patterns like custom1-custom40 and orgUnit1-orgUnit6.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The identifier of the custom field (e.g., custom1, orgUnit1)"
+    },
+    "value": {
+      "type": "string",
+      "description": "The value assigned to the custom field"
+    },
+    "isValid": {
+      "type": "boolean",
+      "description": "Whether the current value passes validation rules"
+    }
+  }
+}

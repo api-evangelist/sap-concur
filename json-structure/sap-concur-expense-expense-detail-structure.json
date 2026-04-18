@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ExpenseDetail",
+  "type": "object",
+  "properties": {
+    "expenseId": {
+      "type": "string"
+    },
+    "transactionDate": {
+      "type": "string"
+    },
+    "businessPurpose": {
+      "type": "string"
+    },
+    "allocationState": {
+      "type": "string"
+    },
+    "isPersonalExpense": {
+      "type": "boolean"
+    },
+    "isExpenseRejected": {
+      "type": "boolean"
+    },
+    "isPaperReceiptReceived": {
+      "type": "boolean"
+    },
+    "hasExceptions": {
+      "type": "boolean"
+    },
+    "invoiceId": {
+      "type": "string"
+    },
+    "customData": {
+      "type": "array"
+    },
+    "lastModifiedDate": {
+      "type": "string"
+    },
+    "links": {
+      "type": "array"
+    }
+  }
+}

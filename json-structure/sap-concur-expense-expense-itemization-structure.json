@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ExpenseItemization",
+  "type": "object",
+  "properties": {
+    "itemizationId": {
+      "type": "string"
+    },
+    "expenseId": {
+      "type": "string"
+    },
+    "transactionDate": {
+      "type": "string"
+    },
+    "businessPurpose": {
+      "type": "string"
+    },
+    "customData": {
+      "type": "array"
+    }
+  }
+}

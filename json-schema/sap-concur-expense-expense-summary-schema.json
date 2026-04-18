@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExpenseSummary",
+  "type": "object",
+  "description": "A summary of an expense entry on a report",
+  "properties": {
+    "expenseId": {
+      "type": "string",
+      "description": "Unique identifier of the expense"
+    },
+    "transactionDate": {
+      "type": "string",
+      "description": "The date the transaction occurred"
+    },
+    "businessPurpose": {
+      "type": "string",
+      "description": "Business justification for this expense"
+    },
+    "links": {
+      "type": "array"
+    }
+  }
+}

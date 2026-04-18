@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ReportDetails",
+  "type": "object",
+  "properties": {
+    "reportId": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "businessPurpose": {
+      "type": "string"
+    },
+    "reportDate": {
+      "type": "string"
+    },
+    "startDate": {
+      "type": "string"
+    },
+    "endDate": {
+      "type": "string"
+    },
+    "countryCode": {
+      "type": "string"
+    },
+    "countrySubDivisionCode": {
+      "type": "string"
+    },
+    "currencyCode": {
+      "type": "string"
+    },
+    "policyId": {
+      "type": "string"
+    },
+    "reportFormId": {
+      "type": "string"
+    },
+    "ledgerId": {
+      "type": "string"
+    },
+    "approvalStatus": {
+      "type": "string"
+    },
+    "approvalStatusId": {
+      "type": "string"
+    },
+    "paymentStatus": {
+      "type": "string"
+    },
+    "paymentStatusId": {
+      "type": "string"
+    },
+    "userId": {
+      "type": "string"
+    },
+    "isSubmitted": {
+      "type": "boolean"
+    },
+    "isSentBack": {
+      "type": "boolean"
+    },
+    "creationDate": {
+      "type": "string"
+    },
+    "submitDate": {
+      "type": "string"
+    },
+    "reportVersion": {
+      "type": "integer"
+    },
+    "customData": {
+      "type": "array"
+    },
+    "links": {
+      "type": "array"
+    }
+  }
+}

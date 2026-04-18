@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mileage",
+  "type": "object",
+  "description": "Mileage-specific data for distance-based expenses",
+  "properties": {
+    "totalDistance": {
+      "type": "integer",
+      "description": "Total distance traveled"
+    },
+    "vehicleId": {
+      "type": "string",
+      "description": "The identifier of the vehicle used"
+    },
+    "odometerStart": {
+      "type": "integer",
+      "description": "Starting odometer reading"
+    },
+    "odometerEnd": {
+      "type": "integer",
+      "description": "Ending odometer reading"
+    },
+    "passengerCount": {
+      "type": "integer",
+      "description": "Number of passengers"
+    },
+    "personalDistance": {
+      "type": "integer",
+      "description": "Distance attributed to personal use"
+    },
+    "isMarkedAsHigherRate": {
+      "type": "boolean",
+      "description": "Whether the higher mileage rate applies"
+    },
+    "routeId": {
+      "type": "string",
+      "description": "The identifier of the route taken"
+    },
+    "hasMachinery": {
+      "type": "boolean",
+      "description": "Whether equipment was transported"
+    }
+  }
+}

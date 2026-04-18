@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ExchangeRate",
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "number"
+    },
+    "operation": {
+      "type": "string"
+    }
+  }
+}

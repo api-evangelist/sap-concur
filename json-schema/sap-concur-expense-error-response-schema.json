@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ErrorResponse",
+  "type": "object",
+  "description": "Standard error response",
+  "properties": {
+    "errorId": {
+      "type": "string",
+      "description": "Unique identifier for this error occurrence"
+    },
+    "errorMessage": {
+      "type": "string",
+      "description": "Human-readable error description"
+    },
+    "httpStatus": {
+      "type": "string",
+      "description": "The HTTP status code as a string"
+    },
+    "path": {
+      "type": "string",
+      "description": "The request path that triggered the error"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "When the error occurred"
+    },
+    "validationErrors": {
+      "type": "array",
+      "description": "Detailed field-level validation failures"
+    }
+  }
+}

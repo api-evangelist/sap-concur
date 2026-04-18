@@ -1,0 +1,260 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "SAP Concur Expense Management"
+  description: "Unified expense management workflow combining report creation, expense tracking, approval workflows, and allocation management. Used by finance teams, approvers, and employees to manage the full expense lifecycle."
+  tags:
+    - SAP Concur
+    - Expense Management
+    - Approval Workflows
+    - Financial Services
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      CONCUR_ACCESS_TOKEN: CONCUR_ACCESS_TOKEN
+
+capability:
+  consumes:
+    - import: concur-expense
+      location: ./shared/concur-expense.yaml
+
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: concur-expense-mgmt-api
+      description: "Unified REST API for SAP Concur expense management workflows."
+      resources:
+        - path: /v1/reports
+          name: reports
+          description: "Expense report lifecycle management."
+          operations:
+            - method: POST
+              name: create-report
+              description: "Create a new expense report."
+              call: "concur-expense.create-report"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: GET
+              name: get-reports-to-approve
+              description: "Get reports pending approval."
+              call: "concur-expense.get-reports-to-approve"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/reports/{reportId}
+          name: report-detail
+          description: "Individual report operations."
+          operations:
+            - method: GET
+              name: get-report
+              description: "Retrieve a report."
+              call: "concur-expense.get-report"
+              with:
+                reportId: "rest.reportId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/reports/{reportId}/submit
+          name: submit
+          description: "Submit report."
+          operations:
+            - method: POST
+              name: submit-report
+              description: "Submit for approval."
+              call: "concur-expense.submit-report"
+              with:
+                reportId: "rest.reportId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/reports/{reportId}/approve
+          name: approve
+          description: "Approve report."
+          operations:
+            - method: POST
+              name: approve-report
+              description: "Approve an expense report."
+              call: "concur-expense.approve-report"
+              with:
+                reportId: "rest.reportId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/expenses
+          name: expenses
+          description: "Expense entry operations."
+          operations:
+            - method: GET
+              name: get-expenses
+              description: "Get expenses for a report."
+              call: "concur-expense.get-expenses"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/comments
+          name: comments
+          description: "Report comments."
+          operations:
+            - method: GET
+              name: get-comments
+              description: "Get report comments."
+              call: "concur-expense.get-report-comments"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-comment
+              description: "Add a report comment."
+              call: "concur-expense.create-report-comment"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9090
+      namespace: concur-expense-mgmt-mcp
+      transport: http
+      description: "MCP server for AI-assisted SAP Concur expense management."
+      tools:
+        - name: create-report
+          description: "Create a new expense report."
+          hints:
+            readOnly: false
+          call: "concur-expense.create-report"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-report
+          description: "Retrieve an expense report by ID."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "concur-expense.get-report"
+          with:
+            reportId: "tools.reportId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: update-report
+          description: "Update an unsubmitted expense report."
+          hints:
+            readOnly: false
+            idempotent: true
+          call: "concur-expense.update-report"
+          with:
+            reportId: "tools.reportId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: delete-report
+          description: "Delete an unsubmitted expense report."
+          hints:
+            readOnly: false
+            destructive: true
+          call: "concur-expense.delete-report"
+          with:
+            reportId: "tools.reportId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-reports-to-approve
+          description: "List expense reports pending approval."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "concur-expense.get-reports-to-approve"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: submit-report
+          description: "Submit an expense report for approval."
+          hints:
+            readOnly: false
+          call: "concur-expense.submit-report"
+          with:
+            reportId: "tools.reportId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: approve-report
+          description: "Approve an expense report."
+          hints:
+            readOnly: false
+          call: "concur-expense.approve-report"
+          with:
+            reportId: "tools.reportId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: send-back-report
+          description: "Send back an expense report for revision."
+          hints:
+            readOnly: false
+          call: "concur-expense.send-back-report"
+          with:
+            reportId: "tools.reportId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: recall-report
+          description: "Recall a submitted expense report."
+          hints:
+            readOnly: false
+          call: "concur-expense.recall-report"
+          with:
+            reportId: "tools.reportId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-expenses
+          description: "Get expense entries for a report."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "concur-expense.get-expenses"
+          with:
+            reportId: "tools.reportId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-expense
+          description: "Get a single expense entry."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "concur-expense.get-expense"
+          with:
+            expenseId: "tools.expenseId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-allocations
+          description: "Get expense allocations."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "concur-expense.get-allocations"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-report-comments
+          description: "Get comments on an expense report."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "concur-expense.get-report-comments"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-report-comment
+          description: "Add a comment to an expense report."
+          hints:
+            readOnly: false
+          call: "concur-expense.create-report-comment"
+          outputParameters:
+            - type: object
+              mapping: "$."

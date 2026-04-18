@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "TravelAllowance",
+  "type": "object",
+  "properties": {
+    "isExpensePartOfTravelAllowance": {
+      "type": "boolean"
+    },
+    "dailyTravelAllowanceId": {
+      "type": "string"
+    },
+    "dailyLimitAmount": {
+      "type": "number"
+    }
+  }
+}

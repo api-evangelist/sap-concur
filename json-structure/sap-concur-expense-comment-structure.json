@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Comment",
+  "type": "object",
+  "properties": {
+    "comment": {
+      "type": "string"
+    },
+    "author": {
+      "type": "object"
+    },
+    "creationDate": {
+      "type": "string"
+    },
+    "isLatest": {
+      "type": "boolean"
+    },
+    "isAuditLog": {
+      "type": "boolean"
+    }
+  }
+}

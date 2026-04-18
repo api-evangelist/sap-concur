@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Amount",
+  "type": "object",
+  "description": "A monetary amount with its currency code",
+  "properties": {
+    "value": {
+      "type": "number",
+      "description": "The numeric monetary amount"
+    },
+    "currencyCode": {
+      "type": "string",
+      "description": "ISO 4217 three-letter currency code"
+    }
+  }
+}

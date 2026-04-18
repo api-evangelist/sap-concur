@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ErrorResponse",
+  "type": "object",
+  "properties": {
+    "errorId": {
+      "type": "string"
+    },
+    "errorMessage": {
+      "type": "string"
+    },
+    "httpStatus": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string"
+    },
+    "validationErrors": {
+      "type": "array"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TravelAllowance",
+  "type": "object",
+  "description": "Travel allowance (per diem) data associated with an expense",
+  "properties": {
+    "isExpensePartOfTravelAllowance": {
+      "type": "boolean",
+      "description": "Whether this expense is part of a travel allowance"
+    },
+    "dailyTravelAllowanceId": {
+      "type": "string",
+      "description": "Identifier of the daily travel allowance"
+    },
+    "dailyLimitAmount": {
+      "type": "number",
+      "description": "The daily allowance limit amount"
+    }
+  }
+}

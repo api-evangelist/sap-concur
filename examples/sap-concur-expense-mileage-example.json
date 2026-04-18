@@ -1,0 +1,11 @@
+{
+  "totalDistance": 10,
+  "vehicleId": "500123",
+  "odometerStart": 10,
+  "odometerEnd": 10,
+  "passengerCount": 10,
+  "personalDistance": 10,
+  "isMarkedAsHigherRate": true,
+  "routeId": "500123",
+  "hasMachinery": true
+}

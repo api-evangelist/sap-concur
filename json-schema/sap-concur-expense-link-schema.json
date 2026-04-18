@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Link",
+  "type": "object",
+  "description": "A HATEOAS hypermedia link for resource navigation",
+  "properties": {
+    "rel": {
+      "type": "string",
+      "description": "The link relation type"
+    },
+    "href": {
+      "type": "string",
+      "description": "The target URI"
+    },
+    "hreflang": {
+      "type": "string",
+      "description": "Language of the target resource"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Travel",
+  "type": "object",
+  "description": "Travel-specific data for transportation expenses",
+  "properties": {
+    "startLocation": {
+      "type": "string",
+      "description": "Trip origin location"
+    },
+    "endLocation": {
+      "type": "string",
+      "description": "Trip destination location"
+    },
+    "ticketNumber": {
+      "type": "string",
+      "description": "Ticket or booking reference number"
+    },
+    "hotelCheckinDate": {
+      "type": "string",
+      "description": "Hotel check-in date"
+    },
+    "hotelCheckoutDate": {
+      "type": "string",
+      "description": "Hotel check-out date"
+    },
+    "carRentalDays": {
+      "type": "integer",
+      "description": "Number of car rental days"
+    },
+    "airlineServiceClassCode": {
+      "type": "string",
+      "description": "Airline cabin class code"
+    },
+    "airlineFeeTypeCode": {
+      "type": "string",
+      "description": "Airline fee type identifier"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReportApproveRequest",
+  "type": "object",
+  "description": "Request body for approving or recalling a report",
+  "properties": {
+    "comment": {
+      "type": "string",
+      "description": "An optional comment accompanying the approval"
+    },
+    "expenseRejectedComment": {
+      "type": "string",
+      "description": "Comment explaining why specific expenses are being rejected within an otherwise approved report"
+    },
+    "statusId": {
+      "type": "string",
+      "description": "Target status identifier"
+    },
+    "expectedStepCode": {
+      "type": "string",
+      "description": "The expected current workflow step code for optimistic concurrency control"
+    },
+    "expectedStepSequence": {
+      "type": "integer",
+      "description": "The expected current workflow step sequence number for optimistic concurrency control"
+    }
+  }
+}

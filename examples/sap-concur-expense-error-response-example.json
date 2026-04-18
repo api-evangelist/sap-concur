@@ -1,0 +1,8 @@
+{
+  "errorId": "500123",
+  "errorMessage": "example_value",
+  "httpStatus": "example_value",
+  "path": "example_value",
+  "timestamp": "example_value",
+  "validationErrors": []
+}

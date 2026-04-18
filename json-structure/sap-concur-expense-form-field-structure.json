@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "FormField",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "controlType": {
+      "type": "string"
+    },
+    "dataType": {
+      "type": "string"
+    },
+    "isRequired": {
+      "type": "boolean"
+    },
+    "isCustom": {
+      "type": "boolean"
+    },
+    "maxLength": {
+      "type": "integer"
+    },
+    "sequence": {
+      "type": "integer"
+    }
+  }
+}

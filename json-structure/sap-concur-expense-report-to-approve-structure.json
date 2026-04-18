@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ReportToApprove",
+  "type": "object",
+  "properties": {
+    "reportId": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "userId": {
+      "type": "string"
+    },
+    "approvalStatus": {
+      "type": "string"
+    },
+    "submitDate": {
+      "type": "string"
+    }
+  }
+}

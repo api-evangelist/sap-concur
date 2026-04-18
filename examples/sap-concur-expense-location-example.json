@@ -1,0 +1,7 @@
+{
+  "id": "abc123",
+  "name": "Example Title",
+  "city": "example_value",
+  "countryCode": "example_value",
+  "countrySubDivisionCode": "example_value"
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Example Title",
+  "businessPurpose": "example_value",
+  "reportDate": "example_value",
+  "startDate": "example_value",
+  "endDate": "example_value",
+  "currencyCode": "example_value",
+  "countryCode": "example_value",
+  "countrySubDivisionCode": "example_value",
+  "policyId": "500123",
+  "customData": []
+}

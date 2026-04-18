@@ -1,0 +1,10 @@
+{
+  "startLocation": "example_value",
+  "endLocation": "example_value",
+  "ticketNumber": "example_value",
+  "hotelCheckinDate": "example_value",
+  "hotelCheckoutDate": "example_value",
+  "carRentalDays": 10,
+  "airlineServiceClassCode": "example_value",
+  "airlineFeeTypeCode": "example_value"
+}

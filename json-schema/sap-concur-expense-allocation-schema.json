@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Allocation",
+  "type": "object",
+  "description": "An expense allocation that distributes an expense amount across cost centers, departments, or general ledger accounts.",
+  "properties": {
+    "allocationId": {
+      "type": "string",
+      "description": "Unique identifier of the allocation"
+    },
+    "expenseId": {
+      "type": "string",
+      "description": "The expense this allocation belongs to"
+    },
+    "accountCode": {
+      "type": "string",
+      "description": "The ledger account code"
+    },
+    "overLimitAccountCode": {
+      "type": "string",
+      "description": "Account code for amounts exceeding policy limits"
+    },
+    "percentage": {
+      "type": "number",
+      "description": "The percentage of the total expense allocated (0-100)"
+    },
+    "isSystemAllocation": {
+      "type": "boolean",
+      "description": "Whether this allocation was automatically created by the system (true) or manually created by a user (false)"
+    },
+    "isPercentEdited": {
+      "type": "boolean",
+      "description": "Whether the allocation percentage has been modified"
+    },
+    "customData": {
+      "type": "array",
+      "description": "Custom field values on the allocation"
+    }
+  }
+}
