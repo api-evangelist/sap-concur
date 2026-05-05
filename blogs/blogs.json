@@ -1,0 +1,13 @@
+{
+  "repo": "sap-concur",
+  "feeds": [
+    {
+      "source": "https://www.concur.com/newsroom",
+      "feed_url": "https://www.concur.com/blog/feed",
+      "saved": 10,
+      "title": "SAP Concur Blog"
+    }
+  ],
+  "post_count": 10,
+  "fetched": "2026-05-03T23:37:32Z"
+}
