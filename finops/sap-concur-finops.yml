@@ -1,0 +1,373 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+provider: SAP Concur
+providerId: sap-concur
+publisherName: SAP Concur
+serviceCategory: API
+created: '2026-05-04'
+modified: '2026-05-04'
+tags:
+  - Business Travel
+  - Expense Management
+  - Financial Services
+  - Invoice Management
+  - Travel Management
+  - FinOps
+  - Cost Management
+  - FOCUS
+description: FinOps framework definition for the SAP Concur API surface. Provides a FOCUS-aligned mapping
+  for cost allocation, usage measurement, and unit-economics reporting across the provider's APIs.
+principles:
+  - name: Visibility
+    description: Make API consumption costs visible to engineering, product, and finance teams in near
+      real-time.
+  - name: Allocation
+    description: Tag every chargeable API call with the consuming team, environment, application, and
+      feature so cost can be allocated.
+  - name: Optimization
+    description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce
+      cost per useful unit of work.
+  - name: Accountability
+    description: Establish budget owners and chargeback or showback flows for each consuming team.
+domains:
+  - name: Understand Usage and Cost
+    capabilities:
+      - Data Ingestion
+      - Allocation
+      - Reporting and Analytics
+      - Anomaly Management
+  - name: Quantify Business Value
+    capabilities:
+      - Planning and Estimating
+      - Forecasting
+      - Budgeting
+      - Benchmarking
+      - Unit Economics
+  - name: Optimize Usage and Cost
+    capabilities:
+      - Architecting for Cloud
+      - Rate Optimization
+      - Workload Optimization
+      - Cloud Sustainability
+      - Licensing and SaaS
+  - name: Manage the FinOps Practice
+    capabilities:
+      - FinOps Practice Operations
+      - FinOps Education and Enablement
+      - Invoicing and Chargeback
+      - Onboarding Workloads
+      - Intersecting Disciplines
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+    - Usage
+    - Purchase
+    - Tax
+    - Credit
+    - Adjustment
+  chargeFrequency: Recurring
+focusColumns:
+  ServiceName: SAP Concur
+  ServiceCategory: Developer Tools / API
+  ProviderName: SAP Concur
+  PublisherName: SAP Concur
+  InvoiceIssuerName: SAP Concur
+  PricingCategory: Usage-Based
+  PricingUnit: request
+  BillingCurrency: USD
+  ChargeCategory: Usage
+meters:
+  - name: api_requests
+    description: Count of billable API requests
+    unit: request
+    aggregation: sum
+    dimensions:
+      - api
+      - endpoint
+      - tier
+      - region
+      - consumer
+  - name: data_egress
+    description: Bytes returned over the network in API responses
+    unit: GB
+    aggregation: sum
+    dimensions:
+      - api
+      - region
+      - consumer
+  - name: compute_seconds
+    description: Server-side compute consumed by the request, where applicable
+    unit: second
+    aggregation: sum
+    dimensions:
+      - api
+      - endpoint
+      - tier
+apis:
+  - name: Concur Expense API
+    baseURL: https://www.concursolutions.com/api/v3.0
+    tags:
+      - Expenses
+      - Receipts
+      - Reports
+    serviceName: Concur Expense API
+    serviceCategory: API
+  - name: Concur Travel API
+    baseURL: https://www.concursolutions.com/api/v3.0
+    tags:
+      - Bookings
+      - Itineraries
+      - Travel
+    serviceName: Concur Travel API
+    serviceCategory: API
+  - name: Concur Invoice API
+    baseURL: https://www.concursolutions.com/api/v3.0
+    tags:
+      - Invoices
+      - Payments
+      - Purchase Requests
+    serviceName: Concur Invoice API
+    serviceCategory: API
+  - name: Concur Request API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Approvals
+      - Travel Requests
+      - Workflows
+    serviceName: Concur Request API
+    serviceCategory: API
+  - name: Concur User Provisioning API
+    baseURL: https://www.concursolutions.com/api/user/v1.0
+    tags:
+      - Identity Management
+      - Provisioning
+      - Users
+    serviceName: Concur User Provisioning API
+    serviceCategory: API
+  - name: Concur Receipt API
+    baseURL: https://www.concursolutions.com/api/v3.0
+    tags:
+      - Documents
+      - Images
+      - Receipts
+    serviceName: Concur Receipt API
+    serviceCategory: API
+  - name: Concur Budget API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Budgets
+      - Financial Planning
+      - Fiscal Years
+    serviceName: Concur Budget API
+    serviceCategory: API
+  - name: Concur Cards API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Credit Cards
+      - Financial Data
+      - Transactions
+    serviceName: Concur Cards API
+    serviceCategory: API
+  - name: Concur Quick Expense API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Expenses
+      - Quick Entry
+      - Receipts
+    serviceName: Concur Quick Expense API
+    serviceCategory: API
+  - name: Concur Exchange Rate API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Currency
+      - Exchange Rates
+      - Financial Data
+    serviceName: Concur Exchange Rate API
+    serviceCategory: API
+  - name: Concur Financial Integration API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - ERP
+      - Financial Integration
+      - Posting
+    serviceName: Concur Financial Integration API
+    serviceCategory: API
+  - name: Concur Identity API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Identity
+      - SCIM
+      - User Profiles
+    serviceName: Concur Identity API
+    serviceCategory: API
+  - name: Concur Event Subscription Service API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Events
+      - Subscriptions
+      - Webhooks
+    serviceName: Concur Event Subscription Service API
+    serviceCategory: API
+  - name: Concur Callouts API
+    baseURL: https://www.concursolutions.com/api/v1.0
+    tags:
+      - Callouts
+      - Connectors
+      - Integrations
+    serviceName: Concur Callouts API
+    serviceCategory: API
+  - name: Concur Direct Connect Hotel Service API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Booking
+      - Direct Connect
+      - Hotels
+    serviceName: Concur Direct Connect Hotel Service API
+    serviceCategory: API
+  - name: Concur Direct Connect Ground Transportation API
+    baseURL: https://www.concursolutions.com/api/v1.0
+    tags:
+      - Booking
+      - Direct Connect
+      - Ground Transportation
+    serviceName: Concur Direct Connect Ground Transportation API
+    serviceCategory: API
+  - name: Concur Spend Documents API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Documents
+      - Receipts
+      - Spend Management
+    serviceName: Concur Spend Documents API
+    serviceCategory: API
+  - name: Concur List Item API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Configuration
+      - List Items
+      - Lists
+    serviceName: Concur List Item API
+    serviceCategory: API
+  - name: Concur Lists API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Configuration
+      - Lists
+      - Shared Resources
+    serviceName: Concur Lists API
+    serviceCategory: API
+  - name: Concur Travel Profile API
+    baseURL: https://www.concursolutions.com/api/v2.0
+    tags:
+      - Loyalty Programs
+      - Travel Profiles
+      - User Profiles
+    serviceName: Concur Travel Profile API
+    serviceCategory: API
+  - name: Concur Travel Allowance API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Expenses
+      - Per Diem
+      - Travel Allowance
+    serviceName: Concur Travel Allowance API
+    serviceCategory: API
+  - name: Concur Cash Advance API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Cash Advances
+      - Expenses
+      - Reimbursements
+    serviceName: Concur Cash Advance API
+    serviceCategory: API
+  - name: Concur Purchase Order API
+    baseURL: https://www.concursolutions.com/api/v3.0
+    tags:
+      - Invoices
+      - Procurement
+      - Purchase Orders
+    serviceName: Concur Purchase Order API
+    serviceCategory: API
+  - name: Concur Purchase Request API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Approvals
+      - Procurement
+      - Purchase Requests
+    serviceName: Concur Purchase Request API
+    serviceCategory: API
+  - name: Concur Vendor API
+    baseURL: https://www.concursolutions.com/api/v3.0
+    tags:
+      - Invoices
+      - Supplier Management
+      - Vendors
+    serviceName: Concur Vendor API
+    serviceCategory: API
+  - name: Concur Sales Tax Validation API
+    baseURL: https://www.concursolutions.com/api/v3.0
+    tags:
+      - Invoices
+      - Tax Compliance
+      - Tax Validation
+    serviceName: Concur Sales Tax Validation API
+    serviceCategory: API
+  - name: Concur Document Compliance Gateway API
+    baseURL: https://www.concursolutions.com/api/v4.0
+    tags:
+      - Compliance
+      - Document Validation
+      - Tax Documents
+    serviceName: Concur Document Compliance Gateway API
+    serviceCategory: API
+  - name: Concur Image API
+    baseURL: https://www.concursolutions.com/api/image/v1.0
+    tags:
+      - Documents
+      - Images
+      - Receipts
+    serviceName: Concur Image API
+    serviceCategory: API
+  - name: Concur Travel Receipts API
+    baseURL: https://us.api.concursolutions.com/travelreceipts/v1
+    tags:
+      - E-Receipts
+      - Travel
+      - Travel Receipts
+    serviceName: Concur Travel Receipts API
+    serviceCategory: API
+  - name: Concur Locations API
+    baseURL: https://www.concursolutions.com/api/v3.0
+    tags:
+      - Common Resources
+      - Geography
+      - Locations
+    serviceName: Concur Locations API
+    serviceCategory: API
+  - name: Concur Expense Attendee Types API
+    baseURL: https://www.concursolutions.com/api/v3.0
+    tags:
+      - Attendees
+      - Configuration
+      - Expenses
+    serviceName: Concur Expense Attendee Types API
+    serviceCategory: API
+unitEconomics:
+  - name: Cost per 1K Requests
+    metric: billed_cost / (api_requests / 1000)
+    target: TBD
+  - name: Cost per Active Consumer
+    metric: billed_cost / active_consumers
+    target: TBD
+maintainers:
+  - name: Kin Lane
+    email: kin@apievangelist.com
+    url: https://developer.concur.com/
