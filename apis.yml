@@ -521,6 +521,14 @@ common:
         description: Sync customer and opportunity data to pre-populate expense reports and travel requests.
       - name: Oracle NetSuite
         description: Automated financial posting of approved expense reports and invoices into Oracle NetSuite.
+  - type: Integrations
+    url: https://www.concur.com/integrations
+integrations:
+  - name: SAP
+  - name: ADP
+  - name: NetSuite
+  - name: QuickBooks
+  - name: Xero
 maintainers:
   - name: Kin Lane
     email: kin@apievangelist.com
