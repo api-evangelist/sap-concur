@@ -1,0 +1,137 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: SAP Concur Expense Report API — Allocations
+  description: 'SAP Concur Expense Report API — Allocations. 3 operations. Lead operation: Sap Concur Retrieve a Single Allocation
+    by Id. Self-contained Naftiko capability covering one Sap Concur business surface.'
+  tags:
+  - Sap Concur
+  - Allocations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SAP_CONCUR_API_KEY: SAP_CONCUR_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: expense-allocations
+    baseUri: https://us.api.concursolutions.com
+    description: SAP Concur Expense Report API — Allocations business capability. Self-contained, no shared references.
+    resources:
+    - name: expensereports-v4-users-userID-context-contextType-reports-reportId-allocations-
+      path: /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/allocations/{allocationId}
+      operations:
+      - name: getallocation
+        method: GET
+        description: Sap Concur Retrieve a Single Allocation by Id
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateallocation
+        method: PATCH
+        description: Sap Concur Update an Allocation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: expensereports-v4-users-userID-context-contextType-reports-reportId-expenses-exp
+      path: /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/allocations
+      operations:
+      - name: getallocations
+        method: GET
+        description: Sap Concur Retrieve Allocations for an Expense
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.SAP_CONCUR_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: expense-allocations-rest
+    port: 8080
+    description: REST adapter for SAP Concur Expense Report API — Allocations. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/expensereports/v4/users/{userid}/context/{contexttype}/reports/{reportid}/allocations/{allocationid}
+      name: expensereports-v4-users-userid-context-contexttype-reports-reportid-allocations
+      description: REST surface for expensereports-v4-users-userID-context-contextType-reports-reportId-allocations-.
+      operations:
+      - method: GET
+        name: getallocation
+        description: Sap Concur Retrieve a Single Allocation by Id
+        call: expense-allocations.getallocation
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateallocation
+        description: Sap Concur Update an Allocation
+        call: expense-allocations.updateallocation
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/expensereports/v4/users/{userid}/context/{contexttype}/reports/{reportid}/expenses/{expenseid}/allocations
+      name: expensereports-v4-users-userid-context-contexttype-reports-reportid-expenses-exp
+      description: REST surface for expensereports-v4-users-userID-context-contextType-reports-reportId-expenses-exp.
+      operations:
+      - method: GET
+        name: getallocations
+        description: Sap Concur Retrieve Allocations for an Expense
+        call: expense-allocations.getallocations
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: expense-allocations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for SAP Concur Expense Report API — Allocations. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: sap-concur-retrieve-single-allocation
+      description: Sap Concur Retrieve a Single Allocation by Id
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: expense-allocations.getallocation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: sap-concur-update-allocation
+      description: Sap Concur Update an Allocation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: expense-allocations.updateallocation
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: sap-concur-retrieve-allocations-expense
+      description: Sap Concur Retrieve Allocations for an Expense
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: expense-allocations.getallocations
+      outputParameters:
+      - type: object
+        mapping: $.

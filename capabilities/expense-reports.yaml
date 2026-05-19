@@ -1,0 +1,322 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: SAP Concur Expense Report API — Reports
+  description: 'SAP Concur Expense Report API — Reports. 7 operations. Lead operation: Sap Concur Update a Submitted Expense
+    Report. Self-contained Naftiko capability covering one Sap Concur business surface.'
+  tags:
+  - Sap Concur
+  - Reports
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SAP_CONCUR_API_KEY: SAP_CONCUR_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: expense-reports
+    baseUri: https://us.api.concursolutions.com
+    description: SAP Concur Expense Report API — Reports business capability. Self-contained, no shared references.
+    resources:
+    - name: expensereports-v4-reports-reportId
+      path: /expensereports/v4/reports/{reportId}
+      operations:
+      - name: updatesubmittedreport
+        method: PATCH
+        description: Sap Concur Update a Submitted Expense Report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletereport
+        method: DELETE
+        description: Sap Concur Delete an Expense Report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: expensereports-v4-reports-reportId-formFields
+      path: /expensereports/v4/reports/{reportId}/formFields
+      operations:
+      - name: getreportformfields
+        method: GET
+        description: Sap Concur Retrieve Report Form Field Configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: policyId
+          in: query
+          type: string
+          description: Policy identifier to determine applicable form fields
+    - name: expensereports-v4-users-userID-context-contextType-reports
+      path: /expensereports/v4/users/{userID}/context/{contextType}/reports
+      operations:
+      - name: createreport
+        method: POST
+        description: Sap Concur Create a New Expense Report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: expensereports-v4-users-userID-context-contextType-reports-reportId
+      path: /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}
+      operations:
+      - name: getreport
+        method: GET
+        description: Sap Concur Retrieve an Expense Report by Id
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatereport
+        method: PATCH
+        description: Sap Concur Update an Unsubmitted Expense Report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: expensereports-v4-users-userId-context-contextType-reportsToApprove
+      path: /expensereports/v4/users/{userId}/context/{contextType}/reportsToApprove
+      operations:
+      - name: getreportstoapprove
+        method: GET
+        description: Sap Concur Retrieve Reports Pending Approval
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: userId
+          in: path
+          type: string
+          description: The unique identifier of the approving manager
+          required: true
+        - name: contextType
+          in: path
+          type: string
+          description: Must be MANAGER for this endpoint
+          required: true
+        - name: sort
+          in: query
+          type: string
+          description: Field to sort results by
+        - name: order
+          in: query
+          type: string
+          description: Sort order
+        - name: includeDelegateApprovals
+          in: query
+          type: boolean
+          description: Whether to include reports delegated for approval
+    authentication:
+      type: bearer
+      token: '{{env.SAP_CONCUR_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: expense-reports-rest
+    port: 8080
+    description: REST adapter for SAP Concur Expense Report API — Reports. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/expensereports/v4/reports/{reportid}
+      name: expensereports-v4-reports-reportid
+      description: REST surface for expensereports-v4-reports-reportId.
+      operations:
+      - method: PATCH
+        name: updatesubmittedreport
+        description: Sap Concur Update a Submitted Expense Report
+        call: expense-reports.updatesubmittedreport
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletereport
+        description: Sap Concur Delete an Expense Report
+        call: expense-reports.deletereport
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/expensereports/v4/reports/{reportid}/formfields
+      name: expensereports-v4-reports-reportid-formfields
+      description: REST surface for expensereports-v4-reports-reportId-formFields.
+      operations:
+      - method: GET
+        name: getreportformfields
+        description: Sap Concur Retrieve Report Form Field Configuration
+        call: expense-reports.getreportformfields
+        with:
+          policyId: rest.policyId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/expensereports/v4/users/{userid}/context/{contexttype}/reports
+      name: expensereports-v4-users-userid-context-contexttype-reports
+      description: REST surface for expensereports-v4-users-userID-context-contextType-reports.
+      operations:
+      - method: POST
+        name: createreport
+        description: Sap Concur Create a New Expense Report
+        call: expense-reports.createreport
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/expensereports/v4/users/{userid}/context/{contexttype}/reports/{reportid}
+      name: expensereports-v4-users-userid-context-contexttype-reports-reportid
+      description: REST surface for expensereports-v4-users-userID-context-contextType-reports-reportId.
+      operations:
+      - method: GET
+        name: getreport
+        description: Sap Concur Retrieve an Expense Report by Id
+        call: expense-reports.getreport
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updatereport
+        description: Sap Concur Update an Unsubmitted Expense Report
+        call: expense-reports.updatereport
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/expensereports/v4/users/{userid}/context/{contexttype}/reportstoapprove
+      name: expensereports-v4-users-userid-context-contexttype-reportstoapprove
+      description: REST surface for expensereports-v4-users-userId-context-contextType-reportsToApprove.
+      operations:
+      - method: GET
+        name: getreportstoapprove
+        description: Sap Concur Retrieve Reports Pending Approval
+        call: expense-reports.getreportstoapprove
+        with:
+          userId: rest.userId
+          contextType: rest.contextType
+          sort: rest.sort
+          order: rest.order
+          includeDelegateApprovals: rest.includeDelegateApprovals
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: expense-reports-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for SAP Concur Expense Report API — Reports. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: sap-concur-update-submitted-expense
+      description: Sap Concur Update a Submitted Expense Report
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: expense-reports.updatesubmittedreport
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: sap-concur-delete-expense-report
+      description: Sap Concur Delete an Expense Report
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: expense-reports.deletereport
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: sap-concur-retrieve-report-form
+      description: Sap Concur Retrieve Report Form Field Configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: expense-reports.getreportformfields
+      with:
+        policyId: tools.policyId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: sap-concur-create-new-expense
+      description: Sap Concur Create a New Expense Report
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: expense-reports.createreport
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: sap-concur-retrieve-expense-report
+      description: Sap Concur Retrieve an Expense Report by Id
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: expense-reports.getreport
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: sap-concur-update-unsubmitted-expense
+      description: Sap Concur Update an Unsubmitted Expense Report
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: expense-reports.updatereport
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: sap-concur-retrieve-reports-pending
+      description: Sap Concur Retrieve Reports Pending Approval
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: expense-reports.getreportstoapprove
+      with:
+        userId: tools.userId
+        contextType: tools.contextType
+        sort: tools.sort
+        order: tools.order
+        includeDelegateApprovals: tools.includeDelegateApprovals
+      outputParameters:
+      - type: object
+        mapping: $.
