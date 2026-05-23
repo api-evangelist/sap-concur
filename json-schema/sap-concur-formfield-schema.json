@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/FormField",
+  "title": "FormField",
+  "type": "object",
+  "description": "A configured form field with its metadata, display properties, and validation rules.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The field identifier",
+      "example": "abc123"
+    },
+    "label": {
+      "type": "string",
+      "description": "The localized display label",
+      "example": "Example Title"
+    },
+    "controlType": {
+      "type": "string",
+      "description": "The UI control type for rendering",
+      "example": "example_value"
+    },
+    "dataType": {
+      "type": "string",
+      "description": "The data type of the field value",
+      "example": "example_value"
+    },
+    "isRequired": {
+      "type": "boolean",
+      "description": "Whether the field is mandatory",
+      "example": true
+    },
+    "isCustom": {
+      "type": "boolean",
+      "description": "Whether this is a customer-configured custom field",
+      "example": true
+    },
+    "maxLength": {
+      "type": "integer",
+      "description": "Maximum allowed character length",
+      "example": 10
+    },
+    "sequence": {
+      "type": "integer",
+      "description": "Display order sequence number",
+      "example": 10
+    }
+  }
+}

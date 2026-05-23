@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/UpdateSubmittedReport",
+  "title": "UpdateSubmittedReport",
+  "type": "object",
+  "description": "Limited-field JSON Merge Patch for updating a submitted report. Only accessible with Company JWT authentication.",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name or title of the expense report",
+      "example": "Example Title"
+    },
+    "businessPurpose": {
+      "type": "string",
+      "description": "The business justification",
+      "example": "example_value"
+    },
+    "comment": {
+      "type": "string",
+      "description": "A comment to accompany the update",
+      "example": "example_value"
+    },
+    "isPaperReceiptsReceived": {
+      "type": "boolean",
+      "description": "Whether physical receipts have been received",
+      "example": true
+    },
+    "customData": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/CustomData"
+      },
+      "example": []
+    }
+  }
+}

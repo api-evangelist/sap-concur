@@ -1,0 +1,23 @@
+{
+  "operationId": "updateAllocation",
+  "method": "PATCH",
+  "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/allocations/{allocationId}",
+  "summary": "Sap Concur Update an Allocation",
+  "requestExamples": [
+    {
+      "contentType": "application/merge-patch+json",
+      "name": "UpdateallocationRequestExample",
+      "example": {
+        "allocation": {
+          "customData": [
+            {}
+          ]
+        },
+        "expenseIds": [
+          "example_value"
+        ]
+      }
+    }
+  ],
+  "responseExamples": []
+}

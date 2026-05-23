@@ -1,0 +1,26 @@
+{
+  "operationId": "getReportFormFields",
+  "method": "GET",
+  "path": "/expensereports/v4/reports/{reportId}/formFields",
+  "summary": "Sap Concur Retrieve Report Form Field Configuration",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "name": "Getreportformfields200Example",
+      "example": [
+        {
+          "id": "abc123",
+          "label": "Example Title",
+          "controlType": "example_value",
+          "dataType": "example_value",
+          "isRequired": true,
+          "isCustom": true,
+          "maxLength": 10,
+          "sequence": 10
+        }
+      ]
+    }
+  ]
+}

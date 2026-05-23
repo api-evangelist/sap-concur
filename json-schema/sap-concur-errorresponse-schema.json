@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ErrorResponse",
+  "title": "ErrorResponse",
+  "type": "object",
+  "description": "Standard error response",
+  "properties": {
+    "errorId": {
+      "type": "string",
+      "description": "Unique identifier for this error occurrence",
+      "example": "500123"
+    },
+    "errorMessage": {
+      "type": "string",
+      "description": "Human-readable error description",
+      "example": "example_value"
+    },
+    "httpStatus": {
+      "type": "string",
+      "description": "The HTTP status code as a string",
+      "example": "example_value"
+    },
+    "path": {
+      "type": "string",
+      "description": "The request path that triggered the error",
+      "example": "example_value"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the error occurred",
+      "example": "2026-01-15T10:30:00Z"
+    },
+    "validationErrors": {
+      "type": "array",
+      "description": "Detailed field-level validation failures",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "The field or parameter that failed validation"
+          },
+          "message": {
+            "type": "string",
+            "description": "Description of the validation failure"
+          }
+        }
+      },
+      "example": []
+    }
+  }
+}

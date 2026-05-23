@@ -1,0 +1,27 @@
+{
+  "operationId": "getReportsToApprove",
+  "method": "GET",
+  "path": "/expensereports/v4/users/{userId}/context/{contextType}/reportsToApprove",
+  "summary": "Sap Concur Retrieve Reports Pending Approval",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "name": "Getreportstoapprove200Example",
+      "example": [
+        {
+          "reportId": "500123",
+          "name": "Example Title",
+          "userId": "500123",
+          "approvalStatus": "example_value",
+          "reportTotal": {
+            "value": 42.5,
+            "currencyCode": "example_value"
+          },
+          "submitDate": "2026-01-15T10:30:00Z"
+        }
+      ]
+    }
+  ]
+}

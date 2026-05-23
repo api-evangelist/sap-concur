@@ -1,0 +1,110 @@
+{
+  "operationId": "getExpense",
+  "method": "GET",
+  "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}",
+  "summary": "Sap Concur Retrieve a Single Expense by Id",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "name": "Getexpense200Example",
+      "example": {
+        "expenseId": "500123",
+        "transactionDate": "2026-01-15",
+        "transactionAmount": {
+          "value": 42.5,
+          "currencyCode": "example_value"
+        },
+        "postedAmount": {
+          "value": 42.5,
+          "currencyCode": "example_value"
+        },
+        "approvedAmount": {
+          "value": 42.5,
+          "currencyCode": "example_value"
+        },
+        "approverAdjustedAmount": {
+          "value": 42.5,
+          "currencyCode": "example_value"
+        },
+        "businessPurpose": "example_value",
+        "expenseType": {
+          "id": "abc123",
+          "name": "Example Title",
+          "code": "example_value",
+          "isDeleted": true
+        },
+        "paymentType": {
+          "id": "abc123",
+          "name": "Example Title",
+          "code": "example_value"
+        },
+        "location": {
+          "id": "abc123",
+          "name": "Example Title",
+          "city": "example_value",
+          "countryCode": "example_value",
+          "countrySubDivisionCode": "example_value"
+        },
+        "vendor": {
+          "id": "abc123",
+          "name": "Example Title",
+          "description": "A sample description."
+        },
+        "exchangeRate": {
+          "value": 42.5,
+          "operation": "MULTIPLY"
+        },
+        "allocationState": "FULLY_ALLOCATED",
+        "isPersonalExpense": true,
+        "isExpenseRejected": true,
+        "isPaperReceiptReceived": true,
+        "hasExceptions": true,
+        "expenseTaxSummary": {},
+        "mileage": {
+          "totalDistance": 10,
+          "vehicleId": "500123",
+          "odometerStart": 10,
+          "odometerEnd": 10,
+          "passengerCount": 10,
+          "personalDistance": 10,
+          "isMarkedAsHigherRate": true,
+          "routeId": "500123",
+          "hasMachinery": true
+        },
+        "travel": {
+          "startLocation": "example_value",
+          "endLocation": "example_value",
+          "ticketNumber": "example_value",
+          "hotelCheckinDate": "2026-01-15",
+          "hotelCheckoutDate": "2026-01-15",
+          "carRentalDays": 10,
+          "airlineServiceClassCode": "BUSIN",
+          "airlineFeeTypeCode": "example_value"
+        },
+        "travelAllowance": {
+          "isExpensePartOfTravelAllowance": true,
+          "dailyTravelAllowanceId": "500123",
+          "dailyLimitAmount": 42.5
+        },
+        "invoiceId": "500123",
+        "customData": [
+          {
+            "id": "abc123",
+            "value": "example_value",
+            "isValid": "500123"
+          }
+        ],
+        "lastModifiedDate": "2026-01-15T10:30:00Z",
+        "links": [
+          {
+            "rel": "example_value",
+            "href": "https://www.example.com",
+            "hreflang": "example_value"
+          }
+        ]
+      }
+    }
+  ]
+}

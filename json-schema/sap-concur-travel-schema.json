@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Travel",
+  "title": "Travel",
+  "type": "object",
+  "description": "Travel-specific data for transportation expenses",
+  "properties": {
+    "startLocation": {
+      "type": "string",
+      "description": "Trip origin location",
+      "maxLength": 100,
+      "example": "example_value"
+    },
+    "endLocation": {
+      "type": "string",
+      "description": "Trip destination location",
+      "maxLength": 100,
+      "example": "example_value"
+    },
+    "ticketNumber": {
+      "type": "string",
+      "description": "Ticket or booking reference number",
+      "maxLength": 32,
+      "example": "example_value"
+    },
+    "hotelCheckinDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Hotel check-in date",
+      "example": "2026-01-15"
+    },
+    "hotelCheckoutDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Hotel check-out date",
+      "example": "2026-01-15"
+    },
+    "carRentalDays": {
+      "type": "integer",
+      "description": "Number of car rental days",
+      "example": 10
+    },
+    "airlineServiceClassCode": {
+      "type": "string",
+      "description": "Airline cabin class code",
+      "enum": [
+        "BUSIN",
+        "COACH",
+        "FIRST"
+      ],
+      "example": "BUSIN"
+    },
+    "airlineFeeTypeCode": {
+      "type": "string",
+      "description": "Airline fee type identifier",
+      "example": "example_value"
+    }
+  }
+}

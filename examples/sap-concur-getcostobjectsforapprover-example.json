@@ -1,0 +1,21 @@
+{
+  "operationId": "getCostObjectsForApprover",
+  "method": "GET",
+  "path": "/expensereports/v4/users/{userId}/reports/{reportId}/costObjectsForApprover",
+  "summary": "Sap Concur Retrieve Cost Objects for an Approver",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "name": "Getcostobjectsforapprover200Example",
+      "example": [
+        {
+          "costObjectId": "500123",
+          "name": "Example Title",
+          "code": "example_value"
+        }
+      ]
+    }
+  ]
+}

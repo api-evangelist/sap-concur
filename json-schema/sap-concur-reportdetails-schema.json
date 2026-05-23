@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ReportDetails",
+  "title": "ReportDetails",
+  "type": "object",
+  "description": "The full representation of an expense report",
+  "required": [
+    "reportId",
+    "name",
+    "currencyCode",
+    "policyId",
+    "approvalStatus",
+    "paymentStatus",
+    "userId",
+    "isSubmitted",
+    "creationDate",
+    "reportVersion"
+  ],
+  "properties": {
+    "reportId": {
+      "type": "string",
+      "description": "Unique identifier of the expense report",
+      "example": "500123"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name or title of the report",
+      "example": "Example Title"
+    },
+    "businessPurpose": {
+      "type": "string",
+      "description": "The business justification for the expenses",
+      "example": "example_value"
+    },
+    "reportDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The date of the report",
+      "example": "2026-01-15"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The start date of the reporting period",
+      "example": "2026-01-15"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The end date of the reporting period",
+      "example": "2026-01-15"
+    },
+    "countryCode": {
+      "type": "string",
+      "description": "ISO 3166-1 alpha-2 country code",
+      "example": "example_value"
+    },
+    "countrySubDivisionCode": {
+      "type": "string",
+      "description": "ISO 3166-2 subdivision code",
+      "example": "example_value"
+    },
+    "currencyCode": {
+      "type": "string",
+      "description": "ISO 4217 three-letter currency code",
+      "example": "example_value"
+    },
+    "policyId": {
+      "type": "string",
+      "description": "The expense policy applied to this report",
+      "example": "500123"
+    },
+    "reportFormId": {
+      "type": "string",
+      "description": "The form template used for this report",
+      "example": "500123"
+    },
+    "ledgerId": {
+      "type": "string",
+      "description": "The financial ledger associated with this report",
+      "example": "500123"
+    },
+    "approvalStatus": {
+      "type": "string",
+      "description": "Human-readable approval status label",
+      "examples": [
+        "Not Submitted",
+        "Submitted & Pending Approval",
+        "Approved"
+      ]
+    },
+    "approvalStatusId": {
+      "type": "string",
+      "description": "Machine-readable approval status code",
+      "examples": [
+        "A_NOTF",
+        "A_PEND",
+        "A_APPR"
+      ]
+    },
+    "paymentStatus": {
+      "type": "string",
+      "description": "Human-readable payment status label",
+      "examples": [
+        "Not Paid",
+        "Payment Confirmed"
+      ]
+    },
+    "paymentStatusId": {
+      "type": "string",
+      "description": "Machine-readable payment status code",
+      "example": "500123"
+    },
+    "claimedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "approvedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "reportTotal": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "amountDueEmployee": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "userId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The unique identifier of the report owner",
+      "example": "500123"
+    },
+    "isSubmitted": {
+      "type": "boolean",
+      "description": "Whether the report has been submitted",
+      "example": true
+    },
+    "isSentBack": {
+      "type": "boolean",
+      "description": "Whether the report was sent back for corrections",
+      "example": true
+    },
+    "creationDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the report was created (ISO 8601)",
+      "example": "2026-01-15T10:30:00Z"
+    },
+    "submitDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the report was last submitted (ISO 8601)",
+      "example": "2026-01-15T10:30:00Z"
+    },
+    "reportVersion": {
+      "type": "integer",
+      "format": "int32",
+      "description": "The version number, incremented on each modification",
+      "example": 10
+    },
+    "customData": {
+      "type": "array",
+      "description": "Custom field values on the report header",
+      "items": {
+        "$ref": "#/components/schemas/CustomData"
+      },
+      "example": []
+    },
+    "links": {
+      "type": "array",
+      "description": "HATEOAS navigation links",
+      "items": {
+        "$ref": "#/components/schemas/Link"
+      },
+      "example": []
+    }
+  }
+}

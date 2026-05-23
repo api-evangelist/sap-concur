@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/NewReport",
+  "title": "NewReport",
+  "type": "object",
+  "description": "Request body for creating a new expense report",
+  "required": [
+    "name",
+    "currencyCode",
+    "policyId"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name or title of the expense report",
+      "examples": [
+        "Q1 2026 Business Travel"
+      ]
+    },
+    "businessPurpose": {
+      "type": "string",
+      "description": "The business justification for the expenses",
+      "examples": [
+        "Client meetings in New York"
+      ]
+    },
+    "reportDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The date of the report (YYYY-MM-DD)",
+      "example": "2026-01-15"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The start date of the reporting period",
+      "example": "2026-01-15"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The end date of the reporting period",
+      "example": "2026-01-15"
+    },
+    "currencyCode": {
+      "type": "string",
+      "description": "ISO 4217 three-letter currency code for the report",
+      "minLength": 3,
+      "maxLength": 3,
+      "examples": [
+        "USD"
+      ]
+    },
+    "countryCode": {
+      "type": "string",
+      "description": "ISO 3166-1 alpha-2 country code",
+      "minLength": 2,
+      "maxLength": 2,
+      "examples": [
+        "US"
+      ]
+    },
+    "countrySubDivisionCode": {
+      "type": "string",
+      "description": "ISO 3166-2 subdivision code (state/province)",
+      "example": "example_value"
+    },
+    "policyId": {
+      "type": "string",
+      "description": "The identifier of the expense policy to apply",
+      "example": "500123"
+    },
+    "customData": {
+      "type": "array",
+      "description": "Custom field values for the report header",
+      "items": {
+        "$ref": "#/components/schemas/CustomData"
+      },
+      "example": []
+    }
+  }
+}

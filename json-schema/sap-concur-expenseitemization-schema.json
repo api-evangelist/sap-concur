@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ExpenseItemization",
+  "title": "ExpenseItemization",
+  "type": "object",
+  "description": "An itemized line within a parent expense, representing a breakdown of the total amount.",
+  "properties": {
+    "itemizationId": {
+      "type": "string",
+      "description": "Unique identifier of the itemization",
+      "example": "500123"
+    },
+    "expenseId": {
+      "type": "string",
+      "description": "The parent expense identifier",
+      "example": "500123"
+    },
+    "transactionDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The date of the itemized charge",
+      "example": "2026-01-15"
+    },
+    "transactionAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "expenseType": {
+      "$ref": "#/components/schemas/ExpenseType"
+    },
+    "businessPurpose": {
+      "type": "string",
+      "description": "Purpose of this specific itemization",
+      "example": "example_value"
+    },
+    "customData": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/CustomData"
+      },
+      "example": []
+    }
+  }
+}

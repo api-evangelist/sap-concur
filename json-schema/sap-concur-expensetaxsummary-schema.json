@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ExpenseTaxSummary",
+  "title": "ExpenseTaxSummary",
+  "type": "object",
+  "description": "Tax information summarized for an expense",
+  "properties": {
+    "netAdjustedTaxAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "netReclaimAdjustedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "netReclaimAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "netTaxAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "totalReclaimAdjustedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "totalReclaimPostedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "totalTaxAdjustedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "totalTaxPostedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+name: SAP Concur Domain Vocabulary
+provider: SAP Concur
+providerId: sap-concur
+description: Tag-derived vocabulary for the SAP Concur API surface; sourced from openapi/ tags.
+terms:
+- term: Allocations
+  description: Operations for retrieving and updating expense allocations, which distribute expense amounts across cost centers
+    or accounts.
+- term: Comments
+  description: Operations for creating, retrieving, updating, and deleting comments at the report header or individual expense
+    level.
+- term: Expenses
+  description: Operations for retrieving, updating, and deleting expense entries (line items) on a report, and retrieving
+    itemizations.
+- term: Reports
+  description: Operations for creating, retrieving, updating, and deleting expense reports, as well as retrieving reports
+    pending approval.
+- term: Workflows
+  description: Operations for submitting, approving, recalling, and sending back expense reports through the approval workflow.

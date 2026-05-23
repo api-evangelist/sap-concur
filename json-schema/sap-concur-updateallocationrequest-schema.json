@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/UpdateAllocationRequest",
+  "title": "UpdateAllocationRequest",
+  "type": "object",
+  "description": "Request body for updating an allocation",
+  "properties": {
+    "allocation": {
+      "type": "object",
+      "description": "The allocation fields to update",
+      "properties": {
+        "customData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/CustomData"
+          }
+        }
+      },
+      "example": "example_value"
+    },
+    "expenseIds": {
+      "type": "array",
+      "description": "The expense IDs to which this update applies",
+      "items": {
+        "type": "string"
+      },
+      "example": []
+    }
+  }
+}

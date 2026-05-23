@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ReportToApprove",
+  "title": "ReportToApprove",
+  "type": "object",
+  "description": "A summary of an expense report awaiting approval",
+  "properties": {
+    "reportId": {
+      "type": "string",
+      "description": "Unique identifier of the report",
+      "example": "500123"
+    },
+    "name": {
+      "type": "string",
+      "description": "The report name",
+      "example": "Example Title"
+    },
+    "userId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The report owner's user ID",
+      "example": "500123"
+    },
+    "approvalStatus": {
+      "type": "string",
+      "description": "Current approval status",
+      "example": "example_value"
+    },
+    "reportTotal": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "submitDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the report was submitted",
+      "example": "2026-01-15T10:30:00Z"
+    }
+  }
+}

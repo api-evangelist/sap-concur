@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Amount",
+  "title": "Amount",
+  "type": "object",
+  "description": "A monetary amount with its currency code",
+  "required": [
+    "value",
+    "currencyCode"
+  ],
+  "properties": {
+    "value": {
+      "type": "number",
+      "format": "double",
+      "description": "The numeric monetary amount",
+      "examples": [
+        250.0
+      ]
+    },
+    "currencyCode": {
+      "type": "string",
+      "description": "ISO 4217 three-letter currency code",
+      "minLength": 3,
+      "maxLength": 3,
+      "examples": [
+        "USD"
+      ]
+    }
+  }
+}

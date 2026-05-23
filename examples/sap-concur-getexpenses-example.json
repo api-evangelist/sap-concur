@@ -1,0 +1,47 @@
+{
+  "operationId": "getExpenses",
+  "method": "GET",
+  "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses",
+  "summary": "Sap Concur Retrieve All Expenses on a Report",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "name": "Getexpenses200Example",
+      "example": [
+        {
+          "expenseId": "500123",
+          "transactionDate": "2026-01-15",
+          "transactionAmount": {
+            "value": 42.5,
+            "currencyCode": "example_value"
+          },
+          "postedAmount": {
+            "value": 42.5,
+            "currencyCode": "example_value"
+          },
+          "approvedAmount": {
+            "value": 42.5,
+            "currencyCode": "example_value"
+          },
+          "expenseType": {
+            "id": "abc123",
+            "name": "Example Title",
+            "code": "example_value",
+            "isDeleted": true
+          },
+          "businessPurpose": "example_value",
+          "vendor": {
+            "id": "abc123",
+            "name": "Example Title",
+            "description": "A sample description."
+          },
+          "links": [
+            {}
+          ]
+        }
+      ]
+    }
+  ]
+}

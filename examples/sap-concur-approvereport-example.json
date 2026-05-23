@@ -1,0 +1,20 @@
+{
+  "operationId": "approveReport",
+  "method": "PATCH",
+  "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/approve",
+  "summary": "Sap Concur Approve an Expense Report",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "name": "ApprovereportRequestExample",
+      "example": {
+        "comment": "example_value",
+        "expenseRejectedComment": "example_value",
+        "statusId": "500123",
+        "expectedStepCode": "example_value",
+        "expectedStepSequence": 10
+      }
+    }
+  ],
+  "responseExamples": []
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Allocation",
+  "title": "Allocation",
+  "type": "object",
+  "description": "An expense allocation that distributes an expense amount across cost centers, departments, or general ledger accounts.",
+  "required": [
+    "allocationId",
+    "expenseId",
+    "percentage",
+    "isSystemAllocation",
+    "isPercentEdited"
+  ],
+  "properties": {
+    "allocationId": {
+      "type": "string",
+      "description": "Unique identifier of the allocation",
+      "example": "500123"
+    },
+    "expenseId": {
+      "type": "string",
+      "description": "The expense this allocation belongs to",
+      "example": "500123"
+    },
+    "accountCode": {
+      "type": "string",
+      "description": "The ledger account code",
+      "example": "example_value"
+    },
+    "overLimitAccountCode": {
+      "type": "string",
+      "description": "Account code for amounts exceeding policy limits",
+      "example": "example_value"
+    },
+    "allocationAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "approvedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "claimedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "percentage": {
+      "type": "number",
+      "format": "double",
+      "description": "The percentage of the total expense allocated (0-100)",
+      "minimum": 0,
+      "maximum": 100,
+      "example": 42.5
+    },
+    "isSystemAllocation": {
+      "type": "boolean",
+      "description": "Whether this allocation was automatically created by the system (true) or manually created by a user (false)",
+      "example": true
+    },
+    "isPercentEdited": {
+      "type": "boolean",
+      "description": "Whether the allocation percentage has been modified",
+      "example": true
+    },
+    "customData": {
+      "type": "array",
+      "description": "Custom field values on the allocation",
+      "items": {
+        "$ref": "#/components/schemas/CustomData"
+      },
+      "example": []
+    }
+  }
+}

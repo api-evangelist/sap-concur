@@ -1,0 +1,478 @@
+{
+  "provider": "SAP Concur",
+  "providerId": "sap-concur",
+  "kind": "json-structure",
+  "description": "Structural overview of the SAP Concur API surface; extracted from openapi/.",
+  "schemaCount": 31,
+  "operationCount": 27,
+  "schemas": [
+    {
+      "name": "Amount",
+      "type": "object",
+      "propertyCount": 2,
+      "required": [
+        "value",
+        "currencyCode"
+      ]
+    },
+    {
+      "name": "CustomData",
+      "type": "object",
+      "propertyCount": 3,
+      "required": [
+        "id"
+      ]
+    },
+    {
+      "name": "NewReport",
+      "type": "object",
+      "propertyCount": 10,
+      "required": [
+        "name",
+        "currencyCode",
+        "policyId"
+      ]
+    },
+    {
+      "name": "UpdateReport",
+      "type": "object",
+      "propertyCount": 9,
+      "required": []
+    },
+    {
+      "name": "UpdateSubmittedReport",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "ReportDetails",
+      "type": "object",
+      "propertyCount": 28,
+      "required": [
+        "reportId",
+        "name",
+        "currencyCode",
+        "policyId",
+        "approvalStatus",
+        "paymentStatus",
+        "userId",
+        "isSubmitted",
+        "creationDate",
+        "reportVersion"
+      ]
+    },
+    {
+      "name": "ReportToApprove",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    },
+    {
+      "name": "ExpenseSummary",
+      "type": "object",
+      "propertyCount": 9,
+      "required": []
+    },
+    {
+      "name": "ExpenseDetail",
+      "type": "object",
+      "propertyCount": 25,
+      "required": [
+        "expenseId"
+      ]
+    },
+    {
+      "name": "UpdateSubmittedExpense",
+      "type": "object",
+      "propertyCount": 5,
+      "required": [
+        "expenseSource"
+      ]
+    },
+    {
+      "name": "ExpenseItemization",
+      "type": "object",
+      "propertyCount": 7,
+      "required": []
+    },
+    {
+      "name": "ExpenseType",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "PaymentType",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "Location",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "Vendor",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "ExchangeRate",
+      "type": "object",
+      "propertyCount": 2,
+      "required": [
+        "value",
+        "operation"
+      ]
+    },
+    {
+      "name": "Mileage",
+      "type": "object",
+      "propertyCount": 9,
+      "required": []
+    },
+    {
+      "name": "Travel",
+      "type": "object",
+      "propertyCount": 8,
+      "required": []
+    },
+    {
+      "name": "TravelAllowance",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "ExpenseTaxSummary",
+      "type": "object",
+      "propertyCount": 8,
+      "required": []
+    },
+    {
+      "name": "Allocation",
+      "type": "object",
+      "propertyCount": 11,
+      "required": [
+        "allocationId",
+        "expenseId",
+        "percentage",
+        "isSystemAllocation",
+        "isPercentEdited"
+      ]
+    },
+    {
+      "name": "UpdateAllocationRequest",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "Comment",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "CommentRequest",
+      "type": "object",
+      "propertyCount": 1,
+      "required": [
+        "comment"
+      ]
+    },
+    {
+      "name": "ReportApproveRequest",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "ReportSendBackRequest",
+      "type": "object",
+      "propertyCount": 3,
+      "required": [
+        "comment"
+      ]
+    },
+    {
+      "name": "CostObjectForApprover",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "FormField",
+      "type": "object",
+      "propertyCount": 8,
+      "required": []
+    },
+    {
+      "name": "Link",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "ResourceCreatedResponse",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "ErrorResponse",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    }
+  ],
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports",
+      "operationId": "createReport",
+      "summary": "Sap Concur Create a New Expense Report",
+      "tags": [
+        "Reports"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}",
+      "operationId": "getReport",
+      "summary": "Sap Concur Retrieve an Expense Report by Id",
+      "tags": [
+        "Reports"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}",
+      "operationId": "updateReport",
+      "summary": "Sap Concur Update an Unsubmitted Expense Report",
+      "tags": [
+        "Reports"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/expensereports/v4/reports/{reportId}",
+      "operationId": "deleteReport",
+      "summary": "Sap Concur Delete an Expense Report",
+      "tags": [
+        "Reports"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/expensereports/v4/reports/{reportId}",
+      "operationId": "updateSubmittedReport",
+      "summary": "Sap Concur Update a Submitted Expense Report",
+      "tags": [
+        "Reports"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/reports/{reportId}/formFields",
+      "operationId": "getReportFormFields",
+      "summary": "Sap Concur Retrieve Report Form Field Configuration",
+      "tags": [
+        "Reports"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/users/{userId}/context/{contextType}/reportsToApprove",
+      "operationId": "getReportsToApprove",
+      "summary": "Sap Concur Retrieve Reports Pending Approval",
+      "tags": [
+        "Reports"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses",
+      "operationId": "getExpenses",
+      "summary": "Sap Concur Retrieve All Expenses on a Report",
+      "tags": [
+        "Expenses"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}",
+      "operationId": "getExpense",
+      "summary": "Sap Concur Retrieve a Single Expense by Id",
+      "tags": [
+        "Expenses"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/itemizations",
+      "operationId": "getExpenseItemizations",
+      "summary": "Sap Concur Retrieve Itemizations for an Expense",
+      "tags": [
+        "Expenses"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/expensereports/v4/reports/{reportId}/expenses/{expenseId}",
+      "operationId": "deleteExpense",
+      "summary": "Sap Concur Delete an Expense From a Report",
+      "tags": [
+        "Expenses"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/expensereports/v4/reports/{reportId}/expenses/{expenseId}",
+      "operationId": "updateSubmittedExpense",
+      "summary": "Sap Concur Update an Expense on a Submitted Report",
+      "tags": [
+        "Expenses"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/reports/{reportId}/expenses/{expenseId}/formFields",
+      "operationId": "getExpenseFormFields",
+      "summary": "Sap Concur Retrieve Expense Form Field Configuration",
+      "tags": [
+        "Expenses"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/allocations",
+      "operationId": "getAllocations",
+      "summary": "Sap Concur Retrieve Allocations for an Expense",
+      "tags": [
+        "Allocations"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/allocations/{allocationId}",
+      "operationId": "getAllocation",
+      "summary": "Sap Concur Retrieve a Single Allocation by Id",
+      "tags": [
+        "Allocations"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/allocations/{allocationId}",
+      "operationId": "updateAllocation",
+      "summary": "Sap Concur Update an Allocation",
+      "tags": [
+        "Allocations"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/comments",
+      "operationId": "getReportComments",
+      "summary": "Sap Concur Retrieve Report-level Comments",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/comments",
+      "operationId": "createReportComment",
+      "summary": "Sap Concur Create a Report-level Comment",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/comments",
+      "operationId": "updateReportComment",
+      "summary": "Sap Concur Update the Latest Report-level Comment",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/comments",
+      "operationId": "deleteReportComment",
+      "summary": "Sap Concur Delete the Latest Report-level Comment",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/comments",
+      "operationId": "getExpenseComments",
+      "summary": "Sap Concur Retrieve Expense-level Comments",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/comments",
+      "operationId": "createExpenseComment",
+      "summary": "Sap Concur Create an Expense-level Comment",
+      "tags": [
+        "Comments"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/expensereports/v4/users/{userId}/reports/{reportId}/submit",
+      "operationId": "submitReport",
+      "summary": "Sap Concur Submit an Expense Report for Approval",
+      "tags": [
+        "Workflows"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/approve",
+      "operationId": "approveReport",
+      "summary": "Sap Concur Approve an Expense Report",
+      "tags": [
+        "Workflows"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/sendBack",
+      "operationId": "sendBackReport",
+      "summary": "Sap Concur Send Back an Expense Report to the Submitter",
+      "tags": [
+        "Workflows"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/recall",
+      "operationId": "recallReport",
+      "summary": "Sap Concur Recall a Submitted Expense Report",
+      "tags": [
+        "Workflows"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/expensereports/v4/users/{userId}/reports/{reportId}/costObjectsForApprover",
+      "operationId": "getCostObjectsForApprover",
+      "summary": "Sap Concur Retrieve Cost Objects for an Approver",
+      "tags": [
+        "Workflows"
+      ]
+    }
+  ]
+}

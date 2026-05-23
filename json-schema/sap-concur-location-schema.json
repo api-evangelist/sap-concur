@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Location",
+  "title": "Location",
+  "type": "object",
+  "description": "A geographic location associated with an expense",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The location identifier",
+      "example": "abc123"
+    },
+    "name": {
+      "type": "string",
+      "description": "The localized location name",
+      "example": "Example Title"
+    },
+    "city": {
+      "type": "string",
+      "description": "The city name",
+      "example": "example_value"
+    },
+    "countryCode": {
+      "type": "string",
+      "description": "ISO 3166-1 alpha-2 country code",
+      "example": "example_value"
+    },
+    "countrySubDivisionCode": {
+      "type": "string",
+      "description": "ISO 3166-2 subdivision code",
+      "example": "example_value"
+    }
+  }
+}

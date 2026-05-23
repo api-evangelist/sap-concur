@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Comment",
+  "title": "Comment",
+  "type": "object",
+  "description": "A comment on a report or expense",
+  "properties": {
+    "comment": {
+      "type": "string",
+      "description": "The comment text content",
+      "example": "example_value"
+    },
+    "author": {
+      "type": "object",
+      "description": "The user who authored the comment",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uuid",
+          "description": "The author's user identifier"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The author's first name"
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The author's last name"
+        }
+      },
+      "example": "example_value"
+    },
+    "creationDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the comment was created",
+      "example": "2026-01-15T10:30:00Z"
+    },
+    "isLatest": {
+      "type": "boolean",
+      "description": "Whether this is the most recent comment",
+      "example": true
+    },
+    "isAuditLog": {
+      "type": "boolean",
+      "description": "Whether this is a system-generated audit entry",
+      "example": true
+    }
+  }
+}

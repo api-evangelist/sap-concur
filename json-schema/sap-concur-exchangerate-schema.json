@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ExchangeRate",
+  "title": "ExchangeRate",
+  "type": "object",
+  "description": "Currency exchange rate applied to an expense",
+  "required": [
+    "value",
+    "operation"
+  ],
+  "properties": {
+    "value": {
+      "type": "number",
+      "format": "double",
+      "description": "The exchange rate multiplier or divisor",
+      "example": 42.5
+    },
+    "operation": {
+      "type": "string",
+      "description": "How to apply the rate to convert currencies",
+      "enum": [
+        "MULTIPLY",
+        "DIVIDE"
+      ],
+      "example": "MULTIPLY"
+    }
+  }
+}

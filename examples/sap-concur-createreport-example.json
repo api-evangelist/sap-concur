@@ -1,0 +1,40 @@
+{
+  "operationId": "createReport",
+  "method": "POST",
+  "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports",
+  "summary": "Sap Concur Create a New Expense Report",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "name": "CreatereportRequestExample",
+      "example": {
+        "name": "Example Title",
+        "businessPurpose": "example_value",
+        "reportDate": "2026-01-15",
+        "startDate": "2026-01-15",
+        "endDate": "2026-01-15",
+        "currencyCode": "example_value",
+        "countryCode": "example_value",
+        "countrySubDivisionCode": "example_value",
+        "policyId": "500123",
+        "customData": [
+          {
+            "id": "abc123",
+            "value": "example_value",
+            "isValid": "500123"
+          }
+        ]
+      }
+    }
+  ],
+  "responseExamples": [
+    {
+      "status": "201",
+      "contentType": "application/json",
+      "name": "Createreport201Example",
+      "example": {
+        "uri": "https://www.example.com"
+      }
+    }
+  ]
+}

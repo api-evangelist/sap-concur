@@ -1,0 +1,27 @@
+{
+  "operationId": "getReportComments",
+  "method": "GET",
+  "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/comments",
+  "summary": "Sap Concur Retrieve Report-level Comments",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "name": "Getreportcomments200Example",
+      "example": [
+        {
+          "comment": "example_value",
+          "author": {
+            "userId": "500123",
+            "firstName": "example_value",
+            "lastName": "example_value"
+          },
+          "creationDate": "2026-01-15T10:30:00Z",
+          "isLatest": true,
+          "isAuditLog": true
+        }
+      ]
+    }
+  ]
+}

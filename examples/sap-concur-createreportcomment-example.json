@@ -1,0 +1,25 @@
+{
+  "operationId": "createReportComment",
+  "method": "POST",
+  "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/comments",
+  "summary": "Sap Concur Create a Report-level Comment",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "name": "CreatereportcommentRequestExample",
+      "example": {
+        "comment": "example_value"
+      }
+    }
+  ],
+  "responseExamples": [
+    {
+      "status": "201",
+      "contentType": "application/json",
+      "name": "Createreportcomment201Example",
+      "example": {
+        "uri": "https://www.example.com"
+      }
+    }
+  ]
+}

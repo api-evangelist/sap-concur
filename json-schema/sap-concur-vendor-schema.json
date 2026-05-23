@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Vendor",
+  "title": "Vendor",
+  "type": "object",
+  "description": "Vendor or merchant information for an expense",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The vendor identifier",
+      "example": "abc123"
+    },
+    "name": {
+      "type": "string",
+      "description": "The vendor or merchant name",
+      "example": "Example Title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Additional vendor description",
+      "example": "A sample description."
+    }
+  }
+}

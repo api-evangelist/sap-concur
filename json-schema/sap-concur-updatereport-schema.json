@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/UpdateReport",
+  "title": "UpdateReport",
+  "type": "object",
+  "description": "JSON Merge Patch body for updating an unsubmitted report. All fields from NewReport are updatable.",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name or title of the expense report",
+      "example": "Example Title"
+    },
+    "businessPurpose": {
+      "type": "string",
+      "description": "The business justification for the expenses",
+      "example": "example_value"
+    },
+    "reportDate": {
+      "type": "string",
+      "format": "date",
+      "example": "2026-01-15"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date",
+      "example": "2026-01-15"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date",
+      "example": "2026-01-15"
+    },
+    "countryCode": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 2,
+      "example": "example_value"
+    },
+    "countrySubDivisionCode": {
+      "type": "string",
+      "example": "example_value"
+    },
+    "policyId": {
+      "type": "string",
+      "example": "500123"
+    },
+    "customData": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/CustomData"
+      },
+      "example": []
+    }
+  }
+}

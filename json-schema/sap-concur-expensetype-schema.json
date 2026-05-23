@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ExpenseType",
+  "title": "ExpenseType",
+  "type": "object",
+  "description": "An expense category classification",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The expense type identifier (e.g., BRKFT, LODNG, AIRFR)",
+      "maxLength": 5,
+      "example": "abc123"
+    },
+    "name": {
+      "type": "string",
+      "description": "The localized display name",
+      "example": "Example Title"
+    },
+    "code": {
+      "type": "string",
+      "description": "The expense type code",
+      "example": "example_value"
+    },
+    "isDeleted": {
+      "type": "boolean",
+      "description": "Whether this type has been deactivated",
+      "example": true
+    }
+  }
+}

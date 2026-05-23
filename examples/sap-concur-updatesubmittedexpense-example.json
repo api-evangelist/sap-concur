@@ -1,0 +1,26 @@
+{
+  "operationId": "updateSubmittedExpense",
+  "method": "PATCH",
+  "path": "/expensereports/v4/reports/{reportId}/expenses/{expenseId}",
+  "summary": "Sap Concur Update an Expense on a Submitted Report",
+  "requestExamples": [
+    {
+      "contentType": "application/merge-patch+json",
+      "name": "UpdatesubmittedexpenseRequestExample",
+      "example": {
+        "businessPurpose": "example_value",
+        "expenseSource": "EA",
+        "isExpenseRejected": true,
+        "isPaperReceiptReceived": true,
+        "customData": [
+          {
+            "id": "abc123",
+            "value": "example_value",
+            "isValid": "500123"
+          }
+        ]
+      }
+    }
+  ],
+  "responseExamples": []
+}

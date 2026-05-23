@@ -1,0 +1,16 @@
+{
+  "operationId": "updateReportComment",
+  "method": "PUT",
+  "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/comments",
+  "summary": "Sap Concur Update the Latest Report-level Comment",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "name": "UpdatereportcommentRequestExample",
+      "example": {
+        "comment": "example_value"
+      }
+    }
+  ],
+  "responseExamples": []
+}

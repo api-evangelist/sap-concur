@@ -1,0 +1,40 @@
+{
+  "operationId": "getAllocations",
+  "method": "GET",
+  "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/allocations",
+  "summary": "Sap Concur Retrieve Allocations for an Expense",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "name": "Getallocations200Example",
+      "example": [
+        {
+          "allocationId": "500123",
+          "expenseId": "500123",
+          "accountCode": "example_value",
+          "overLimitAccountCode": "example_value",
+          "allocationAmount": {
+            "value": 42.5,
+            "currencyCode": "example_value"
+          },
+          "approvedAmount": {
+            "value": 42.5,
+            "currencyCode": "example_value"
+          },
+          "claimedAmount": {
+            "value": 42.5,
+            "currencyCode": "example_value"
+          },
+          "percentage": 42.5,
+          "isSystemAllocation": true,
+          "isPercentEdited": true,
+          "customData": [
+            {}
+          ]
+        }
+      ]
+    }
+  ]
+}

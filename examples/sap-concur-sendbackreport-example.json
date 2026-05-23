@@ -1,0 +1,18 @@
+{
+  "operationId": "sendBackReport",
+  "method": "PATCH",
+  "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/sendBack",
+  "summary": "Sap Concur Send Back an Expense Report to the Submitter",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "name": "SendbackreportRequestExample",
+      "example": {
+        "comment": "example_value",
+        "expectedStepCode": "example_value",
+        "expectedStepSequence": 10
+      }
+    }
+  ],
+  "responseExamples": []
+}

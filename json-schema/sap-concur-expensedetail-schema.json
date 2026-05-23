@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ExpenseDetail",
+  "title": "ExpenseDetail",
+  "type": "object",
+  "description": "The full representation of an expense entry",
+  "required": [
+    "expenseId"
+  ],
+  "properties": {
+    "expenseId": {
+      "type": "string",
+      "description": "Unique identifier of the expense",
+      "example": "500123"
+    },
+    "transactionDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The date the transaction occurred",
+      "example": "2026-01-15"
+    },
+    "transactionAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "postedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "approvedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "approverAdjustedAmount": {
+      "$ref": "#/components/schemas/Amount"
+    },
+    "businessPurpose": {
+      "type": "string",
+      "description": "Business justification, maximum 64 characters",
+      "maxLength": 64,
+      "example": "example_value"
+    },
+    "expenseType": {
+      "$ref": "#/components/schemas/ExpenseType"
+    },
+    "paymentType": {
+      "$ref": "#/components/schemas/PaymentType"
+    },
+    "location": {
+      "$ref": "#/components/schemas/Location"
+    },
+    "vendor": {
+      "$ref": "#/components/schemas/Vendor"
+    },
+    "exchangeRate": {
+      "$ref": "#/components/schemas/ExchangeRate"
+    },
+    "allocationState": {
+      "type": "string",
+      "description": "The allocation status of this expense",
+      "enum": [
+        "FULLY_ALLOCATED",
+        "NOT_ALLOCATED",
+        "PARTIALLY_ALLOCATED"
+      ],
+      "example": "FULLY_ALLOCATED"
+    },
+    "isPersonalExpense": {
+      "type": "boolean",
+      "description": "Whether this is a non-reimbursable personal expense",
+      "example": true
+    },
+    "isExpenseRejected": {
+      "type": "boolean",
+      "description": "Whether the expense has been rejected by an approver",
+      "example": true
+    },
+    "isPaperReceiptReceived": {
+      "type": "boolean",
+      "description": "Whether a physical receipt has been received",
+      "example": true
+    },
+    "hasExceptions": {
+      "type": "boolean",
+      "description": "Whether the expense has policy exceptions",
+      "example": true
+    },
+    "expenseTaxSummary": {
+      "$ref": "#/components/schemas/ExpenseTaxSummary"
+    },
+    "mileage": {
+      "$ref": "#/components/schemas/Mileage"
+    },
+    "travel": {
+      "$ref": "#/components/schemas/Travel"
+    },
+    "travelAllowance": {
+      "$ref": "#/components/schemas/TravelAllowance"
+    },
+    "invoiceId": {
+      "type": "string",
+      "description": "Reference to a supplier invoice",
+      "example": "500123"
+    },
+    "customData": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/CustomData"
+      },
+      "example": []
+    },
+    "lastModifiedDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the expense was last modified (ISO 8601)",
+      "example": "2026-01-15T10:30:00Z"
+    },
+    "links": {
+      "type": "array",
+      "description": "HATEOAS navigation links",
+      "items": {
+        "$ref": "#/components/schemas/Link"
+      },
+      "example": []
+    }
+  }
+}

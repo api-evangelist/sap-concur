@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PaymentType",
+  "title": "PaymentType",
+  "type": "object",
+  "description": "A payment method used for an expense",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The payment type identifier (e.g., CASH, CPAID)",
+      "maxLength": 4,
+      "example": "abc123"
+    },
+    "name": {
+      "type": "string",
+      "description": "The localized display name",
+      "example": "Example Title"
+    },
+    "code": {
+      "type": "string",
+      "description": "The payment type code",
+      "example": "example_value"
+    }
+  }
+}

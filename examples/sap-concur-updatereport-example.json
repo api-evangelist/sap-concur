@@ -1,0 +1,30 @@
+{
+  "operationId": "updateReport",
+  "method": "PATCH",
+  "path": "/expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}",
+  "summary": "Sap Concur Update an Unsubmitted Expense Report",
+  "requestExamples": [
+    {
+      "contentType": "application/merge-patch+json",
+      "name": "UpdatereportRequestExample",
+      "example": {
+        "name": "Example Title",
+        "businessPurpose": "example_value",
+        "reportDate": "2026-01-15",
+        "startDate": "2026-01-15",
+        "endDate": "2026-01-15",
+        "countryCode": "example_value",
+        "countrySubDivisionCode": "example_value",
+        "policyId": "500123",
+        "customData": [
+          {
+            "id": "abc123",
+            "value": "example_value",
+            "isValid": "500123"
+          }
+        ]
+      }
+    }
+  ],
+  "responseExamples": []
+}
