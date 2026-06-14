@@ -1,0 +1,1374 @@
+"""
+SAP Concur GraphQL Schema
+Conceptual schema for the SAP Concur travel, expense, and invoice management platform.
+Based on the Concur REST APIs: https://developer.concur.com/api-reference/
+"""
+
+scalar DateTime
+scalar Date
+scalar Decimal
+scalar JSON
+scalar Upload
+
+# ─────────────────────────────────────────────────────────────
+# Enums
+# ─────────────────────────────────────────────────────────────
+
+enum ApprovalStatusCode {
+  NOT_SUBMITTED
+  SUBMITTED
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+  RECALLED
+  PENDING_PAYMENT
+  PAID
+  VOIDED
+}
+
+enum PaymentMethodType {
+  PERSONAL_CARD
+  COMPANY_CARD
+  CASH
+  CHECK
+  DIRECT_DEPOSIT
+  PURCHASE_CARD
+}
+
+enum ReimbursementMethod {
+  ADP_PAYROLL
+  CNF_CHECK
+  AP_CHECK
+  PAY_PAY
+  OTHER
+}
+
+enum TravelSegmentType {
+  AIR
+  HOTEL
+  CAR
+  RAIL
+  GROUND_TRANSPORTATION
+  DINING
+}
+
+enum InvoiceStatus {
+  PENDING_COST_OBJECT_APPROVAL
+  PENDING_RECEIPT
+  APPROVED
+  EXTRACTED
+  PAID
+  VOIDED
+}
+
+enum RequestStatus {
+  NOT_SUBMITTED
+  SUBMITTED
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+  CANCELLED
+  CLOSED
+}
+
+enum CurrencyCode {
+  USD
+  EUR
+  GBP
+  JPY
+  CAD
+  AUD
+  CHF
+  CNY
+  INR
+  BRL
+  MXN
+  SGD
+  HKD
+  SEK
+  NOK
+  DKK
+  NZD
+  ZAR
+  AED
+  KRW
+}
+
+enum WebhookEventType {
+  EXPENSE_REPORT_SUBMITTED
+  EXPENSE_REPORT_APPROVED
+  EXPENSE_REPORT_REJECTED
+  TRAVEL_REQUEST_SUBMITTED
+  TRAVEL_REQUEST_APPROVED
+  INVOICE_SUBMITTED
+  INVOICE_APPROVED
+  CASH_ADVANCE_ISSUED
+}
+
+# ─────────────────────────────────────────────────────────────
+# Core Expense Types
+# ─────────────────────────────────────────────────────────────
+
+"""Top-level expense report submitted by an employee."""
+type ExpenseReport {
+  id: ID!
+  reportKey: String
+  name: String!
+  purpose: String
+  createdDate: DateTime!
+  submittedDate: DateTime
+  approvedDate: DateTime
+  paidDate: DateTime
+  status: ApprovalStatusCode!
+  approvalStatus: ApprovalStatus
+  totalAmount: ExpenseAmount!
+  personalAmount: ExpenseAmount
+  amountDueEmployee: ExpenseAmount
+  amountDueCompanyCard: ExpenseAmount
+  ledgerName: String
+  policyId: String
+  policy: Policy
+  owner: User
+  entries: [ReportEntry!]!
+  allocations: [ExpenseAllocation!]
+  comments: [Comment!]
+  workflow: [WorkflowStep!]
+  receiptsRequired: Boolean
+  hasException: Boolean
+  isTestUser: Boolean
+}
+
+"""A single expense entry within an expense report."""
+type ReportEntry {
+  id: ID!
+  reportId: ID!
+  expenseTypeCode: String!
+  expenseType: ExpenseType
+  transactionDate: Date!
+  transactionAmount: ExpenseAmount!
+  postedAmount: ExpenseAmount
+  approvedAmount: ExpenseAmount
+  description: String
+  businessPurpose: String
+  location: Location
+  vendor: VendorDetail
+  paymentType: PaymentMethodType
+  hasReceipt: Boolean!
+  receipt: Receipt
+  attendees: [Attendee!]
+  allocations: [ExpenseAllocation!]
+  itemizations: [Itemization!]
+  eReceipt: EReceipt
+  isPersonal: Boolean
+  isBillable: Boolean
+  hasException: Boolean
+  comment: String
+}
+
+"""Detail view of a report, including additional metadata."""
+type ReportDetail {
+  report: ExpenseReport!
+  entriesCount: Int!
+  totalClaimedAmount: ExpenseAmount!
+  totalApprovedAmount: ExpenseAmount!
+  approvalWorkflow: [WorkflowStep!]
+  auditTrail: [AuditEntry!]
+}
+
+"""Categorized expense type (e.g., Airfare, Hotel, Meals)."""
+type ExpenseType {
+  id: ID!
+  code: String!
+  name: String!
+  category: ExpenseCategory
+  isActive: Boolean!
+  isSystemType: Boolean!
+  requiresReceipt: Boolean
+  allowItemization: Boolean
+  allowAttendees: Boolean
+  spendLimit: ExpenseAmount
+}
+
+"""Grouping of expense types (e.g., Travel, Entertainment)."""
+type ExpenseCategory {
+  id: ID!
+  code: String!
+  name: String!
+  expenseTypes: [ExpenseType!]
+}
+
+"""Allocation of an expense across cost centers or projects."""
+type ExpenseAllocation {
+  id: ID!
+  reportId: ID
+  entryId: ID
+  percentage: Decimal!
+  allocatedAmount: ExpenseAmount
+  costCenter: CostCenter
+  customFields: JSON
+  isPercentage: Boolean!
+}
+
+"""An organizational cost center for financial allocation."""
+type CostCenter {
+  id: ID!
+  code: String!
+  name: String!
+  description: String
+  isActive: Boolean!
+  parentCostCenter: CostCenter
+}
+
+"""Business purpose justification for an expense."""
+type BusinessPurpose {
+  id: ID!
+  description: String!
+  entryId: ID
+  reportId: ID
+}
+
+# ─────────────────────────────────────────────────────────────
+# Attendee Types
+# ─────────────────────────────────────────────────────────────
+
+"""An attendee on an expense entry."""
+type Attendee {
+  id: ID!
+  type: AttendeeType
+  firstName: String
+  lastName: String
+  company: String
+  title: String
+  externalId: String
+  isEmployee: Boolean!
+  details: AttendeeDetail
+}
+
+"""Additional detail for a specific attendee."""
+type AttendeeDetail {
+  attendeeId: ID!
+  versionNumber: Int
+  totalAmountPaid: ExpenseAmount
+  attendeeCount: Int
+  customFields: JSON
+}
+
+"""Configured attendee type (e.g., Client, Employee, Guest)."""
+type AttendeeType {
+  id: ID!
+  code: String!
+  name: String!
+  hasUserDefinedFields: Boolean
+  allowManuallyAddedAttendees: Boolean
+}
+
+# ─────────────────────────────────────────────────────────────
+# Financial Amount Types
+# ─────────────────────────────────────────────────────────────
+
+"""A monetary amount with currency."""
+type ExpenseAmount {
+  value: Decimal!
+  currency: Currency!
+}
+
+"""Currency definition."""
+type Currency {
+  code: CurrencyCode!
+  name: String!
+  symbol: String
+  decimalPlaces: Int!
+}
+
+"""Tax rate applied to an expense or invoice."""
+type TaxRate {
+  id: ID!
+  name: String!
+  rate: Decimal!
+  country: String
+  region: String
+  taxType: String
+  isActive: Boolean!
+}
+
+"""An itemized line within an expense entry (e.g., hotel folio)."""
+type Itemization {
+  id: ID!
+  entryId: ID!
+  expenseType: ExpenseType
+  transactionDate: Date!
+  transactionAmount: ExpenseAmount!
+  description: String
+  taxRate: TaxRate
+}
+
+# ─────────────────────────────────────────────────────────────
+# Receipt Types
+# ─────────────────────────────────────────────────────────────
+
+"""A receipt attached to an expense entry."""
+type Receipt {
+  id: ID!
+  entryId: ID
+  reportId: ID
+  imageId: String
+  receiptImage: ReceiptImage
+  receiptProvider: ReceiptProvider
+  isVerified: Boolean
+  receiptType: String
+  createdDate: DateTime!
+}
+
+"""Image representation of a receipt."""
+type ReceiptImage {
+  id: ID!
+  url: String!
+  contentType: String!
+  fileSizeBytes: Int
+  pageCount: Int
+  uploadedDate: DateTime!
+}
+
+"""Electronic receipt from a travel or commerce provider."""
+type EReceipt {
+  id: ID!
+  provider: ReceiptProvider
+  transactionReferenceNumber: String
+  merchantName: String
+  transactionDate: DateTime
+  transactionAmount: ExpenseAmount
+  rawData: JSON
+}
+
+"""An e-receipt provider partner."""
+type ReceiptProvider {
+  id: ID!
+  name: String!
+  category: String
+  isActive: Boolean!
+  eReceiptType: String
+}
+
+# ─────────────────────────────────────────────────────────────
+# Travel Types
+# ─────────────────────────────────────────────────────────────
+
+"""A complete travel booking itinerary."""
+type TripBooking {
+  id: ID!
+  tripName: String
+  startDate: Date!
+  endDate: Date!
+  bookingSource: String
+  createdDate: DateTime!
+  status: String
+  traveler: User
+  reservations: [TravelReservation!]!
+  totalCost: ExpenseAmount
+}
+
+"""A single travel reservation within a trip."""
+type TravelReservation {
+  id: ID!
+  tripId: ID!
+  type: TravelSegmentType!
+  confirmationNumber: String
+  status: String
+  vendor: Vendor
+  flight: FlightSegment
+  hotel: HotelReservation
+  carRental: CarRental
+  rail: RailBooking
+  groundTransportation: GroundTransportation
+  cost: ExpenseAmount
+}
+
+"""A hotel reservation."""
+type HotelReservation {
+  id: ID!
+  hotelName: String!
+  checkInDate: Date!
+  checkOutDate: Date!
+  roomType: String
+  confirmationNumber: String
+  address: Address
+  dailyRate: ExpenseAmount
+  totalCost: ExpenseAmount
+  loyaltyNumber: String
+  isCancellable: Boolean
+  cancellationPolicy: String
+}
+
+"""A flight booking."""
+type Flight {
+  id: ID!
+  segments: [FlightSegment!]!
+  passengerName: String
+  ticketNumber: String
+  fareClass: String
+  totalCost: ExpenseAmount
+  baggageAllowance: String
+}
+
+"""A single flight segment (leg)."""
+type FlightSegment {
+  id: ID!
+  flightId: ID
+  carrier: String!
+  flightNumber: String!
+  departureAirport: String!
+  arrivalAirport: String!
+  departureDateTime: DateTime!
+  arrivalDateTime: DateTime!
+  seatNumber: String
+  fareClass: String
+  status: String
+  duration: Int
+}
+
+"""A car rental reservation."""
+type CarRental {
+  id: ID!
+  vendorCode: String
+  vendorName: String!
+  pickupDateTime: DateTime!
+  returnDateTime: DateTime!
+  pickupLocation: Location
+  returnLocation: Location
+  vehicleClass: String
+  confirmationNumber: String
+  dailyRate: ExpenseAmount
+  totalCost: ExpenseAmount
+}
+
+"""A rail (train) booking."""
+type RailBooking {
+  id: ID!
+  operator: String!
+  departureStation: String!
+  arrivalStation: String!
+  departureDateTime: DateTime!
+  arrivalDateTime: DateTime!
+  ticketClass: String
+  seatNumber: String
+  confirmationNumber: String
+  totalCost: ExpenseAmount
+}
+
+"""A dining/restaurant booking."""
+type DiningBooking {
+  id: ID!
+  restaurantName: String!
+  reservationDateTime: DateTime!
+  partySize: Int
+  confirmationNumber: String
+  location: Location
+  estimatedCost: ExpenseAmount
+}
+
+"""Ground transportation booking."""
+type GroundTransportation {
+  id: ID!
+  type: String
+  providerName: String
+  pickupDateTime: DateTime!
+  pickupAddress: Address
+  dropoffAddress: Address
+  confirmationNumber: String
+  cost: ExpenseAmount
+}
+
+# ─────────────────────────────────────────────────────────────
+# Vendor Types
+# ─────────────────────────────────────────────────────────────
+
+"""A vendor/supplier in the system."""
+type Vendor {
+  id: ID!
+  vendorCode: String!
+  name: String!
+  category: String
+  details: VendorDetail
+  locations: [VendorLocation!]
+  isActive: Boolean!
+}
+
+"""Detailed vendor information."""
+type VendorDetail {
+  vendorId: ID!
+  taxId: String
+  addressLine1: String
+  addressLine2: String
+  city: String
+  state: String
+  postalCode: String
+  country: String
+  phone: String
+  email: String
+  website: String
+  bankingInfo: VendorBankingInfo
+  customFields: JSON
+}
+
+"""Vendor banking/payment information."""
+type VendorBankingInfo {
+  vendorId: ID!
+  accountNumber: String
+  routingNumber: String
+  accountType: String
+  bankName: String
+  bankCountry: String
+}
+
+"""A specific vendor location."""
+type VendorLocation {
+  id: ID!
+  vendorId: ID!
+  name: String
+  address: Address
+  phone: String
+  iata: String
+}
+
+# ─────────────────────────────────────────────────────────────
+# Policy & Approval Types
+# ─────────────────────────────────────────────────────────────
+
+"""An expense or travel policy."""
+type Policy {
+  id: ID!
+  name: String!
+  description: String
+  isActive: Boolean!
+  policyType: String
+  rules: [PolicyRule!]
+  expenseTypes: [ExpenseType!]
+}
+
+"""A single rule within a policy."""
+type PolicyRule {
+  id: ID!
+  policyId: ID!
+  description: String!
+  ruleType: String!
+  threshold: ExpenseAmount
+  action: String
+}
+
+"""Approval state and metadata for a document."""
+type Approval {
+  id: ID!
+  documentId: ID!
+  documentType: String!
+  status: ApprovalStatus!
+  requestedDate: DateTime!
+  completedDate: DateTime
+  approver: Approver
+  comments: [Comment!]
+}
+
+"""Status detail for an approval step."""
+type ApprovalStatus {
+  code: ApprovalStatusCode!
+  name: String!
+  description: String
+}
+
+"""An individual approver."""
+type Approver {
+  id: ID!
+  user: User!
+  approverType: String
+  sequenceNumber: Int
+  isRequired: Boolean!
+}
+
+"""A role assignment for a user."""
+type RoleAssignment {
+  id: ID!
+  userId: ID!
+  role: String!
+  scope: String
+  assignedDate: DateTime!
+  assignedBy: User
+}
+
+"""A step in an approval workflow."""
+type WorkflowStep {
+  id: ID!
+  documentId: ID!
+  stepName: String!
+  sequenceNumber: Int!
+  status: ApprovalStatusCode!
+  approver: Approver
+  completedDate: DateTime
+  comments: String
+  isOptional: Boolean!
+}
+
+# ─────────────────────────────────────────────────────────────
+# Payment Types
+# ─────────────────────────────────────────────────────────────
+
+"""A payment method on file."""
+type PaymentMethod {
+  id: ID!
+  userId: ID
+  methodType: PaymentMethodType!
+  isDefault: Boolean!
+  creditCard: CreditCard
+  bankAccount: BankAccount
+}
+
+"""A credit card."""
+type CreditCard {
+  id: ID!
+  cardNumber: String!
+  cardholderName: String!
+  expirationDate: String!
+  cardType: String
+  isCompanyCard: Boolean!
+  isPurchaseCard: Boolean!
+  creditLimit: ExpenseAmount
+  billingAddress: Address
+}
+
+"""A purchase card (P-Card) for direct procurement."""
+type PurchaseCard {
+  id: ID!
+  cardNumber: String!
+  cardholderName: String!
+  cardType: String
+  creditLimit: ExpenseAmount
+  costCenter: CostCenter
+  allowedVendors: [Vendor!]
+  transactionLimit: ExpenseAmount
+}
+
+"""A bank account for reimbursement."""
+type BankAccount {
+  id: ID!
+  userId: ID!
+  accountNumber: String!
+  routingNumber: String!
+  accountType: String!
+  bankName: String
+  isVerified: Boolean!
+}
+
+# ─────────────────────────────────────────────────────────────
+# Travel Request Types
+# ─────────────────────────────────────────────────────────────
+
+"""A pre-trip travel request requiring approval."""
+type TravelRequest {
+  id: ID!
+  requestId: String!
+  name: String!
+  purpose: String
+  startDate: Date!
+  endDate: Date!
+  destination: String
+  status: RequestStatus!
+  totalEstimatedAmount: ExpenseAmount
+  owner: User
+  policy: Policy
+  entries: [RequestEntry!]!
+  allocations: [RequestAllocation!]
+  approval: RequestApproval
+  cashAdvances: [CashAdvance!]
+  createdDate: DateTime!
+  submittedDate: DateTime
+}
+
+"""A pre-trip approval request."""
+type PreTripApproval {
+  id: ID!
+  requestId: ID!
+  approvalStatus: ApprovalStatus!
+  approver: Approver
+  requestedDate: DateTime!
+  approvedDate: DateTime
+  comments: String
+}
+
+"""An entry in a travel request."""
+type RequestEntry {
+  id: ID!
+  requestId: ID!
+  expenseType: ExpenseType
+  transactionDate: Date
+  estimatedAmount: ExpenseAmount
+  description: String
+  location: Location
+  customFields: JSON
+}
+
+"""An allocation within a travel request."""
+type RequestAllocation {
+  id: ID!
+  requestId: ID!
+  percentage: Decimal!
+  costCenter: CostCenter
+  customFields: JSON
+}
+
+"""Approval details for a travel request."""
+type RequestApproval {
+  requestId: ID!
+  status: ApprovalStatus!
+  approvalSteps: [WorkflowStep!]!
+  comments: [Comment!]
+}
+
+# ─────────────────────────────────────────────────────────────
+# Cash Advance Types
+# ─────────────────────────────────────────────────────────────
+
+"""A cash advance issued to an employee."""
+type CashAdvance {
+  id: ID!
+  cashAdvanceId: String!
+  requestedAmount: ExpenseAmount!
+  approvedAmount: ExpenseAmount
+  issuedAmount: ExpenseAmount
+  status: ApprovalStatusCode!
+  requestedDate: DateTime!
+  approvedDate: DateTime
+  issuedDate: DateTime
+  purpose: String
+  owner: User
+  reimbursementMethod: ReimbursementMethod
+}
+
+"""A request for a cash advance."""
+type CashAdvanceRequest {
+  id: ID!
+  requestedAmount: ExpenseAmount!
+  currency: Currency!
+  purpose: String!
+  startingDate: Date!
+  userId: ID!
+  requestedDate: DateTime!
+}
+
+# ─────────────────────────────────────────────────────────────
+# Reimbursement Types
+# ─────────────────────────────────────────────────────────────
+
+"""A reimbursement issued to an employee."""
+type Reimbursement {
+  id: ID!
+  reportId: ID!
+  amount: ExpenseAmount!
+  method: ReimbursementMethod!
+  status: String!
+  processingDate: DateTime
+  settledDate: DateTime
+  batchId: ID
+  employee: User
+}
+
+"""A batch of reimbursements processed together."""
+type ReimbursementBatch {
+  id: ID!
+  batchName: String!
+  processedDate: DateTime!
+  totalAmount: ExpenseAmount!
+  reimbursementCount: Int!
+  status: String!
+  reimbursements: [Reimbursement!]!
+}
+
+# ─────────────────────────────────────────────────────────────
+# Financial Configuration Types
+# ─────────────────────────────────────────────────────────────
+
+"""An exchange rate between two currencies."""
+type ExchangeRate {
+  id: ID!
+  fromCurrency: Currency!
+  toCurrency: Currency!
+  rate: Decimal!
+  effectiveDate: Date!
+  source: String
+  isCustom: Boolean!
+}
+
+"""Tax configuration for a company or region."""
+type TaxConfiguration {
+  id: ID!
+  name: String!
+  country: String!
+  region: String
+  taxRates: [TaxRate!]!
+  isActive: Boolean!
+  effectiveDate: Date!
+}
+
+# ─────────────────────────────────────────────────────────────
+# Invoice Types
+# ─────────────────────────────────────────────────────────────
+
+"""An accounts payable invoice."""
+type Invoice {
+  id: ID!
+  invoiceNumber: String!
+  vendor: Vendor!
+  status: InvoiceStatus!
+  invoiceDate: Date!
+  dueDate: Date
+  submittedDate: DateTime
+  approvedDate: DateTime
+  totalAmount: ExpenseAmount!
+  taxAmount: ExpenseAmount
+  lines: [InvoiceLine!]!
+  payments: [Payment!]
+  purchaseOrder: PurchaseOrder
+  approvals: [Approval!]
+  companyBillToAddress: Address
+  companyShipToAddress: Address
+  vendorRemitToAddress: Address
+}
+
+"""A request to create or pay an invoice."""
+type InvoiceRequest {
+  id: ID!
+  vendorId: ID!
+  requestedAmount: ExpenseAmount!
+  invoiceDate: Date!
+  description: String
+  lines: [InvoiceLine!]!
+  requestedBy: User
+  requestedDate: DateTime!
+}
+
+"""A line item on an invoice."""
+type InvoiceLine {
+  id: ID!
+  invoiceId: ID!
+  lineNumber: Int!
+  description: String!
+  quantity: Decimal
+  unitPrice: ExpenseAmount
+  totalAmount: ExpenseAmount!
+  expenseType: ExpenseType
+  costCenter: CostCenter
+  taxRate: TaxRate
+}
+
+"""A payment made against an invoice."""
+type Payment {
+  id: ID!
+  invoiceId: ID!
+  amount: ExpenseAmount!
+  paymentDate: Date!
+  paymentMethod: PaymentMethod
+  referenceNumber: String
+  status: String!
+}
+
+"""A direct payment (non-invoice)."""
+type DirectPayment {
+  id: ID!
+  vendor: Vendor!
+  amount: ExpenseAmount!
+  paymentDate: Date!
+  purpose: String
+  approvedBy: User
+  paymentReference: String
+}
+
+"""A purchase order linked to invoices."""
+type PurchaseOrder {
+  id: ID!
+  poNumber: String!
+  vendor: Vendor!
+  status: String!
+  createdDate: DateTime!
+  totalAmount: ExpenseAmount!
+  lines: [PurchaseOrderLine!]!
+  invoices: [Invoice!]
+}
+
+"""A line item on a purchase order."""
+type PurchaseOrderLine {
+  id: ID!
+  poId: ID!
+  lineNumber: Int!
+  description: String!
+  quantity: Decimal!
+  unitPrice: ExpenseAmount!
+  totalAmount: ExpenseAmount!
+}
+
+# ─────────────────────────────────────────────────────────────
+# Authentication / Integration Types
+# ─────────────────────────────────────────────────────────────
+
+"""An API key for programmatic access."""
+type APIKey {
+  id: ID!
+  name: String!
+  clientId: String!
+  scopes: [String!]!
+  createdDate: DateTime!
+  expiresDate: DateTime
+  isActive: Boolean!
+  owner: User
+}
+
+"""An OAuth 2.0 access token."""
+type OAuthToken {
+  accessToken: String!
+  tokenType: String!
+  expiresIn: Int!
+  refreshToken: String
+  scope: String!
+  geolocation: String
+}
+
+"""A webhook subscription for event notifications."""
+type Webhook {
+  id: ID!
+  topic: String!
+  eventType: WebhookEventType!
+  webhookUrl: String!
+  isActive: Boolean!
+  createdDate: DateTime!
+  lastDelivery: DateTime
+  deliveryFailureCount: Int!
+}
+
+# ─────────────────────────────────────────────────────────────
+# Shared / Common Types
+# ─────────────────────────────────────────────────────────────
+
+"""A geographic location."""
+type Location {
+  id: ID!
+  name: String!
+  city: String
+  state: String
+  country: String!
+  iataCode: String
+  latitude: Decimal
+  longitude: Decimal
+  isAirport: Boolean
+}
+
+"""A postal address."""
+type Address {
+  street1: String
+  street2: String
+  city: String!
+  state: String
+  postalCode: String
+  country: String!
+}
+
+"""A Concur system user."""
+type User {
+  id: ID!
+  loginId: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  employeeId: String
+  country: String
+  currency: Currency
+  reimbursementMethod: ReimbursementMethod
+  roles: [RoleAssignment!]
+  expenseReports: [ExpenseReport!]
+  travelRequests: [TravelRequest!]
+}
+
+"""A comment on a report, entry, or workflow step."""
+type Comment {
+  id: ID!
+  text: String!
+  author: User!
+  createdDate: DateTime!
+  isLatest: Boolean
+}
+
+"""An audit trail entry."""
+type AuditEntry {
+  id: ID!
+  documentId: ID!
+  action: String!
+  performedBy: User!
+  timestamp: DateTime!
+  oldValue: String
+  newValue: String
+}
+
+"""A configurable list resource."""
+type ConcurList {
+  id: ID!
+  name: String!
+  isMultiLevel: Boolean!
+  isManaged: Boolean!
+  itemCount: Int!
+  items: [ListItem!]!
+}
+
+"""An item within a configurable list."""
+type ListItem {
+  id: ID!
+  listId: ID!
+  code: String!
+  value: String!
+  level: Int!
+  parentId: ID
+  isActive: Boolean!
+  children: [ListItem!]
+}
+
+"""A travel allowance itinerary."""
+type TravelAllowance {
+  id: ID!
+  userId: ID!
+  startDate: Date!
+  endDate: Date!
+  rateType: String
+  dailyAmount: ExpenseAmount
+  calculatedAmount: ExpenseAmount
+  itinerary: [TravelAllowanceDay!]!
+}
+
+"""A single day of travel allowance."""
+type TravelAllowanceDay {
+  date: Date!
+  location: Location
+  allowanceAmount: ExpenseAmount
+  adjustments: [TravelAllowanceAdjustment!]
+}
+
+"""An adjustment to a travel allowance day."""
+type TravelAllowanceAdjustment {
+  type: String!
+  amount: ExpenseAmount!
+  reason: String
+}
+
+"""Budget header for a fiscal period."""
+type Budget {
+  id: ID!
+  name: String!
+  fiscalYear: FiscalYear!
+  totalAmount: ExpenseAmount!
+  spentAmount: ExpenseAmount!
+  remainingAmount: ExpenseAmount!
+  trackingFields: [BudgetTrackingField!]
+  isActive: Boolean!
+}
+
+"""A fiscal year definition."""
+type FiscalYear {
+  id: ID!
+  name: String!
+  startDate: Date!
+  endDate: Date!
+  isCurrent: Boolean!
+  periods: [FiscalPeriod!]
+}
+
+"""A fiscal period within a fiscal year."""
+type FiscalPeriod {
+  id: ID!
+  fiscalYearId: ID!
+  name: String!
+  startDate: Date!
+  endDate: Date!
+  periodType: String
+}
+
+"""A budget tracking field."""
+type BudgetTrackingField {
+  id: ID!
+  budgetId: ID!
+  fieldCode: String!
+  fieldName: String!
+  value: String
+}
+
+# ─────────────────────────────────────────────────────────────
+# Query Root
+# ─────────────────────────────────────────────────────────────
+
+type Query {
+  # Expense Reports
+  expenseReport(id: ID!): ExpenseReport
+  expenseReports(userId: ID, status: ApprovalStatusCode, limit: Int, offset: Int): [ExpenseReport!]!
+  reportDetail(reportId: ID!): ReportDetail
+  reportEntry(id: ID!): ReportEntry
+
+  # Expense Configuration
+  expenseTypes(isActive: Boolean): [ExpenseType!]!
+  expenseCategories: [ExpenseCategory!]!
+  policies(policyType: String): [Policy!]!
+
+  # Attendees
+  attendees(userId: ID, search: String): [Attendee!]!
+  attendeeTypes: [AttendeeType!]!
+
+  # Travel
+  tripBooking(id: ID!): TripBooking
+  tripBookings(userId: ID, startDate: Date, endDate: Date): [TripBooking!]!
+  travelReservation(id: ID!): TravelReservation
+
+  # Vendors
+  vendor(id: ID!): Vendor
+  vendors(search: String, isActive: Boolean): [Vendor!]!
+
+  # Travel Requests
+  travelRequest(id: ID!): TravelRequest
+  travelRequests(userId: ID, status: RequestStatus): [TravelRequest!]!
+
+  # Cash Advances
+  cashAdvance(id: ID!): CashAdvance
+  cashAdvances(userId: ID, status: ApprovalStatusCode): [CashAdvance!]!
+
+  # Invoices
+  invoice(id: ID!): Invoice
+  invoices(vendorId: ID, status: InvoiceStatus, limit: Int, offset: Int): [Invoice!]!
+
+  # Financial
+  exchangeRate(from: CurrencyCode!, to: CurrencyCode!, date: Date): ExchangeRate
+  exchangeRates(effectiveDate: Date): [ExchangeRate!]!
+  taxConfigurations(country: String): [TaxConfiguration!]!
+
+  # Reimbursements
+  reimbursement(id: ID!): Reimbursement
+  reimbursementBatch(id: ID!): ReimbursementBatch
+
+  # Users & Auth
+  user(id: ID!): User
+  users(search: String, limit: Int, offset: Int): [User!]!
+  oauthToken(clientId: String!, clientSecret: String!, grantType: String!): OAuthToken
+  webhooks: [Webhook!]!
+
+  # Lists
+  lists(isActive: Boolean): [ConcurList!]!
+  listItems(listId: ID!, parentId: ID): [ListItem!]!
+
+  # Locations
+  location(id: ID!): Location
+  locations(search: String, country: String): [Location!]!
+
+  # Budgets
+  budget(id: ID!): Budget
+  budgets(fiscalYearId: ID, isActive: Boolean): [Budget!]!
+  fiscalYears: [FiscalYear!]!
+
+  # Receipts
+  receipt(id: ID!): Receipt
+  travelAllowance(id: ID!): TravelAllowance
+}
+
+# ─────────────────────────────────────────────────────────────
+# Mutation Root
+# ─────────────────────────────────────────────────────────────
+
+type Mutation {
+  # Expense Reports
+  createExpenseReport(input: CreateExpenseReportInput!): ExpenseReport!
+  updateExpenseReport(id: ID!, input: UpdateExpenseReportInput!): ExpenseReport!
+  submitExpenseReport(id: ID!): ExpenseReport!
+  recallExpenseReport(id: ID!): ExpenseReport!
+  approveExpenseReport(id: ID!, comment: String): Approval!
+  rejectExpenseReport(id: ID!, comment: String!): Approval!
+
+  # Entries
+  createReportEntry(reportId: ID!, input: CreateEntryInput!): ReportEntry!
+  updateReportEntry(id: ID!, input: UpdateEntryInput!): ReportEntry!
+  deleteReportEntry(id: ID!): Boolean!
+
+  # Receipts
+  uploadReceipt(file: Upload!, entryId: ID): Receipt!
+  deleteReceipt(id: ID!): Boolean!
+
+  # Travel Requests
+  createTravelRequest(input: CreateTravelRequestInput!): TravelRequest!
+  submitTravelRequest(id: ID!): TravelRequest!
+  approveTravelRequest(id: ID!, comment: String): RequestApproval!
+  rejectTravelRequest(id: ID!, comment: String!): RequestApproval!
+
+  # Cash Advances
+  createCashAdvanceRequest(input: CashAdvanceRequestInput!): CashAdvanceRequest!
+  issueCashAdvance(id: ID!): CashAdvance!
+
+  # Invoices
+  createInvoice(input: CreateInvoiceInput!): Invoice!
+  updateInvoice(id: ID!, input: UpdateInvoiceInput!): Invoice!
+  approveInvoice(id: ID!, comment: String): Approval!
+
+  # Vendors
+  createVendor(input: CreateVendorInput!): Vendor!
+  updateVendor(id: ID!, input: UpdateVendorInput!): Vendor!
+  deleteVendor(id: ID!): Boolean!
+
+  # Exchange Rates
+  createExchangeRate(input: CreateExchangeRateInput!): ExchangeRate!
+  bulkCreateExchangeRates(input: [CreateExchangeRateInput!]!): [ExchangeRate!]!
+
+  # Webhooks
+  createWebhook(input: CreateWebhookInput!): Webhook!
+  updateWebhook(id: ID!, input: UpdateWebhookInput!): Webhook!
+  deleteWebhook(id: ID!): Boolean!
+
+  # Lists
+  createList(name: String!, isMultiLevel: Boolean): ConcurList!
+  createListItem(listId: ID!, input: CreateListItemInput!): ListItem!
+  updateListItem(id: ID!, input: UpdateListItemInput!): ListItem!
+  deleteListItem(id: ID!): Boolean!
+
+  # Users
+  provisionUser(input: ProvisionUserInput!): User!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+  assignRole(userId: ID!, role: String!, scope: String): RoleAssignment!
+}
+
+# ─────────────────────────────────────────────────────────────
+# Input Types
+# ─────────────────────────────────────────────────────────────
+
+input CreateExpenseReportInput {
+  name: String!
+  purpose: String
+  policyId: String
+  ledgerName: String
+}
+
+input UpdateExpenseReportInput {
+  name: String
+  purpose: String
+  policyId: String
+}
+
+input CreateEntryInput {
+  expenseTypeCode: String!
+  transactionDate: Date!
+  transactionAmount: Decimal!
+  transactionCurrency: CurrencyCode!
+  description: String
+  businessPurpose: String
+  paymentType: PaymentMethodType
+  vendorId: ID
+  locationId: ID
+}
+
+input UpdateEntryInput {
+  transactionDate: Date
+  transactionAmount: Decimal
+  description: String
+  businessPurpose: String
+}
+
+input CreateTravelRequestInput {
+  name: String!
+  purpose: String!
+  startDate: Date!
+  endDate: Date!
+  destination: String
+  policyId: String
+}
+
+input CashAdvanceRequestInput {
+  requestedAmount: Decimal!
+  currency: CurrencyCode!
+  purpose: String!
+  startingDate: Date!
+  userId: ID!
+}
+
+input CreateInvoiceInput {
+  vendorId: ID!
+  invoiceNumber: String!
+  invoiceDate: Date!
+  dueDate: Date
+  totalAmount: Decimal!
+  currency: CurrencyCode!
+  lines: [InvoiceLineInput!]!
+}
+
+input UpdateInvoiceInput {
+  invoiceDate: Date
+  dueDate: Date
+  totalAmount: Decimal
+}
+
+input InvoiceLineInput {
+  description: String!
+  quantity: Decimal
+  unitPrice: Decimal
+  totalAmount: Decimal!
+  expenseTypeCode: String
+}
+
+input CreateVendorInput {
+  vendorCode: String!
+  name: String!
+  taxId: String
+  addressLine1: String
+  city: String
+  country: String!
+  email: String
+}
+
+input UpdateVendorInput {
+  name: String
+  addressLine1: String
+  city: String
+  email: String
+  isActive: Boolean
+}
+
+input CreateExchangeRateInput {
+  fromCurrency: CurrencyCode!
+  toCurrency: CurrencyCode!
+  rate: Decimal!
+  effectiveDate: Date!
+}
+
+input CreateWebhookInput {
+  topic: String!
+  eventType: WebhookEventType!
+  webhookUrl: String!
+}
+
+input UpdateWebhookInput {
+  webhookUrl: String
+  isActive: Boolean
+}
+
+input CreateListItemInput {
+  code: String!
+  value: String!
+  level: Int!
+  parentId: ID
+}
+
+input UpdateListItemInput {
+  value: String
+  isActive: Boolean
+}
+
+input ProvisionUserInput {
+  loginId: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  employeeId: String
+  country: String!
+  currency: CurrencyCode
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  email: String
+  country: String
+  currency: CurrencyCode
+}
