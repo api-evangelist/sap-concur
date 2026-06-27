@@ -547,7 +547,7 @@ common:
   url: https://open.concur.com/
 - type: Blog
   url: https://www.concur.com/newsroom
-- type: SignUp
+- type: Signup
   url: https://developer.concur.com/register
 - type: GitHubRepository
   url: https://github.com/SAP-docs/preview.developer.concur.com

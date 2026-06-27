@@ -3,19 +3,10 @@
   "feeds": [
     {
       "source": "https://www.concur.com/newsroom",
-      "feed_url": "https://www.concur.com/newsroom",
-      "title": "",
       "saved": 0,
-      "method": "none"
-    },
-    {
-      "source": "https://open.concur.com/",
-      "feed_url": "https://open.concur.com/",
-      "title": "",
-      "saved": 0,
-      "method": "none"
+      "error": "HTTP 403 Forbidden"
     }
   ],
   "post_count": 10,
-  "fetched": "2026-06-14T20:42:17Z"
+  "fetched": "2026-06-27T13:08:54Z"
 }
