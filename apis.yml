@@ -529,6 +529,12 @@ apis:
   - type: Documentation
     url: https://developer.concur.com/api-reference/expense/attendee-types/v3.attendee-types.html
 common:
+- type: VulnerabilityDisclosure
+  url: security/sap-concur-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/sap-concur-domain-security.yml
+- type: Authentication
+  url: authentication/sap-concur-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/sapconcur
 - type: DeveloperPortal

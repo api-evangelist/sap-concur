@@ -1,0 +1,15 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/sap-concur-expense-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: OAuth 2.0 Bearer token. Obtain tokens via the SAP Concur Authentication API using
+    either Company or User level grants. Required scopes vary by operation.
+  sources:
+  - openapi/sap-concur-expense-openapi.yml
