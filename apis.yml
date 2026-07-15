@@ -529,6 +529,8 @@ apis:
   - type: Documentation
     url: https://developer.concur.com/api-reference/expense/attendee-types/v3.attendee-types.html
 common:
+- type: AgenticAccess
+  url: agentic-access/sap-concur-agentic-access.yml
 - type: VulnerabilityDisclosure
   url: security/sap-concur-vulnerability-disclosure.yml
 - type: DomainSecurity
