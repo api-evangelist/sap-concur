@@ -1,0 +1,426 @@
+openapi: 3.1.0
+info:
+  title: SAP Concur Expense Report Allocations API
+  description: The SAP Concur Expense Report v4 API enables integration with Concur Expense for creating, retrieving, updating, and managing expense reports, expenses (entries), allocations, comments, and workflow actions. This API follows RESTful conventions with JSON Merge Patch (RFC 7386) for partial updates and HATEOAS links for resource navigation.
+  version: 4.0.0
+  contact:
+    name: SAP Concur Developer Support
+    url: https://developer.concur.com/support/
+  license:
+    name: SAP Concur API Terms of Use
+    url: https://www.concur.com/terms-of-use
+  x-api-id: sap-concur-expense-report-v4
+  x-audience: external-partner
+servers:
+- url: https://us.api.concursolutions.com
+  description: US Production Datacenter
+- url: https://us2.api.concursolutions.com
+  description: US2 Production Datacenter
+- url: https://emea.api.concursolutions.com
+  description: EMEA Production Datacenter
+- url: https://cn.api.concursolutions.com
+  description: China Production Datacenter
+security:
+- bearerAuth: []
+tags:
+- name: Allocations
+  description: Operations for retrieving and updating expense allocations, which distribute expense amounts across cost centers or accounts.
+paths:
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/expenses/{expenseId}/allocations:
+    get:
+      operationId: getAllocations
+      summary: Sap Concur Retrieve Allocations for an Expense
+      description: Returns all allocations associated with a specific expense entry, showing how the expense amount is distributed across cost centers, departments, or accounts.
+      tags:
+      - Allocations
+      parameters:
+      - $ref: '#/components/parameters/userID'
+      - $ref: '#/components/parameters/contextType'
+      - $ref: '#/components/parameters/reportId'
+      - $ref: '#/components/parameters/expenseId'
+      responses:
+        '200':
+          description: Allocations retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Allocation'
+              examples:
+                Getallocations200Example:
+                  summary: Default getAllocations 200 response
+                  x-microcks-default: true
+                  value:
+                  - allocationId: '500123'
+                    expenseId: '500123'
+                    accountCode: example_value
+                    overLimitAccountCode: example_value
+                    allocationAmount:
+                      value: 42.5
+                      currencyCode: example_value
+                    approvedAmount:
+                      value: 42.5
+                      currencyCode: example_value
+                    claimedAmount:
+                      value: 42.5
+                      currencyCode: example_value
+                    percentage: 42.5
+                    isSystemAllocation: true
+                    isPercentEdited: true
+                    customData:
+                    - {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /expensereports/v4/users/{userID}/context/{contextType}/reports/{reportId}/allocations/{allocationId}:
+    get:
+      operationId: getAllocation
+      summary: Sap Concur Retrieve a Single Allocation by Id
+      description: Returns the full details of a specific allocation including account codes, amounts, percentage, and custom data fields.
+      tags:
+      - Allocations
+      parameters:
+      - $ref: '#/components/parameters/userID'
+      - $ref: '#/components/parameters/contextType'
+      - $ref: '#/components/parameters/reportId'
+      - $ref: '#/components/parameters/allocationId'
+      responses:
+        '200':
+          description: Allocation retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Allocation'
+              examples:
+                Getallocation200Example:
+                  summary: Default getAllocation 200 response
+                  x-microcks-default: true
+                  value:
+                    allocationId: '500123'
+                    expenseId: '500123'
+                    accountCode: example_value
+                    overLimitAccountCode: example_value
+                    allocationAmount:
+                      value: 42.5
+                      currencyCode: example_value
+                    approvedAmount:
+                      value: 42.5
+                      currencyCode: example_value
+                    claimedAmount:
+                      value: 42.5
+                      currencyCode: example_value
+                    percentage: 42.5
+                    isSystemAllocation: true
+                    isPercentEdited: true
+                    customData:
+                    - id: abc123
+                      value: example_value
+                      isValid: '500123'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    patch:
+      operationId: updateAllocation
+      summary: Sap Concur Update an Allocation
+      description: Partially updates an allocation using JSON Merge Patch (RFC 7386). Typically used to update custom data fields on allocations. The request body includes the allocation update and the list of expense IDs to which the update applies.
+      tags:
+      - Allocations
+      parameters:
+      - $ref: '#/components/parameters/userID'
+      - $ref: '#/components/parameters/contextTypeWritable'
+      - $ref: '#/components/parameters/reportId'
+      - $ref: '#/components/parameters/allocationId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateAllocationRequest'
+            examples:
+              UpdateallocationRequestExample:
+                summary: Default updateAllocation request
+                x-microcks-default: true
+                value:
+                  allocation:
+                    customData:
+                    - {}
+                  expenseIds:
+                  - example_value
+      responses:
+        '204':
+          description: Allocation updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    Amount:
+      type: object
+      description: A monetary amount with its currency code
+      required:
+      - value
+      - currencyCode
+      properties:
+        value:
+          type: number
+          format: double
+          description: The numeric monetary amount
+          examples:
+          - 250.0
+        currencyCode:
+          type: string
+          description: ISO 4217 three-letter currency code
+          minLength: 3
+          maxLength: 3
+          examples:
+          - USD
+    CustomData:
+      type: object
+      description: A custom field value configured by the organization. Field IDs follow patterns like custom1-custom40 and orgUnit1-orgUnit6.
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The identifier of the custom field (e.g., custom1, orgUnit1)
+          examples:
+          - custom1
+        value:
+          type: string
+          description: The value assigned to the custom field
+          maxLength: 48
+          examples:
+          - Marketing Department
+        isValid:
+          type: boolean
+          description: Whether the current value passes validation rules
+          example: '500123'
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        errorId:
+          type: string
+          description: Unique identifier for this error occurrence
+          example: '500123'
+        errorMessage:
+          type: string
+          description: Human-readable error description
+          example: example_value
+        httpStatus:
+          type: string
+          description: The HTTP status code as a string
+          example: example_value
+        path:
+          type: string
+          description: The request path that triggered the error
+          example: example_value
+        timestamp:
+          type: string
+          format: date-time
+          description: When the error occurred
+          example: '2026-01-15T10:30:00Z'
+        validationErrors:
+          type: array
+          description: Detailed field-level validation failures
+          items:
+            type: object
+            properties:
+              source:
+                type: string
+                description: The field or parameter that failed validation
+              message:
+                type: string
+                description: Description of the validation failure
+          example: []
+    UpdateAllocationRequest:
+      type: object
+      description: Request body for updating an allocation
+      properties:
+        allocation:
+          type: object
+          description: The allocation fields to update
+          properties:
+            customData:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomData'
+          example: example_value
+        expenseIds:
+          type: array
+          description: The expense IDs to which this update applies
+          items:
+            type: string
+          example: []
+    Allocation:
+      type: object
+      description: An expense allocation that distributes an expense amount across cost centers, departments, or general ledger accounts.
+      required:
+      - allocationId
+      - expenseId
+      - percentage
+      - isSystemAllocation
+      - isPercentEdited
+      properties:
+        allocationId:
+          type: string
+          description: Unique identifier of the allocation
+          example: '500123'
+        expenseId:
+          type: string
+          description: The expense this allocation belongs to
+          example: '500123'
+        accountCode:
+          type: string
+          description: The ledger account code
+          example: example_value
+        overLimitAccountCode:
+          type: string
+          description: Account code for amounts exceeding policy limits
+          example: example_value
+        allocationAmount:
+          $ref: '#/components/schemas/Amount'
+        approvedAmount:
+          $ref: '#/components/schemas/Amount'
+        claimedAmount:
+          $ref: '#/components/schemas/Amount'
+        percentage:
+          type: number
+          format: double
+          description: The percentage of the total expense allocated (0-100)
+          minimum: 0
+          maximum: 100
+          example: 42.5
+        isSystemAllocation:
+          type: boolean
+          description: Whether this allocation was automatically created by the system (true) or manually created by a user (false)
+          example: true
+        isPercentEdited:
+          type: boolean
+          description: Whether the allocation percentage has been modified
+          example: true
+        customData:
+          type: array
+          description: Custom field values on the allocation
+          items:
+            $ref: '#/components/schemas/CustomData'
+          example: []
+  responses:
+    Forbidden:
+      description: The authenticated user does not have the required scope or permission to perform this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource (report, expense, allocation, or user) was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication failed. The bearer token is missing, expired, or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    contextType:
+      name: contextType
+      in: path
+      required: true
+      description: The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate.
+      schema:
+        type: string
+        enum:
+        - TRAVELER
+        - MANAGER
+        - PROXY
+    reportId:
+      name: reportId
+      in: path
+      required: true
+      description: The unique identifier of the expense report
+      schema:
+        type: string
+    contextTypeWritable:
+      name: contextType
+      in: path
+      required: true
+      description: The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner.
+      schema:
+        type: string
+        enum:
+        - TRAVELER
+        - PROXY
+    expenseId:
+      name: expenseId
+      in: path
+      required: true
+      description: The unique identifier of the expense entry
+      schema:
+        type: string
+    userID:
+      name: userID
+      in: path
+      required: true
+      description: The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API.
+      schema:
+        type: string
+        format: uuid
+    allocationId:
+      name: allocationId
+      in: path
+      required: true
+      description: The unique identifier of the allocation
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: OAuth 2.0 Bearer token. Obtain tokens via the SAP Concur Authentication API using either Company or User level grants. Required scopes vary by operation.
