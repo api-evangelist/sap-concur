@@ -1,0 +1,22 @@
+{
+  "provider": "sap-concur",
+  "sources": [
+    "sap-concur-allocations-api-openapi.yml",
+    "sap-concur-comments-api-openapi.yml",
+    "sap-concur-expenses-api-openapi.yml",
+    "sap-concur-reports-api-openapi.yml",
+    "sap-concur-workflows-api-openapi.yml"
+  ],
+  "outputs": [
+    "sap-concur-allocations-api-openapi.yml",
+    "sap-concur-comments-api-openapi.yml",
+    "sap-concur-expenses-api-openapi.yml",
+    "sap-concur-reports-api-openapi.yml",
+    "sap-concur-workflows-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
