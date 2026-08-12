@@ -710,6 +710,9 @@ apis:
   - type: Resources
     url: https://api.sap.com/package/ConcurRequest
 common:
+- type: License
+  name: Apache-2.0
+  url: https://github.com/SAP-docs/preview.developer.concur.com/blob/main/LICENSE
 - type: AgenticAccess
   url: agentic-access/sap-concur-agentic-access.yml
 - type: VulnerabilityDisclosure
