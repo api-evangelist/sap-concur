@@ -1,0 +1,139 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SAP Concur Expense Report Allocations API",
+    "version": "4.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Allocations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Sap Concur Retrieve Allocations for an Expense",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/expenses/:expenseId/allocations",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              },
+              {
+                "name": "expenseId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense entry"
+              }
+            ]
+          },
+          "docs": "Returns all allocations associated with a specific expense entry, showing how the expense amount is distributed across cost centers, departments, or accounts."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Retrieve a Single Allocation by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/allocations/:allocationId",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              },
+              {
+                "name": "allocationId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the allocation"
+              }
+            ]
+          },
+          "docs": "Returns the full details of a specific allocation including account codes, amounts, percentage, and custom data fields."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Update an Allocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/allocations/:allocationId",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              },
+              {
+                "name": "allocationId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the allocation"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Partially updates an allocation using JSON Merge Patch (RFC 7386). Typically used to update custom data fields on allocations. The request body includes the allocation update and the list of expense IDs to which the update applies."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

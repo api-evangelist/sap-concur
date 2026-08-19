@@ -1,0 +1,240 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SAP Concur Expense Report Allocations Comments API",
+    "version": "4.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Comments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Sap Concur Retrieve Report-level Comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/comments",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              },
+              {
+                "name": "includeAllComments",
+                "value": "true",
+                "type": "query",
+                "description": "Whether to return comments from all report levels"
+              }
+            ]
+          },
+          "docs": "Returns all comments associated with the expense report header."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Create a Report-level Comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/comments",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a new comment to the expense report header."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Update the Latest Report-level Comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/comments",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replaces the content of the most recent comment on the report header. Only the latest comment by the authenticated user can be updated."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Delete the Latest Report-level Comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/comments",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              }
+            ]
+          },
+          "docs": "Removes the most recent comment from the expense report header. Only the latest comment by the authenticated user can be deleted."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Retrieve Expense-level Comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/expenses/:expenseId/comments",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              },
+              {
+                "name": "expenseId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense entry"
+              }
+            ]
+          },
+          "docs": "Returns all comments associated with a specific expense entry."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Create an Expense-level Comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/expenses/:expenseId/comments",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              },
+              {
+                "name": "expenseId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense entry"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a new comment to a specific expense entry."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

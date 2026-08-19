@@ -1,0 +1,179 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SAP Concur Expense Report Allocations Workflows API",
+    "version": "4.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workflows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Sap Concur Submit an Expense Report for Approval",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userId/reports/:reportId/submit",
+            "params": [
+              {
+                "name": "userId",
+                "value": "500123",
+                "type": "path",
+                "description": "The unique identifier of the report owner"
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              }
+            ]
+          },
+          "docs": "Submits an unsubmitted expense report into the approval workflow. The report must have at least one expense entry and pass all configured validation rules."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Approve an Expense Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/approve",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "MANAGER",
+                "type": "path",
+                "description": "Must be MANAGER for approval actions"
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Approves an expense report in the current workflow step. The authenticated user must be an assigned approver. Individual expenses can be rejected within the approval by specifying expenseRejectedComment."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Send Back an Expense Report to the Submitter",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/sendBack",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "MANAGER",
+                "type": "path",
+                "description": "Must be MANAGER for send-back actions"
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns a submitted expense report to the employee for corrections. A comment explaining the reason is required."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Recall a Submitted Expense Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/recall",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Recalls a previously submitted expense report back to unsubmitted status, removing it from the approval workflow. Only the report owner or a proxy can recall a report."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Retrieve Cost Objects for an Approver",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userId/reports/:reportId/costObjectsForApprover",
+            "params": [
+              {
+                "name": "userId",
+                "value": "500123",
+                "type": "path",
+                "description": "The unique identifier of the approving manager"
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              }
+            ]
+          },
+          "docs": "Returns the cost objects (cost centers, departments, projects) associated with expenses on a report that are relevant to the specified approver."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

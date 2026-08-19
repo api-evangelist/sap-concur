@@ -1,0 +1,218 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SAP Concur Expense Report Allocations Expenses API",
+    "version": "4.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Expenses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Sap Concur Retrieve All Expenses on a Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/expenses",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              }
+            ]
+          },
+          "docs": "Returns a summary list of all expense entries (line items) associated with the specified expense report."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Retrieve a Single Expense by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/expenses/:expenseId",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              },
+              {
+                "name": "expenseId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense entry"
+              }
+            ]
+          },
+          "docs": "Returns the full details of a specific expense entry including transaction amounts, vendor information, location, payment type, allocation state, tax summary, mileage, and travel data."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Retrieve Itemizations for an Expense",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/users/:userID/context/:contextType/reports/:reportId/expenses/:expenseId/itemizations",
+            "params": [
+              {
+                "name": "userID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+              },
+              {
+                "name": "contextType",
+                "value": "",
+                "type": "path",
+                "description": "The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+              },
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              },
+              {
+                "name": "expenseId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense entry"
+              }
+            ]
+          },
+          "docs": "Returns the itemized breakdown of a parent expense entry, such as individual charges on a hotel folio or conference registration."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Update an Expense on a Submitted Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/reports/:reportId/expenses/:expenseId",
+            "params": [
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              },
+              {
+                "name": "expenseId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense entry"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Partially updates an expense on a submitted report. Only Company JWT authentication is permitted. Updatable fields are limited to businessPurpose, customData, expenseSource, isExpenseRejected, and isPaperReceiptReceived."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Delete an Expense From a Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/reports/:reportId/expenses/:expenseId",
+            "params": [
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              },
+              {
+                "name": "expenseId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense entry"
+              }
+            ]
+          },
+          "docs": "Permanently removes an expense entry and its associated allocations and itemizations from a report."
+        },
+        {
+          "info": {
+            "name": "Sap Concur Retrieve Expense Form Field Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://us.api.concursolutions.com/expensereports/v4/reports/:reportId/expenses/:expenseId/formFields",
+            "params": [
+              {
+                "name": "reportId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense report"
+              },
+              {
+                "name": "expenseId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the expense entry"
+              },
+              {
+                "name": "expenseTypeId",
+                "value": "500123",
+                "type": "query",
+                "description": "Expense type identifier to filter applicable fields"
+              }
+            ]
+          },
+          "docs": "Returns the configured form fields for a specific expense entry, including field metadata, validation rules, and display properties."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

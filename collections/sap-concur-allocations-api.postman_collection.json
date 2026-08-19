@@ -1,0 +1,1782 @@
+{
+  "item": [
+    {
+      "id": "455216f4-56da-4380-b64b-aa6dd6ef3b0a",
+      "name": "Allocations",
+      "description": {
+        "content": "Operations for retrieving and updating expense allocations, which distribute expense amounts across cost centers or accounts.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f7e2c475-5f30-40a7-9a3d-17741d504213",
+          "name": "Sap Concur Retrieve Allocations for an Expense",
+          "request": {
+            "name": "Sap Concur Retrieve Allocations for an Expense",
+            "description": {
+              "content": "Returns all allocations associated with a specific expense entry, showing how the expense amount is distributed across cost centers, departments, or accounts.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "expensereports",
+                "v4",
+                "users",
+                ":userID",
+                "context",
+                ":contextType",
+                "reports",
+                ":reportId",
+                "expenses",
+                ":expenseId",
+                "allocations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "userID",
+                  "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contextType",
+                  "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "reportId",
+                  "description": "(Required) The unique identifier of the expense report"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "expenseId",
+                  "description": "(Required) The unique identifier of the expense entry"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "568067aa-cc3e-4b6a-9d09-1c6a14126beb",
+              "name": "Allocations retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "expenses",
+                    ":expenseId",
+                    "allocations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "expenseId",
+                      "description": "(Required) The unique identifier of the expense entry"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"allocationId\": \"500123\",\n    \"expenseId\": \"500123\",\n    \"accountCode\": \"example_value\",\n    \"overLimitAccountCode\": \"example_value\",\n    \"allocationAmount\": {\n      \"value\": 42.5,\n      \"currencyCode\": \"example_value\"\n    },\n    \"approvedAmount\": {\n      \"value\": 42.5,\n      \"currencyCode\": \"example_value\"\n    },\n    \"claimedAmount\": {\n      \"value\": 42.5,\n      \"currencyCode\": \"example_value\"\n    },\n    \"percentage\": 42.5,\n    \"isSystemAllocation\": true,\n    \"isPercentEdited\": true,\n    \"customData\": [\n      {}\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8499e853-b1c8-4388-be93-ce91a69c5424",
+              "name": "The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "expenses",
+                    ":expenseId",
+                    "allocations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "expenseId",
+                      "description": "(Required) The unique identifier of the expense entry"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "74582663-77e3-4878-82b5-0114e0c12f28",
+              "name": "Authentication failed. The bearer token is missing, expired, or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "expenses",
+                    ":expenseId",
+                    "allocations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "expenseId",
+                      "description": "(Required) The unique identifier of the expense entry"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d96ba97-0f2d-49e5-91b4-9fbde47f42f0",
+              "name": "The authenticated user does not have the required scope or permission to perform this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "expenses",
+                    ":expenseId",
+                    "allocations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "expenseId",
+                      "description": "(Required) The unique identifier of the expense entry"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d71feaf9-50a8-42bd-9c43-8d22187c08b7",
+              "name": "The requested resource (report, expense, allocation, or user) was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "expenses",
+                    ":expenseId",
+                    "allocations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "expenseId",
+                      "description": "(Required) The unique identifier of the expense entry"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f941060-0145-4755-af9c-18f0e97515e5",
+              "name": "An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "expenses",
+                    ":expenseId",
+                    "allocations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "expenseId",
+                      "description": "(Required) The unique identifier of the expense entry"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0c98e5ea-d0b3-4baa-ba2d-d2c3dbffe290",
+          "name": "Sap Concur Retrieve a Single Allocation by Id",
+          "request": {
+            "name": "Sap Concur Retrieve a Single Allocation by Id",
+            "description": {
+              "content": "Returns the full details of a specific allocation including account codes, amounts, percentage, and custom data fields.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "expensereports",
+                "v4",
+                "users",
+                ":userID",
+                "context",
+                ":contextType",
+                "reports",
+                ":reportId",
+                "allocations",
+                ":allocationId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "userID",
+                  "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contextType",
+                  "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "reportId",
+                  "description": "(Required) The unique identifier of the expense report"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "allocationId",
+                  "description": "(Required) The unique identifier of the allocation"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "268a0f08-31aa-42fc-a2e4-35deb4e63f23",
+              "name": "Allocation retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"allocationId\": \"500123\",\n  \"expenseId\": \"500123\",\n  \"accountCode\": \"example_value\",\n  \"overLimitAccountCode\": \"example_value\",\n  \"allocationAmount\": {\n    \"value\": 42.5,\n    \"currencyCode\": \"example_value\"\n  },\n  \"approvedAmount\": {\n    \"value\": 42.5,\n    \"currencyCode\": \"example_value\"\n  },\n  \"claimedAmount\": {\n    \"value\": 42.5,\n    \"currencyCode\": \"example_value\"\n  },\n  \"percentage\": 42.5,\n  \"isSystemAllocation\": true,\n  \"isPercentEdited\": true,\n  \"customData\": [\n    {\n      \"id\": \"abc123\",\n      \"value\": \"example_value\",\n      \"isValid\": \"500123\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18b6c9ec-c357-47fc-a28d-ee3a5da80b59",
+              "name": "The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63ce54a5-4af7-44af-a760-cca7ff65ac86",
+              "name": "Authentication failed. The bearer token is missing, expired, or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7976f785-8116-4ac2-a39e-22169a4cb335",
+              "name": "The authenticated user does not have the required scope or permission to perform this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2239d8a6-29bd-4c24-b3c2-6a9e78a81e67",
+              "name": "The requested resource (report, expense, allocation, or user) was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a48a8e9-d29c-445b-bf48-e86ea2104932",
+              "name": "An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9c8623f9-2980-480c-9b53-bcdcc4d52629",
+          "name": "Sap Concur Update an Allocation",
+          "request": {
+            "name": "Sap Concur Update an Allocation",
+            "description": {
+              "content": "Partially updates an allocation using JSON Merge Patch (RFC 7386). Typically used to update custom data fields on allocations. The request body includes the allocation update and the list of expense IDs to which the update applies.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "expensereports",
+                "v4",
+                "users",
+                ":userID",
+                "context",
+                ":contextType",
+                "reports",
+                ":reportId",
+                "allocations",
+                ":allocationId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "userID",
+                  "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contextType",
+                  "description": "(Required) The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "reportId",
+                  "description": "(Required) The unique identifier of the expense report"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "allocationId",
+                  "description": "(Required) The unique identifier of the allocation"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/merge-patch+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"allocation\": {\n    \"customData\": [\n      {\n        \"id\": \"<string>\",\n        \"value\": \"<string>\",\n        \"isValid\": \"<boolean>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"value\": \"<string>\",\n        \"isValid\": \"<boolean>\"\n      }\n    ]\n  },\n  \"expenseIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "90f93666-47a2-4762-850d-e576126b13fe",
+              "name": "Allocation updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allocation\": {\n    \"customData\": [\n      {}\n    ]\n  },\n  \"expenseIds\": [\n    \"example_value\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "73afcf04-279b-4171-9b41-9baf103f19ff",
+              "name": "The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allocation\": {\n    \"customData\": [\n      {}\n    ]\n  },\n  \"expenseIds\": [\n    \"example_value\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3a67dc63-3281-4334-b07b-f6ed8ece694c",
+              "name": "Authentication failed. The bearer token is missing, expired, or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allocation\": {\n    \"customData\": [\n      {}\n    ]\n  },\n  \"expenseIds\": [\n    \"example_value\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ec1f68a1-b149-4907-9e48-c4cd671b04b7",
+              "name": "The authenticated user does not have the required scope or permission to perform this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allocation\": {\n    \"customData\": [\n      {}\n    ]\n  },\n  \"expenseIds\": [\n    \"example_value\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "282ec042-4515-4e71-9ec1-aed1cf7bf943",
+              "name": "The requested resource (report, expense, allocation, or user) was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allocation\": {\n    \"customData\": [\n      {}\n    ]\n  },\n  \"expenseIds\": [\n    \"example_value\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "52b50ba5-1612-4fe2-97c5-54d09ea353fe",
+              "name": "An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "expensereports",
+                    "v4",
+                    "users",
+                    ":userID",
+                    "context",
+                    ":contextType",
+                    "reports",
+                    ":reportId",
+                    "allocations",
+                    ":allocationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "userID",
+                      "description": "(Required) The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contextType",
+                      "description": "(Required) The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reportId",
+                      "description": "(Required) The unique identifier of the expense report"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "allocationId",
+                      "description": "(Required) The unique identifier of the allocation"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allocation\": {\n    \"customData\": [\n      {}\n    ]\n  },\n  \"expenseIds\": [\n    \"example_value\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"500123\",\n  \"errorMessage\": \"example_value\",\n  \"httpStatus\": \"example_value\",\n  \"path\": \"example_value\",\n  \"timestamp\": \"2026-01-15T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://us.api.concursolutions.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "002e8e66-b771-43e7-85b9-8b7e3a5dc746",
+    "name": "SAP Concur Expense Report Allocations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The SAP Concur Expense Report v4 API enables integration with Concur Expense for creating, retrieving, updating, and managing expense reports, expenses (entries), allocations, comments, and workflow actions. This API follows RESTful conventions with JSON Merge Patch (RFC 7386) for partial updates and HATEOAS links for resource navigation.\n\nContact Support:\n Name: SAP Concur Developer Support",
+      "type": "text/plain"
+    }
+  }
+}
