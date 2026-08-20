@@ -24,6 +24,12 @@ specificationVersion: '0.23'
 tags:
 - Business Travel
 - Expense Management
+- Financial-Services
+- Invoice Management
+- Travel Management
+tags_raw:
+- Business Travel
+- Expense Management
 - Financial Services
 - Invoice Management
 - Travel Management
@@ -37,6 +43,10 @@ apis:
   baseURL: https://www.concursolutions.com/api/user/v1.0
   humanURL: https://developer.concur.com/api-reference/user/
   tags:
+  - Identity Management
+  - Provisioning
+  - User
+  tags_raw:
   - Identity Management
   - Provisioning
   - Users
@@ -54,6 +64,10 @@ apis:
   baseURL: https://www.concursolutions.com/api/v3.0
   humanURL: https://developer.concur.com/api-reference/receipts/
   tags:
+  - Documents
+  - Image
+  - Receipts
+  tags_raw:
   - Documents
   - Images
   - Receipts
@@ -89,6 +103,10 @@ apis:
   baseURL: https://www.concursolutions.com/api/v4.0
   humanURL: https://developer.concur.com/api-reference/cards/v4.cards-get-started.html
   tags:
+  - Credit Cards
+  - Financial Data
+  - Transaction
+  tags_raw:
   - Credit Cards
   - Financial Data
   - Transactions
@@ -173,6 +191,10 @@ apis:
   baseURL: https://www.concursolutions.com/api/v4.0
   humanURL: https://developer.concur.com/api-reference/ess/v4.event-subscription.html
   tags:
+  - Event
+  - Subscription
+  - Webhook
+  tags_raw:
   - Events
   - Subscriptions
   - Webhooks
@@ -188,6 +210,10 @@ apis:
   baseURL: https://www.concursolutions.com/api/v1.0
   humanURL: https://developer.concur.com/api-reference/callouts/callouts-application-connectors.html
   tags:
+  - Callouts
+  - Connectors
+  - Integration
+  tags_raw:
   - Callouts
   - Connectors
   - Integrations
@@ -251,6 +277,10 @@ apis:
   tags:
   - Configuration
   - List Items
+  - List
+  tags_raw:
+  - Configuration
+  - List Items
   - Lists
   properties:
   - type: Documentation
@@ -264,6 +294,10 @@ apis:
   baseURL: https://www.concursolutions.com/api/v4.0
   humanURL: https://developer.concur.com/api-reference/common/lists/v4.list.html
   tags:
+  - Configuration
+  - List
+  - Shared Resources
+  tags_raw:
   - Configuration
   - Lists
   - Shared Resources
@@ -312,6 +346,10 @@ apis:
   baseURL: https://www.concursolutions.com/api/v4.0
   humanURL: https://developer.concur.com/api-reference/cash-advance/v4-1.cash-advance.html
   tags:
+  - Cash Advances
+  - Expenses
+  - Reimbursement
+  tags_raw:
   - Cash Advances
   - Expenses
   - Reimbursements
@@ -409,6 +447,10 @@ apis:
   baseURL: https://www.concursolutions.com/api/image/v1.0
   humanURL: https://developer.concur.com/api-reference/image/v1.image.html
   tags:
+  - Documents
+  - Image
+  - Receipts
+  tags_raw:
   - Documents
   - Images
   - Receipts
