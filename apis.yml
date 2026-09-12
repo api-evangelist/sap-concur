@@ -767,6 +767,8 @@ apis:
   - type: Resources
     url: https://api.sap.com/package/ConcurRequest
 common:
+- type: Website
+  url: https://www.concur.com/
 - type: CapabilityMap
   url: capabilities/sap-concur-capability-edges.yml
   name: SAP Concur Business Capability Map
