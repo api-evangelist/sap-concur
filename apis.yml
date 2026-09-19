@@ -498,6 +498,10 @@ apis:
   tags:
   - Common Resources
   - Geography
+  - Location
+  tags_raw:
+  - Common Resources
+  - Geography
   - Locations
   properties:
   - type: Documentation
