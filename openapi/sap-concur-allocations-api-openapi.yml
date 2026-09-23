@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: SAP Concur Expense Report Allocations API
   description: The SAP Concur Expense Report v4 API enables integration with Concur Expense for creating, retrieving, updating, and managing expense reports, expenses (entries), allocations, comments, and workflow actions. This API follows RESTful conventions with JSON Merge Patch (RFC 7386) for partial updates and HATEOAS links for resource navigation.
@@ -184,27 +184,38 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  responses:
+    Unauthorized:
+      description: Authentication failed. The bearer token is missing, expired, or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: The authenticated user does not have the required scope or permission to perform this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource (report, expense, allocation, or user) was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    Amount:
-      type: object
-      description: A monetary amount with its currency code
-      required:
-      - value
-      - currencyCode
-      properties:
-        value:
-          type: number
-          format: double
-          description: The numeric monetary amount
-          examples:
-          - 250.0
-        currencyCode:
-          type: string
-          description: ISO 4217 three-letter currency code
-          minLength: 3
-          maxLength: 3
-          examples:
-          - USD
     CustomData:
       type: object
       description: A custom field value configured by the organization. Field IDs follow patterns like custom1-custom40 and orgUnit1-orgUnit6.
@@ -283,6 +294,26 @@ components:
           items:
             type: string
           example: []
+    Amount:
+      type: object
+      description: A monetary amount with its currency code
+      required:
+      - value
+      - currencyCode
+      properties:
+        value:
+          type: number
+          format: double
+          description: The numeric monetary amount
+          examples:
+          - 250.0
+        currencyCode:
+          type: string
+          description: ISO 4217 three-letter currency code
+          minLength: 3
+          maxLength: 3
+          examples:
+          - USD
     Allocation:
       type: object
       description: An expense allocation that distributes an expense amount across cost centers, departments, or general ledger accounts.
@@ -336,56 +367,7 @@ components:
           items:
             $ref: '#/components/schemas/CustomData'
           example: []
-  responses:
-    Forbidden:
-      description: The authenticated user does not have the required scope or permission to perform this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: The requested resource (report, expense, allocation, or user) was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Authentication failed. The bearer token is missing, expired, or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   parameters:
-    contextType:
-      name: contextType
-      in: path
-      required: true
-      description: The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate.
-      schema:
-        type: string
-        enum:
-        - TRAVELER
-        - MANAGER
-        - PROXY
-    reportId:
-      name: reportId
-      in: path
-      required: true
-      description: The unique identifier of the expense report
-      schema:
-        type: string
     contextTypeWritable:
       name: contextType
       in: path
@@ -403,6 +385,31 @@ components:
       description: The unique identifier of the expense entry
       schema:
         type: string
+    reportId:
+      name: reportId
+      in: path
+      required: true
+      description: The unique identifier of the expense report
+      schema:
+        type: string
+    contextType:
+      name: contextType
+      in: path
+      required: true
+      description: The access context for the request. TRAVELER for the report owner, MANAGER for an approver, PROXY for a delegate.
+      schema:
+        type: string
+        enum:
+        - TRAVELER
+        - MANAGER
+        - PROXY
+    allocationId:
+      name: allocationId
+      in: path
+      required: true
+      description: The unique identifier of the allocation
+      schema:
+        type: string
     userID:
       name: userID
       in: path
@@ -411,13 +418,6 @@ components:
       schema:
         type: string
         format: uuid
-    allocationId:
-      name: allocationId
-      in: path
-      required: true
-      description: The unique identifier of the allocation
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

@@ -1,0 +1,32 @@
+# Front Door AI Index — sap-concur — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: sap-concur
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.concur.com
+  final_host: www.concur.com
+  ownership: shared
+  owner: concur
+  shares_host_with:
+  - concur
+  - sap-concur-expense
+  inherited_from: null
+  verdict: scored
+  score: null
+  host_score: 11
+  density: null
+  words: 1730
+  tiers:
+    agentic: 2
+    core: 9
+    model: 0
+  ambiguous: 5
+  top_terms:
+    AI: 8
+    intelligence: 3
+    automation: 2
+    AI assistant: 1
+    agentic: 1
+    artificial intelligence: 1
