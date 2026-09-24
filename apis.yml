@@ -39,7 +39,7 @@ specificationVersion: '0.23'
 tags:
 - Business Travel
 - Expense Management
-- Financial-Services
+- Financial Services
 - Invoice Management
 - Travel Management
 tags_raw:
@@ -48,6 +48,7 @@ tags_raw:
 - Financial Services
 - Invoice Management
 - Travel Management
+- Financial-Services
 apis:
 - name: Concur User Provisioning API
   description: >-
@@ -553,8 +554,6 @@ apis:
       https://developer.concur.com/api-reference/expense/expense-report/v4.expense-attendee-associations.html
   - type: Resources
     url: https://api.sap.com/package/ConcurExpense
-  - type: GraphQL
-    url: graphql/sap-concur-graphql.md
   - type: Documentation
     url: https://developer.concur.com/api-reference/travel/
   - type: Documentation
@@ -603,8 +602,6 @@ apis:
       https://developer.concur.com/api-reference/expense/expense-report/v4.expense-attendee-associations.html
   - type: Resources
     url: https://api.sap.com/package/ConcurExpense
-  - type: GraphQL
-    url: graphql/sap-concur-graphql.md
   - type: Documentation
     url: https://developer.concur.com/api-reference/travel/
   - type: Documentation
@@ -653,8 +650,6 @@ apis:
       https://developer.concur.com/api-reference/expense/expense-report/v4.expense-attendee-associations.html
   - type: Resources
     url: https://api.sap.com/package/ConcurExpense
-  - type: GraphQL
-    url: graphql/sap-concur-graphql.md
   - type: Documentation
     url: https://developer.concur.com/api-reference/travel/
   - type: Documentation
@@ -703,8 +698,6 @@ apis:
       https://developer.concur.com/api-reference/expense/expense-report/v4.expense-attendee-associations.html
   - type: Resources
     url: https://api.sap.com/package/ConcurExpense
-  - type: GraphQL
-    url: graphql/sap-concur-graphql.md
   - type: Documentation
     url: https://developer.concur.com/api-reference/travel/
   - type: Documentation
@@ -753,8 +746,6 @@ apis:
       https://developer.concur.com/api-reference/expense/expense-report/v4.expense-attendee-associations.html
   - type: Resources
     url: https://api.sap.com/package/ConcurExpense
-  - type: GraphQL
-    url: graphql/sap-concur-graphql.md
   - type: Documentation
     url: https://developer.concur.com/api-reference/travel/
   - type: Documentation
