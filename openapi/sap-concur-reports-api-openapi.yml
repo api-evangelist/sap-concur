@@ -427,16 +427,6 @@ paths:
         dispatcher: FALLBACK
 components:
   parameters:
-    contextTypeWritable:
-      name: contextType
-      in: path
-      required: true
-      description: The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner.
-      schema:
-        type: string
-        enum:
-        - TRAVELER
-        - PROXY
     userID:
       name: userID
       in: path
@@ -463,72 +453,17 @@ components:
         - TRAVELER
         - MANAGER
         - PROXY
-  responses:
-    Forbidden:
-      description: The authenticated user does not have the required scope or permission to perform this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Conflict:
-      description: The request conflicts with the current state of the resource. For example, attempting to delete a submitted report or approve a report that has already been processed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Authentication failed. The bearer token is missing, expired, or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: The requested resource (report, expense, allocation, or user) was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+    contextTypeWritable:
+      name: contextType
+      in: path
+      required: true
+      description: The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner.
+      schema:
+        type: string
+        enum:
+        - TRAVELER
+        - PROXY
   schemas:
-    ReportToApprove:
-      type: object
-      description: A summary of an expense report awaiting approval
-      properties:
-        reportId:
-          type: string
-          description: Unique identifier of the report
-          example: '500123'
-        name:
-          type: string
-          description: The report name
-          example: Example Title
-        userId:
-          type: string
-          format: uuid
-          description: The report owner's user ID
-          example: '500123'
-        approvalStatus:
-          type: string
-          description: Current approval status
-          example: example_value
-        reportTotal:
-          $ref: '#/components/schemas/Amount'
-        submitDate:
-          type: string
-          format: date-time
-          description: When the report was submitted
-          example: '2026-01-15T10:30:00Z'
     NewReport:
       type: object
       description: Request body for creating a new expense report
@@ -590,15 +525,6 @@ components:
           items:
             $ref: '#/components/schemas/CustomData'
           example: []
-    ResourceCreatedResponse:
-      type: object
-      description: Response returned when a resource is successfully created
-      properties:
-        uri:
-          type: string
-          format: uri
-          description: The URI of the newly created resource
-          example: https://www.example.com
     UpdateSubmittedReport:
       type: object
       description: Limited-field JSON Merge Patch for updating a submitted report. Only accessible with Company JWT authentication.
@@ -624,44 +550,15 @@ components:
           items:
             $ref: '#/components/schemas/CustomData'
           example: []
-    ErrorResponse:
+    ResourceCreatedResponse:
       type: object
-      description: Standard error response
+      description: Response returned when a resource is successfully created
       properties:
-        errorId:
+        uri:
           type: string
-          description: Unique identifier for this error occurrence
-          example: '500123'
-        errorMessage:
-          type: string
-          description: Human-readable error description
-          example: example_value
-        httpStatus:
-          type: string
-          description: The HTTP status code as a string
-          example: example_value
-        path:
-          type: string
-          description: The request path that triggered the error
-          example: example_value
-        timestamp:
-          type: string
-          format: date-time
-          description: When the error occurred
-          example: '2026-01-15T10:30:00Z'
-        validationErrors:
-          type: array
-          description: Detailed field-level validation failures
-          items:
-            type: object
-            properties:
-              source:
-                type: string
-                description: The field or parameter that failed validation
-              message:
-                type: string
-                description: Description of the validation failure
-          example: []
+          format: uri
+          description: The URI of the newly created resource
+          example: https://www.example.com
     Amount:
       type: object
       description: A monetary amount with its currency code
@@ -682,84 +579,6 @@ components:
           maxLength: 3
           examples:
           - USD
-    UpdateReport:
-      type: object
-      description: JSON Merge Patch body for updating an unsubmitted report. All fields from NewReport are updatable.
-      properties:
-        name:
-          type: string
-          description: The name or title of the expense report
-          example: Example Title
-        businessPurpose:
-          type: string
-          description: The business justification for the expenses
-          example: example_value
-        reportDate:
-          type: string
-          format: date
-          example: '2026-01-15'
-        startDate:
-          type: string
-          format: date
-          example: '2026-01-15'
-        endDate:
-          type: string
-          format: date
-          example: '2026-01-15'
-        countryCode:
-          type: string
-          minLength: 2
-          maxLength: 2
-          example: example_value
-        countrySubDivisionCode:
-          type: string
-          example: example_value
-        policyId:
-          type: string
-          example: '500123'
-        customData:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomData'
-          example: []
-    CustomData:
-      type: object
-      description: A custom field value configured by the organization. Field IDs follow patterns like custom1-custom40 and orgUnit1-orgUnit6.
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          description: The identifier of the custom field (e.g., custom1, orgUnit1)
-          examples:
-          - custom1
-        value:
-          type: string
-          description: The value assigned to the custom field
-          maxLength: 48
-          examples:
-          - Marketing Department
-        isValid:
-          type: boolean
-          description: Whether the current value passes validation rules
-          example: '500123'
-    Link:
-      type: object
-      description: A HATEOAS hypermedia link for resource navigation
-      properties:
-        rel:
-          type: string
-          description: The link relation type
-          example: example_value
-        href:
-          type: string
-          format: uri
-          description: The target URI
-          example: https://www.example.com
-        hreflang:
-          type: string
-          description: Language of the target resource
-          example: example_value
     FormField:
       type: object
       description: A configured form field with its metadata, display properties, and validation rules.
@@ -796,6 +615,23 @@ components:
           type: integer
           description: Display order sequence number
           example: 10
+    Link:
+      type: object
+      description: A HATEOAS hypermedia link for resource navigation
+      properties:
+        rel:
+          type: string
+          description: The link relation type
+          example: example_value
+        href:
+          type: string
+          format: uri
+          description: The target URI
+          example: https://www.example.com
+        hreflang:
+          type: string
+          description: Language of the target resource
+          example: example_value
     ReportDetails:
       type: object
       description: The full representation of an expense report
@@ -934,6 +770,170 @@ components:
           items:
             $ref: '#/components/schemas/Link'
           example: []
+    UpdateReport:
+      type: object
+      description: JSON Merge Patch body for updating an unsubmitted report. All fields from NewReport are updatable.
+      properties:
+        name:
+          type: string
+          description: The name or title of the expense report
+          example: Example Title
+        businessPurpose:
+          type: string
+          description: The business justification for the expenses
+          example: example_value
+        reportDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        startDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        endDate:
+          type: string
+          format: date
+          example: '2026-01-15'
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: example_value
+        countrySubDivisionCode:
+          type: string
+          example: example_value
+        policyId:
+          type: string
+          example: '500123'
+        customData:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomData'
+          example: []
+    CustomData:
+      type: object
+      description: A custom field value configured by the organization. Field IDs follow patterns like custom1-custom40 and orgUnit1-orgUnit6.
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The identifier of the custom field (e.g., custom1, orgUnit1)
+          examples:
+          - custom1
+        value:
+          type: string
+          description: The value assigned to the custom field
+          maxLength: 48
+          examples:
+          - Marketing Department
+        isValid:
+          type: boolean
+          description: Whether the current value passes validation rules
+          example: '500123'
+    ReportToApprove:
+      type: object
+      description: A summary of an expense report awaiting approval
+      properties:
+        reportId:
+          type: string
+          description: Unique identifier of the report
+          example: '500123'
+        name:
+          type: string
+          description: The report name
+          example: Example Title
+        userId:
+          type: string
+          format: uuid
+          description: The report owner's user ID
+          example: '500123'
+        approvalStatus:
+          type: string
+          description: Current approval status
+          example: example_value
+        reportTotal:
+          $ref: '#/components/schemas/Amount'
+        submitDate:
+          type: string
+          format: date-time
+          description: When the report was submitted
+          example: '2026-01-15T10:30:00Z'
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        errorId:
+          type: string
+          description: Unique identifier for this error occurrence
+          example: '500123'
+        errorMessage:
+          type: string
+          description: Human-readable error description
+          example: example_value
+        httpStatus:
+          type: string
+          description: The HTTP status code as a string
+          example: example_value
+        path:
+          type: string
+          description: The request path that triggered the error
+          example: example_value
+        timestamp:
+          type: string
+          format: date-time
+          description: When the error occurred
+          example: '2026-01-15T10:30:00Z'
+        validationErrors:
+          type: array
+          description: Detailed field-level validation failures
+          items:
+            type: object
+            properties:
+              source:
+                type: string
+                description: The field or parameter that failed validation
+              message:
+                type: string
+                description: Description of the validation failure
+          example: []
+  responses:
+    Forbidden:
+      description: The authenticated user does not have the required scope or permission to perform this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource (report, expense, allocation, or user) was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Conflict:
+      description: The request conflicts with the current state of the resource. For example, attempting to delete a submitted report or approve a report that has already been processed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication failed. The bearer token is missing, expired, or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     bearerAuth:
       type: http

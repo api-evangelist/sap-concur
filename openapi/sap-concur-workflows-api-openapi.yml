@@ -257,8 +257,8 @@ paths:
         dispatcher: FALLBACK
 components:
   responses:
-    Unauthorized:
-      description: Authentication failed. The bearer token is missing, expired, or invalid.
+    InternalServerError:
+      description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
       content:
         application/json:
           schema:
@@ -269,14 +269,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Conflict:
-      description: The request conflicts with the current state of the resource. For example, attempting to delete a submitted report or approve a report that has already been processed.
+    BadRequest:
+      description: The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
+    Conflict:
+      description: The request conflicts with the current state of the resource. For example, attempting to delete a submitted report or approve a report that has already been processed.
       content:
         application/json:
           schema:
@@ -287,13 +287,31 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.
+    Unauthorized:
+      description: Authentication failed. The bearer token is missing, expired, or invalid.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    ReportSendBackRequest:
+      type: object
+      description: Request body for sending a report back to the submitter
+      required:
+      - comment
+      properties:
+        comment:
+          type: string
+          description: Explanation of why the report is being returned for corrections
+          example: example_value
+        expectedStepCode:
+          type: string
+          description: The expected current workflow step code
+          example: example_value
+        expectedStepSequence:
+          type: integer
+          description: The expected current workflow step sequence number
+          example: 10
     ReportApproveRequest:
       type: object
       description: Request body for approving or recalling a report
@@ -318,6 +336,22 @@ components:
           type: integer
           description: The expected current workflow step sequence number for optimistic concurrency control
           example: 10
+    CostObjectForApprover:
+      type: object
+      description: A cost object relevant to an approver, representing how expenses on a report map to organizational cost structures.
+      properties:
+        costObjectId:
+          type: string
+          description: Unique identifier of the cost object
+          example: '500123'
+        name:
+          type: string
+          description: Display name of the cost object
+          example: Example Title
+        code:
+          type: string
+          description: Cost object code
+          example: example_value
     ErrorResponse:
       type: object
       description: Standard error response
@@ -356,40 +390,6 @@ components:
                 type: string
                 description: Description of the validation failure
           example: []
-    ReportSendBackRequest:
-      type: object
-      description: Request body for sending a report back to the submitter
-      required:
-      - comment
-      properties:
-        comment:
-          type: string
-          description: Explanation of why the report is being returned for corrections
-          example: example_value
-        expectedStepCode:
-          type: string
-          description: The expected current workflow step code
-          example: example_value
-        expectedStepSequence:
-          type: integer
-          description: The expected current workflow step sequence number
-          example: 10
-    CostObjectForApprover:
-      type: object
-      description: A cost object relevant to an approver, representing how expenses on a report map to organizational cost structures.
-      properties:
-        costObjectId:
-          type: string
-          description: Unique identifier of the cost object
-          example: '500123'
-        name:
-          type: string
-          description: Display name of the cost object
-          example: Example Title
-        code:
-          type: string
-          description: Cost object code
-          example: example_value
   parameters:
     contextTypeWritable:
       name: contextType
@@ -401,13 +401,6 @@ components:
         enum:
         - TRAVELER
         - PROXY
-    reportId:
-      name: reportId
-      in: path
-      required: true
-      description: The unique identifier of the expense report
-      schema:
-        type: string
     userID:
       name: userID
       in: path
@@ -416,6 +409,13 @@ components:
       schema:
         type: string
         format: uuid
+    reportId:
+      name: reportId
+      in: path
+      required: true
+      description: The unique identifier of the expense report
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http
