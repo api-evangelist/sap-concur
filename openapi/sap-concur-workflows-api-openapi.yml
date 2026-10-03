@@ -257,20 +257,14 @@ paths:
         dispatcher: FALLBACK
 components:
   responses:
+    NotFound:
+      description: The requested resource (report, expense, allocation, or user) was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     InternalServerError:
       description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: The authenticated user does not have the required scope or permission to perform this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.
       content:
         application/json:
           schema:
@@ -281,8 +275,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: The requested resource (report, expense, allocation, or user) was not found.
+    Forbidden:
+      description: The authenticated user does not have the required scope or permission to perform this operation.
       content:
         application/json:
           schema:
@@ -293,6 +287,38 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    userID:
+      name: userID
+      in: path
+      required: true
+      description: The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API.
+      schema:
+        type: string
+        format: uuid
+    reportId:
+      name: reportId
+      in: path
+      required: true
+      description: The unique identifier of the expense report
+      schema:
+        type: string
+    contextTypeWritable:
+      name: contextType
+      in: path
+      required: true
+      description: The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner.
+      schema:
+        type: string
+        enum:
+        - TRAVELER
+        - PROXY
   schemas:
     ReportSendBackRequest:
       type: object
@@ -336,22 +362,6 @@ components:
           type: integer
           description: The expected current workflow step sequence number for optimistic concurrency control
           example: 10
-    CostObjectForApprover:
-      type: object
-      description: A cost object relevant to an approver, representing how expenses on a report map to organizational cost structures.
-      properties:
-        costObjectId:
-          type: string
-          description: Unique identifier of the cost object
-          example: '500123'
-        name:
-          type: string
-          description: Display name of the cost object
-          example: Example Title
-        code:
-          type: string
-          description: Cost object code
-          example: example_value
     ErrorResponse:
       type: object
       description: Standard error response
@@ -390,32 +400,22 @@ components:
                 type: string
                 description: Description of the validation failure
           example: []
-  parameters:
-    contextTypeWritable:
-      name: contextType
-      in: path
-      required: true
-      description: The access context for write operations. TRAVELER for the report owner or PROXY for a delegate acting on behalf of the owner.
-      schema:
-        type: string
-        enum:
-        - TRAVELER
-        - PROXY
-    userID:
-      name: userID
-      in: path
-      required: true
-      description: The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API.
-      schema:
-        type: string
-        format: uuid
-    reportId:
-      name: reportId
-      in: path
-      required: true
-      description: The unique identifier of the expense report
-      schema:
-        type: string
+    CostObjectForApprover:
+      type: object
+      description: A cost object relevant to an approver, representing how expenses on a report map to organizational cost structures.
+      properties:
+        costObjectId:
+          type: string
+          description: Unique identifier of the cost object
+          example: '500123'
+        name:
+          type: string
+          description: Display name of the cost object
+          example: Example Title
+        code:
+          type: string
+          description: Cost object code
+          example: example_value
   securitySchemes:
     bearerAuth:
       type: http

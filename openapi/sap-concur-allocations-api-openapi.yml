@@ -185,14 +185,14 @@ paths:
         dispatcher: FALLBACK
 components:
   responses:
-    InternalServerError:
-      description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
+    NotFound:
+      description: The requested resource (report, expense, allocation, or user) was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: The authenticated user does not have the required scope or permission to perform this operation.
+    InternalServerError:
+      description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
       content:
         application/json:
           schema:
@@ -203,8 +203,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: The requested resource (report, expense, allocation, or user) was not found.
+    Forbidden:
+      description: The authenticated user does not have the required scope or permission to perform this operation.
       content:
         application/json:
           schema:
@@ -227,14 +227,27 @@ components:
         - TRAVELER
         - MANAGER
         - PROXY
-    userID:
-      name: userID
+    expenseId:
+      name: expenseId
       in: path
       required: true
-      description: The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API.
+      description: The unique identifier of the expense entry
       schema:
         type: string
-        format: uuid
+    reportId:
+      name: reportId
+      in: path
+      required: true
+      description: The unique identifier of the expense report
+      schema:
+        type: string
+    allocationId:
+      name: allocationId
+      in: path
+      required: true
+      description: The unique identifier of the allocation
+      schema:
+        type: string
     contextTypeWritable:
       name: contextType
       in: path
@@ -245,28 +258,93 @@ components:
         enum:
         - TRAVELER
         - PROXY
-    expenseId:
-      name: expenseId
+    userID:
+      name: userID
       in: path
       required: true
-      description: The unique identifier of the expense entry
+      description: The unique identifier (UUID) of the SAP Concur user. Obtain via the Identity v4 API.
       schema:
         type: string
-    allocationId:
-      name: allocationId
-      in: path
-      required: true
-      description: The unique identifier of the allocation
-      schema:
-        type: string
-    reportId:
-      name: reportId
-      in: path
-      required: true
-      description: The unique identifier of the expense report
-      schema:
-        type: string
+        format: uuid
   schemas:
+    CustomData:
+      type: object
+      description: A custom field value configured by the organization. Field IDs follow patterns like custom1-custom40 and orgUnit1-orgUnit6.
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The identifier of the custom field (e.g., custom1, orgUnit1)
+          examples:
+          - custom1
+        value:
+          type: string
+          description: The value assigned to the custom field
+          maxLength: 48
+          examples:
+          - Marketing Department
+        isValid:
+          type: boolean
+          description: Whether the current value passes validation rules
+          example: '500123'
+    UpdateAllocationRequest:
+      type: object
+      description: Request body for updating an allocation
+      properties:
+        allocation:
+          type: object
+          description: The allocation fields to update
+          properties:
+            customData:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomData'
+          example: example_value
+        expenseIds:
+          type: array
+          description: The expense IDs to which this update applies
+          items:
+            type: string
+          example: []
+    ErrorResponse:
+      type: object
+      description: Standard error response
+      properties:
+        errorId:
+          type: string
+          description: Unique identifier for this error occurrence
+          example: '500123'
+        errorMessage:
+          type: string
+          description: Human-readable error description
+          example: example_value
+        httpStatus:
+          type: string
+          description: The HTTP status code as a string
+          example: example_value
+        path:
+          type: string
+          description: The request path that triggered the error
+          example: example_value
+        timestamp:
+          type: string
+          format: date-time
+          description: When the error occurred
+          example: '2026-01-15T10:30:00Z'
+        validationErrors:
+          type: array
+          description: Detailed field-level validation failures
+          items:
+            type: object
+            properties:
+              source:
+                type: string
+                description: The field or parameter that failed validation
+              message:
+                type: string
+                description: Description of the validation failure
+          example: []
     Allocation:
       type: object
       description: An expense allocation that distributes an expense amount across cost centers, departments, or general ledger accounts.
@@ -320,46 +398,6 @@ components:
           items:
             $ref: '#/components/schemas/CustomData'
           example: []
-    CustomData:
-      type: object
-      description: A custom field value configured by the organization. Field IDs follow patterns like custom1-custom40 and orgUnit1-orgUnit6.
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          description: The identifier of the custom field (e.g., custom1, orgUnit1)
-          examples:
-          - custom1
-        value:
-          type: string
-          description: The value assigned to the custom field
-          maxLength: 48
-          examples:
-          - Marketing Department
-        isValid:
-          type: boolean
-          description: Whether the current value passes validation rules
-          example: '500123'
-    UpdateAllocationRequest:
-      type: object
-      description: Request body for updating an allocation
-      properties:
-        allocation:
-          type: object
-          description: The allocation fields to update
-          properties:
-            customData:
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomData'
-          example: example_value
-        expenseIds:
-          type: array
-          description: The expense IDs to which this update applies
-          items:
-            type: string
-          example: []
     Amount:
       type: object
       description: A monetary amount with its currency code
@@ -380,44 +418,6 @@ components:
           maxLength: 3
           examples:
           - USD
-    ErrorResponse:
-      type: object
-      description: Standard error response
-      properties:
-        errorId:
-          type: string
-          description: Unique identifier for this error occurrence
-          example: '500123'
-        errorMessage:
-          type: string
-          description: Human-readable error description
-          example: example_value
-        httpStatus:
-          type: string
-          description: The HTTP status code as a string
-          example: example_value
-        path:
-          type: string
-          description: The request path that triggered the error
-          example: example_value
-        timestamp:
-          type: string
-          format: date-time
-          description: When the error occurred
-          example: '2026-01-15T10:30:00Z'
-        validationErrors:
-          type: array
-          description: Detailed field-level validation failures
-          items:
-            type: object
-            properties:
-              source:
-                type: string
-                description: The field or parameter that failed validation
-              message:
-                type: string
-                description: Description of the validation failure
-          example: []
   securitySchemes:
     bearerAuth:
       type: http
