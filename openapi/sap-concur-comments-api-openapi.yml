@@ -289,6 +289,16 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    CommentRequest:
+      type: object
+      description: Request body for creating or updating a comment
+      required:
+      - comment
+      properties:
+        comment:
+          type: string
+          description: The comment text content
+          example: example_value
     ResourceCreatedResponse:
       type: object
       description: Response returned when a resource is successfully created
@@ -298,6 +308,42 @@ components:
           format: uri
           description: The URI of the newly created resource
           example: https://www.example.com
+    Comment:
+      type: object
+      description: A comment on a report or expense
+      properties:
+        comment:
+          type: string
+          description: The comment text content
+          example: example_value
+        author:
+          type: object
+          description: The user who authored the comment
+          properties:
+            userId:
+              type: string
+              format: uuid
+              description: The author's user identifier
+            firstName:
+              type: string
+              description: The author's first name
+            lastName:
+              type: string
+              description: The author's last name
+          example: example_value
+        creationDate:
+          type: string
+          format: date-time
+          description: When the comment was created
+          example: '2026-01-15T10:30:00Z'
+        isLatest:
+          type: boolean
+          description: Whether this is the most recent comment
+          example: true
+        isAuditLog:
+          type: boolean
+          description: Whether this is a system-generated audit entry
+          example: true
     ErrorResponse:
       type: object
       description: Standard error response
@@ -336,61 +382,9 @@ components:
                 type: string
                 description: Description of the validation failure
           example: []
-    Comment:
-      type: object
-      description: A comment on a report or expense
-      properties:
-        comment:
-          type: string
-          description: The comment text content
-          example: example_value
-        author:
-          type: object
-          description: The user who authored the comment
-          properties:
-            userId:
-              type: string
-              format: uuid
-              description: The author's user identifier
-            firstName:
-              type: string
-              description: The author's first name
-            lastName:
-              type: string
-              description: The author's last name
-          example: example_value
-        creationDate:
-          type: string
-          format: date-time
-          description: When the comment was created
-          example: '2026-01-15T10:30:00Z'
-        isLatest:
-          type: boolean
-          description: Whether this is the most recent comment
-          example: true
-        isAuditLog:
-          type: boolean
-          description: Whether this is a system-generated audit entry
-          example: true
-    CommentRequest:
-      type: object
-      description: Request body for creating or updating a comment
-      required:
-      - comment
-      properties:
-        comment:
-          type: string
-          description: The comment text content
-          example: example_value
   responses:
-    NotFound:
-      description: The requested resource (report, expense, allocation, or user) was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
+    BadRequest:
+      description: The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.
       content:
         application/json:
           schema:
@@ -407,13 +401,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: The request was malformed or contained invalid parameters. Check the validationErrors array for field-level details.
+    InternalServerError:
+      description: An unexpected server error occurred. Retry the request or contact SAP Concur support with the Concur-CorrelationId header.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource (report, expense, allocation, or user) was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   parameters:
+    reportId:
+      name: reportId
+      in: path
+      required: true
+      description: The unique identifier of the expense report
+      schema:
+        type: string
     contextType:
       name: contextType
       in: path
@@ -425,6 +432,13 @@ components:
         - TRAVELER
         - MANAGER
         - PROXY
+    expenseId:
+      name: expenseId
+      in: path
+      required: true
+      description: The unique identifier of the expense entry
+      schema:
+        type: string
     userID:
       name: userID
       in: path
@@ -433,20 +447,6 @@ components:
       schema:
         type: string
         format: uuid
-    expenseId:
-      name: expenseId
-      in: path
-      required: true
-      description: The unique identifier of the expense entry
-      schema:
-        type: string
-    reportId:
-      name: reportId
-      in: path
-      required: true
-      description: The unique identifier of the expense report
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http
