@@ -59,7 +59,7 @@ apis:
   baseURL: https://www.concursolutions.com/api/user/v1.0
   humanURL: https://developer.concur.com/api-reference/user/
   tags:
-  - Identity Management
+  - Identity and Access Management
   - Provisioning
   - User
   tags_raw:
