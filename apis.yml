@@ -762,6 +762,8 @@ apis:
   - type: Resources
     url: https://api.sap.com/package/ConcurRequest
 common:
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/sap-concur/overview
 - type: Website
   url: https://www.concur.com/
 - type: CapabilityMap
